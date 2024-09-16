@@ -44,7 +44,7 @@ let sampleEvents = [
 struct EventsView: View {
     var events: [HistoricalEvent] = sampleEvents
     var title: String = "September 14"
-    
+
     var body: some View {
         NavigationView {
             List(events) { event in
@@ -66,8 +66,8 @@ struct EventsView: View {
                     }
                 }
             }
+            .navigationTitle(title)
         }
-        .navigationTitle(title)
     }
 }
 
