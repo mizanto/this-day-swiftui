@@ -1,0 +1,41 @@
+opt_in_rules:
+  - attributes
+  - closure_spacing
+  - empty_count
+  - fatal_error_message
+  - file_name
+  - first_where
+  - force_unwrapping
+  - identifier_name
+  - trailing_whitespace
+  - todo
+  - nesting
+  - redundant_optional_initialization
+  - explicit_enum_raw_value
+  - unused_closure_parameter
+
+disabled_rules:
+  - force_cast
+
+line_length:
+  warning: 120
+  error: 150
+
+type_body_length:
+  warning: 250
+  error: 400
+
+function_body_length:
+  warning: 50
+  error: 100
+
+cyclomatic_complexity:
+  warning: 12
+  error: 25
+
+included:
+  - this-day
+
+excluded:
+  - .build
+  - Packages

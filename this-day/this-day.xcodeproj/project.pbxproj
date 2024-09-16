@@ -76,6 +76,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AD4D88F92C9841D0003DD3C4 /* Build configuration list for PBXNativeTarget "this-day" */;
 			buildPhases = (
+				AD4D88FC2C9842FF003DD3C4 /* Run SwiftLint */,
 				AD4D88E62C9841CF003DD3C4 /* Sources */,
 				AD4D88E72C9841CF003DD3C4 /* Frameworks */,
 				AD4D88E82C9841CF003DD3C4 /* Resources */,
@@ -134,6 +135,28 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		AD4D88FC2C9842FF003DD3C4 /* Run SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run SwiftLint";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${DERIVED_FILE_DIR}/swiftlint_output.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\" # for M1/M2\nexport PATH=\"$PATH:/usr/local/bin\" # for Intel Mac\n\necho \"SRCROOT is: ${SRCROOT}\"\n\nif which swiftlint >/dev/null; then\n    CONFIG_FILE=\"${SRCROOT}/../.swiftlint.yml\"\n    SOURCE_DIR=\"${SRCROOT}\"\n\n    echo \"Config file: $CONFIG_FILE\"\n    echo \"Source dir: $SOURCE_DIR\"\n\n    swiftlint lint --config \"$CONFIG_FILE\" \"$SOURCE_DIR\"\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		AD4D88E62C9841CF003DD3C4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -184,7 +207,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -245,7 +268,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
