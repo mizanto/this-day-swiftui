@@ -23,6 +23,7 @@
 		AD4D89182C987F05003DD3C4 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D89172C987F05003DD3C4 /* Event.swift */; };
 		AD4D891A2C987F17003DD3C4 /* EventLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D89192C987F17003DD3C4 /* EventLink.swift */; };
 		AD4D891D2C987F60003DD3C4 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D891C2C987F60003DD3C4 /* Date+Extension.swift */; };
+		AD4D891F2C988810003DD3C4 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D891E2C988810003DD3C4 /* AppLogger.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		AD4D89172C987F05003DD3C4 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		AD4D89192C987F17003DD3C4 /* EventLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLink.swift; sourceTree = "<group>"; };
 		AD4D891C2C987F60003DD3C4 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
+		AD4D891E2C988810003DD3C4 /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				AD4D890A2C986FFB003DD3C4 /* NetworkService.swift */,
+				AD4D891E2C988810003DD3C4 /* AppLogger.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -276,6 +279,7 @@
 				AD4D89032C985B23003DD3C4 /* EventsViewModel.swift in Sources */,
 				AD4D89182C987F05003DD3C4 /* Event.swift in Sources */,
 				AD4D89072C98664F003DD3C4 /* EventsViewBuilder.swift in Sources */,
+				AD4D891F2C988810003DD3C4 /* AppLogger.swift in Sources */,
 				AD4D89112C98703C003DD3C4 /* EventNetworkModel.swift in Sources */,
 				AD4D88EE2C9841CF003DD3C4 /* ThisDayApp.swift in Sources */,
 				AD4D89162C987EEF003DD3C4 /* HistoryEvents.swift in Sources */,
