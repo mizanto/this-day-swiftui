@@ -26,7 +26,6 @@ class EventsViewModel: EventsViewModelProtocol {
     @Published var title: String = ""
 
     private let router: EventsRouterProtocol
-
     private let networkService: NetworkServiceProtocol
     private var cancellables = Set<AnyCancellable>()
 
@@ -37,8 +36,9 @@ class EventsViewModel: EventsViewModelProtocol {
     }
 
     func fetchEvents(for date: Date) {
-        state = .loading
+        AppLogger.shared.info("Starting to fetch events for date: \(date)", category: .ui)
 
+        state = .loading
         title = date.toFormat("MMMM dd")
 
         networkService.fetchEvents(for: date)
@@ -46,13 +46,17 @@ class EventsViewModel: EventsViewModelProtocol {
             .sink(
                 receiveCompletion: { [weak self] completion in
                     switch completion {
-                    case .failure:
+                    case .failure(let error):
+                        AppLogger.shared.error("Failed to load events for date: \(date). Error: \(error)",
+                                               category: .ui)
                         self?.state = .error("Failed to load events. Please try again.")
                     case .finished:
-                        break
+                        AppLogger.shared.info("Successfully finished fetching events for date: \(date)",
+                                              category: .ui)
                     }
                 },
                 receiveValue: { [weak self] events in
+                    AppLogger.shared.info("Loaded \(events.count) events for date: \(date)", category: .ui)
                     self?.state = .loaded(events.map { $0.toUIModel() })
                 }
             )
@@ -60,6 +64,6 @@ class EventsViewModel: EventsViewModelProtocol {
     }
 
     func view(for event: Event) -> AnyView {
-        router.view(for: event)
+        return router.view(for: event)
     }
 }

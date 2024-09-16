@@ -20,6 +20,7 @@ struct EventsView<ViewModel: EventsViewModelProtocol>: View {
                 .navigationTitle(viewModel.title)
         }
         .onAppear {
+            AppLogger.shared.info("EventsView appeared, starting to fetch events.", category: .ui)
             viewModel.fetchEvents(for: Date())
         }
     }
@@ -28,12 +29,18 @@ struct EventsView<ViewModel: EventsViewModelProtocol>: View {
     private func content() -> some View {
         switch viewModel.state {
         case .loading:
+            let _ = AppLogger.shared.info("Loading view is displayed.",
+                                          category: .ui)
             loadingView()
 
         case .loaded(let events):
+            let _ = AppLogger.shared.info("Events loaded and list view is displayed with \(events.count) events.",
+                                          category: .ui)
             eventsListView(events: events)
 
         case .error(let message):
+            let _ = AppLogger.shared.error("Error view is displayed with message: \(message)",
+                                           category: .ui)
             errorView(message: message)
         }
     }
@@ -76,6 +83,7 @@ struct EventsView<ViewModel: EventsViewModelProtocol>: View {
                 .padding()
             Button(
                 action: {
+                    AppLogger.shared.info("Retrying to fetch events after error: \(message)", category: .ui)
                     viewModel.fetchEvents(for: Date())
                 },
                 label: {

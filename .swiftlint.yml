@@ -15,6 +15,7 @@ opt_in_rules:
 
 disabled_rules:
   - force_cast
+  - redundant_discardable_let
 
 line_length:
   warning: 120
