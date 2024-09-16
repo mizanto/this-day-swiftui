@@ -12,6 +12,9 @@
 		AD4D88F22C9841D0003DD3C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD4D88F12C9841D0003DD3C4 /* Assets.xcassets */; };
 		AD4D88F62C9841D0003DD3C4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD4D88F52C9841D0003DD3C4 /* Preview Assets.xcassets */; };
 		AD4D88FE2C985356003DD3C4 /* EventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D88FD2C985356003DD3C4 /* EventDetailView.swift */; };
+		AD4D89032C985B23003DD3C4 /* EventsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D89022C985B23003DD3C4 /* EventsViewModel.swift */; };
+		AD4D89052C98636C003DD3C4 /* EventsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D89042C98636C003DD3C4 /* EventsRouter.swift */; };
+		AD4D89072C98664F003DD3C4 /* EventsViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D89062C98664F003DD3C4 /* EventsViewBuilder.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +25,9 @@
 		AD4D88F32C9841D0003DD3C4 /* this_day.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = this_day.entitlements; sourceTree = "<group>"; };
 		AD4D88F52C9841D0003DD3C4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AD4D88FD2C985356003DD3C4 /* EventDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailView.swift; sourceTree = "<group>"; };
+		AD4D89022C985B23003DD3C4 /* EventsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewModel.swift; sourceTree = "<group>"; };
+		AD4D89042C98636C003DD3C4 /* EventsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsRouter.swift; sourceTree = "<group>"; };
+		AD4D89062C98664F003DD3C4 /* EventsViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewBuilder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,8 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				AD4D88ED2C9841CF003DD3C4 /* ThisDayApp.swift */,
-				AD4D88EF2C9841CF003DD3C4 /* EventsView.swift */,
-				AD4D88FD2C985356003DD3C4 /* EventDetailView.swift */,
+				AD4D88FF2C985AEA003DD3C4 /* Screens */,
 				AD4D88F12C9841D0003DD3C4 /* Assets.xcassets */,
 				AD4D88F32C9841D0003DD3C4 /* this_day.entitlements */,
 				AD4D88F42C9841D0003DD3C4 /* Preview Content */,
@@ -70,6 +75,34 @@
 				AD4D88F52C9841D0003DD3C4 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		AD4D88FF2C985AEA003DD3C4 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				AD4D89002C985AF7003DD3C4 /* Events */,
+				AD4D89012C985B0D003DD3C4 /* EventDetail */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		AD4D89002C985AF7003DD3C4 /* Events */ = {
+			isa = PBXGroup;
+			children = (
+				AD4D89062C98664F003DD3C4 /* EventsViewBuilder.swift */,
+				AD4D88EF2C9841CF003DD3C4 /* EventsView.swift */,
+				AD4D89022C985B23003DD3C4 /* EventsViewModel.swift */,
+				AD4D89042C98636C003DD3C4 /* EventsRouter.swift */,
+			);
+			path = Events;
+			sourceTree = "<group>";
+		};
+		AD4D89012C985B0D003DD3C4 /* EventDetail */ = {
+			isa = PBXGroup;
+			children = (
+				AD4D88FD2C985356003DD3C4 /* EventDetailView.swift */,
+			);
+			path = EventDetail;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -165,7 +198,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AD4D89052C98636C003DD3C4 /* EventsRouter.swift in Sources */,
 				AD4D88F02C9841CF003DD3C4 /* EventsView.swift in Sources */,
+				AD4D89032C985B23003DD3C4 /* EventsViewModel.swift in Sources */,
+				AD4D89072C98664F003DD3C4 /* EventsViewBuilder.swift in Sources */,
 				AD4D88EE2C9841CF003DD3C4 /* ThisDayApp.swift in Sources */,
 				AD4D88FE2C985356003DD3C4 /* EventDetailView.swift in Sources */,
 			);
