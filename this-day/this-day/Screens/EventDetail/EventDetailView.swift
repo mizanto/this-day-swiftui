@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EventDetailView: View {
-    var event: HistoricalEvent
+    var event: Event
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -43,7 +43,7 @@ struct EventDetailView: View {
 }
 
 #Preview {
-    EventDetailView(event: HistoricalEvent(
+    EventDetailView(event: Event(
         year: "81",
         text: "Domitian became Emperor of the Roman Empire upon the death of his brother Titus.",
         links: [

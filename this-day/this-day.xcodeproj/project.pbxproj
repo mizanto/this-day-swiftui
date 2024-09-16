@@ -15,6 +15,14 @@
 		AD4D89032C985B23003DD3C4 /* EventsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D89022C985B23003DD3C4 /* EventsViewModel.swift */; };
 		AD4D89052C98636C003DD3C4 /* EventsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D89042C98636C003DD3C4 /* EventsRouter.swift */; };
 		AD4D89072C98664F003DD3C4 /* EventsViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D89062C98664F003DD3C4 /* EventsViewBuilder.swift */; };
+		AD4D890B2C986FFB003DD3C4 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D890A2C986FFB003DD3C4 /* NetworkService.swift */; };
+		AD4D890F2C987028003DD3C4 /* EventsNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D890E2C987028003DD3C4 /* EventsNetworkModel.swift */; };
+		AD4D89112C98703C003DD3C4 /* EventNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D89102C98703C003DD3C4 /* EventNetworkModel.swift */; };
+		AD4D89132C987050003DD3C4 /* EventLinkNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D89122C987050003DD3C4 /* EventLinkNetworkModel.swift */; };
+		AD4D89162C987EEF003DD3C4 /* HistoryEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D89152C987EEF003DD3C4 /* HistoryEvents.swift */; };
+		AD4D89182C987F05003DD3C4 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D89172C987F05003DD3C4 /* Event.swift */; };
+		AD4D891A2C987F17003DD3C4 /* EventLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D89192C987F17003DD3C4 /* EventLink.swift */; };
+		AD4D891D2C987F60003DD3C4 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D891C2C987F60003DD3C4 /* Date+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +36,14 @@
 		AD4D89022C985B23003DD3C4 /* EventsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewModel.swift; sourceTree = "<group>"; };
 		AD4D89042C98636C003DD3C4 /* EventsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsRouter.swift; sourceTree = "<group>"; };
 		AD4D89062C98664F003DD3C4 /* EventsViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewBuilder.swift; sourceTree = "<group>"; };
+		AD4D890A2C986FFB003DD3C4 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		AD4D890E2C987028003DD3C4 /* EventsNetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsNetworkModel.swift; sourceTree = "<group>"; };
+		AD4D89102C98703C003DD3C4 /* EventNetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventNetworkModel.swift; sourceTree = "<group>"; };
+		AD4D89122C987050003DD3C4 /* EventLinkNetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLinkNetworkModel.swift; sourceTree = "<group>"; };
+		AD4D89152C987EEF003DD3C4 /* HistoryEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryEvents.swift; sourceTree = "<group>"; };
+		AD4D89172C987F05003DD3C4 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		AD4D89192C987F17003DD3C4 /* EventLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLink.swift; sourceTree = "<group>"; };
+		AD4D891C2C987F60003DD3C4 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,8 +76,11 @@
 		AD4D88EC2C9841CF003DD3C4 /* this-day */ = {
 			isa = PBXGroup;
 			children = (
-				AD4D88ED2C9841CF003DD3C4 /* ThisDayApp.swift */,
+				AD4D89082C986C89003DD3C4 /* App */,
+				AD4D890C2C987002003DD3C4 /* Models */,
 				AD4D88FF2C985AEA003DD3C4 /* Screens */,
+				AD4D89092C986C96003DD3C4 /* Services */,
+				AD4D891B2C987F50003DD3C4 /* Extensions */,
 				AD4D88F12C9841D0003DD3C4 /* Assets.xcassets */,
 				AD4D88F32C9841D0003DD3C4 /* this_day.entitlements */,
 				AD4D88F42C9841D0003DD3C4 /* Preview Content */,
@@ -103,6 +122,59 @@
 				AD4D88FD2C985356003DD3C4 /* EventDetailView.swift */,
 			);
 			path = EventDetail;
+			sourceTree = "<group>";
+		};
+		AD4D89082C986C89003DD3C4 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				AD4D88ED2C9841CF003DD3C4 /* ThisDayApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		AD4D89092C986C96003DD3C4 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				AD4D890A2C986FFB003DD3C4 /* NetworkService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		AD4D890C2C987002003DD3C4 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				AD4D89142C9878D9003DD3C4 /* UI */,
+				AD4D890D2C98700F003DD3C4 /* Network */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		AD4D890D2C98700F003DD3C4 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				AD4D890E2C987028003DD3C4 /* EventsNetworkModel.swift */,
+				AD4D89102C98703C003DD3C4 /* EventNetworkModel.swift */,
+				AD4D89122C987050003DD3C4 /* EventLinkNetworkModel.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		AD4D89142C9878D9003DD3C4 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				AD4D89152C987EEF003DD3C4 /* HistoryEvents.swift */,
+				AD4D89172C987F05003DD3C4 /* Event.swift */,
+				AD4D89192C987F17003DD3C4 /* EventLink.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		AD4D891B2C987F50003DD3C4 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				AD4D891C2C987F60003DD3C4 /* Date+Extension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -199,11 +271,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD4D89052C98636C003DD3C4 /* EventsRouter.swift in Sources */,
+				AD4D890F2C987028003DD3C4 /* EventsNetworkModel.swift in Sources */,
 				AD4D88F02C9841CF003DD3C4 /* EventsView.swift in Sources */,
 				AD4D89032C985B23003DD3C4 /* EventsViewModel.swift in Sources */,
+				AD4D89182C987F05003DD3C4 /* Event.swift in Sources */,
 				AD4D89072C98664F003DD3C4 /* EventsViewBuilder.swift in Sources */,
+				AD4D89112C98703C003DD3C4 /* EventNetworkModel.swift in Sources */,
 				AD4D88EE2C9841CF003DD3C4 /* ThisDayApp.swift in Sources */,
+				AD4D89162C987EEF003DD3C4 /* HistoryEvents.swift in Sources */,
+				AD4D89132C987050003DD3C4 /* EventLinkNetworkModel.swift in Sources */,
+				AD4D891A2C987F17003DD3C4 /* EventLink.swift in Sources */,
+				AD4D891D2C987F60003DD3C4 /* Date+Extension.swift in Sources */,
 				AD4D88FE2C985356003DD3C4 /* EventDetailView.swift in Sources */,
+				AD4D890B2C986FFB003DD3C4 /* NetworkService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,19 +7,6 @@
 
 import SwiftUI
 
-struct HistoricalEvent: Identifiable {
-    let id = UUID()
-    let year: String
-    let text: String
-    let links: [EventLink]
-}
-
-struct EventLink: Identifiable {
-    let id = UUID()
-    let title: String
-    let link: String
-}
-
 struct EventsView<ViewModel: EventsViewModelProtocol,
                   Router: EventsRouterProtocol>: View {
     @StateObject private var viewModel: ViewModel
@@ -36,7 +23,7 @@ struct EventsView<ViewModel: EventsViewModelProtocol,
                 .navigationTitle(viewModel.title)
         }
         .onAppear {
-            viewModel.fetchEvents()
+            viewModel.fetchEvents(for: Date())
         }
     }
 
@@ -59,7 +46,7 @@ struct EventsView<ViewModel: EventsViewModelProtocol,
             .progressViewStyle(CircularProgressViewStyle())
     }
 
-    private func eventsListView(events: [HistoricalEvent]) -> some View {
+    private func eventsListView(events: [Event]) -> some View {
         List(events) { event in
             NavigationLink(destination: router.view(for: event)) {
                 VStack(alignment: .leading, spacing: 8) {
@@ -88,7 +75,7 @@ struct EventsView<ViewModel: EventsViewModelProtocol,
                 .padding()
             Button(
                 action: {
-                    viewModel.fetchEvents()
+                    viewModel.fetchEvents(for: Date())
                 },
                 label: {
                     Text("Try Again")

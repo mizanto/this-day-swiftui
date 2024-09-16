@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct ThisDayApp: App {
+    let networkService = NetworkService()
+
     var body: some Scene {
         WindowGroup {
-            EventsViewBuilder.build()
+            EventsViewBuilder.build(networkService: networkService)
         }
     }
 }

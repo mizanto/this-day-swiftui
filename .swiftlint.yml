@@ -11,7 +11,6 @@ opt_in_rules:
   - todo
   - nesting
   - redundant_optional_initialization
-  - explicit_enum_raw_value
   - unused_closure_parameter
 
 disabled_rules:
