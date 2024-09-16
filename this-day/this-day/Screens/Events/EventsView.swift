@@ -7,14 +7,11 @@
 
 import SwiftUI
 
-struct EventsView<ViewModel: EventsViewModelProtocol,
-                  Router: EventsRouterProtocol>: View {
+struct EventsView<ViewModel: EventsViewModelProtocol>: View {
     @StateObject private var viewModel: ViewModel
-    private let router: Router
 
-    init(viewModel: ViewModel, router: Router) {
+    init(viewModel: ViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
-        self.router = router
     }
 
     var body: some View {
@@ -48,7 +45,7 @@ struct EventsView<ViewModel: EventsViewModelProtocol,
 
     private func eventsListView(events: [Event]) -> some View {
         List(events) { event in
-            NavigationLink(destination: router.view(for: event)) {
+            NavigationLink(destination: viewModel.view(for: event)) {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(event.year)
                         .font(.headline)
@@ -56,10 +53,14 @@ struct EventsView<ViewModel: EventsViewModelProtocol,
                         .font(.body)
                         .lineLimit(1)
                     HStack {
-                        ForEach(event.links) { link in
+                        ForEach(event.links.prefix(2)) { link in
                             Text(link.title)
                                 .font(.caption)
-                                .foregroundColor(.blue)
+                                .lineLimit(1)
+                                .padding(4)
+                                .background(.blue)
+                                .foregroundColor(.white)
+                                .cornerRadius(4)
                         }
                     }
                     .padding(.vertical, 8)
@@ -87,5 +88,5 @@ struct EventsView<ViewModel: EventsViewModelProtocol,
 }
 
 #Preview {
-    EventsView(viewModel: EventsViewModel(), router: EventsRouter())
+    EventsView(viewModel: EventsViewModel(router: EventsRouter()))
 }

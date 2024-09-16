@@ -5,7 +5,7 @@
 //  Created by Sergey Bendak on 16.09.2024.
 //
 
-import Foundation
+import SwiftUI
 import Combine
 
 enum ViewState {
@@ -18,24 +18,29 @@ protocol EventsViewModelProtocol: ObservableObject {
     var state: ViewState { get }
     var title: String { get }
     func fetchEvents(for date: Date)
+    func view(for: Event) -> AnyView
 }
 
 class EventsViewModel: EventsViewModelProtocol {
     @Published var state: ViewState = .loading
     @Published var title: String = ""
 
+    private let router: EventsRouterProtocol
+
     private let networkService: NetworkServiceProtocol
     private var cancellables = Set<AnyCancellable>()
 
-    init(networkService: NetworkServiceProtocol = NetworkService()) {
+    init(networkService: NetworkServiceProtocol = NetworkService(),
+         router: EventsRouterProtocol) {
         self.networkService = networkService
+        self.router = router
     }
 
     func fetchEvents(for date: Date) {
         state = .loading
 
         title = date.toFormat("MMMM dd")
-        
+
         networkService.fetchEvents(for: date)
             .receive(on: DispatchQueue.main)
             .sink(
@@ -52,5 +57,9 @@ class EventsViewModel: EventsViewModelProtocol {
                 }
             )
             .store(in: &cancellables)
+    }
+
+    func view(for event: Event) -> AnyView {
+        router.view(for: event)
     }
 }

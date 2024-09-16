@@ -9,8 +9,8 @@ import SwiftUI
 
 final class EventsViewBuilder {
     static func build(networkService: NetworkServiceProtocol) -> some View {
-        let viewModel = EventsViewModel(networkService: networkService)
-        let router = EventsRouter()
-        return EventsView(viewModel: viewModel, router: router)
+        let viewModel = EventsViewModel(networkService: networkService,
+                                        router: EventsRouter())
+        return EventsView(viewModel: viewModel)
     }
 }

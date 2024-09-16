@@ -15,7 +15,7 @@ extension Date {
     var month: Int? {
         return Calendar.current.dateComponents([.month], from: self).month
     }
-    
+
     func toFormat(_ format: String) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = format
