@@ -18,37 +18,40 @@ protocol NetworkServiceProtocol {
     func fetchEvents(for date: Date) -> AnyPublisher<[EventNetworkModel], NetworkServiceError>
 }
 
-class NetworkService: NetworkServiceProtocol {
+final class NetworkService: NetworkServiceProtocol {
     private let baseURL = "https://history.muffinlabs.com"
 
     private func fetchData<T: Decodable>(from url: URL) -> AnyPublisher<T, NetworkServiceError> {
-        print("Fetching data from URL: \(url)")
+        AppLogger.shared.info("Fetching data from URL: \(url)", category: .network)
 
         return URLSession.shared.dataTaskPublisher(for: url)
             .handleEvents(receiveSubscription: { _ in
-                print("Started fetching data from \(url)")
+                AppLogger.shared.info("Started fetching data from \(url)", category: .network)
             }, receiveOutput: { _, response in
                 if let httpResponse = response as? HTTPURLResponse {
-                    print("Received HTTP \(httpResponse.statusCode) from \(url)")
+                    AppLogger.shared.info("Received HTTP \(httpResponse.statusCode) from \(url)", category: .network)
                 }
             }, receiveCompletion: { completion in
                 switch completion {
                 case .finished:
-                    print("Finished fetching data from \(url)")
+                    AppLogger.shared.info("Finished fetching data from \(url)", category: .network)
                 case .failure(let error):
-                    print("Failed fetching data from \(url) with error: \(error)")
+                    AppLogger.shared.error("Failed fetching data from \(url) with error: \(error)", category: .network)
                 }
             })
-            .mapError { NetworkServiceError.networkError($0) }
+            .mapError { error in
+                AppLogger.shared.error("Network error occurred: \(error)", category: .network)
+                return NetworkServiceError.networkError(error)
+            }
             .flatMap { data, _ -> AnyPublisher<T, NetworkServiceError> in
                 do {
                     let decodedData = try JSONDecoder().decode(T.self, from: data)
-                    print("Successfully decoded data from \(url)")
+                    AppLogger.shared.info("Successfully decoded data from \(url)", category: .network)
                     return Just(decodedData)
                         .setFailureType(to: NetworkServiceError.self)
                         .eraseToAnyPublisher()
                 } catch {
-                    print("Decoding error for data from \(url): \(error)")
+                    AppLogger.shared.error("Decoding error for data from \(url): \(error)", category: .network)
                     return Fail(error: NetworkServiceError.decodingError(error))
                         .eraseToAnyPublisher()
                 }
@@ -58,16 +61,16 @@ class NetworkService: NetworkServiceProtocol {
 
     func fetchEvents(for date: Date) -> AnyPublisher<[EventNetworkModel], NetworkServiceError> {
         guard let month = date.month, let day = date.day else {
-            print("Invalid date components for fetching history")
+            AppLogger.shared.error("Invalid date components for fetching history", category: .network)
             return Fail(error: NetworkServiceError.invalidURL).eraseToAnyPublisher()
         }
 
         guard let url = URL(string: "\(baseURL)/date/\(month)/\(day)") else {
-            print("Invalid URL for date: \(date)")
+            AppLogger.shared.error("Invalid URL for date: \(date)", category: .network)
             return Fail(error: NetworkServiceError.invalidURL).eraseToAnyPublisher()
         }
 
-        print("Fetching history for date: \(date) with URL: \(url)")
+        AppLogger.shared.info("Fetching history for date: \(date) with URL: \(url)", category: .network)
 
         return fetchData(from: url)
             .map { (response: EventsNetworkModel) in
