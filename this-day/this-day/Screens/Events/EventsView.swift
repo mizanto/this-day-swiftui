@@ -29,18 +29,18 @@ struct EventsView<ViewModel: EventsViewModelProtocol>: View {
     private func content() -> some View {
         switch viewModel.state {
         case .loading:
-            let _ = AppLogger.shared.info("Loading view is displayed.",
-                                          category: .ui)
+//            let _ = AppLogger.shared.info("Loading view is displayed.",
+//                                          category: .ui)
             loadingView()
 
         case .loaded(let events):
-            let _ = AppLogger.shared.info("Events loaded and list view is displayed with \(events.count) events.",
-                                          category: .ui)
+//            let _ = AppLogger.shared.info("Events loaded and list view is displayed with \(events.count) events.",
+//                                          category: .ui)
             eventsListView(events: events)
 
         case .error(let message):
-            let _ = AppLogger.shared.error("Error view is displayed with message: \(message)",
-                                           category: .ui)
+//            let _ = AppLogger.shared.error("Error view is displayed with message: \(message)",
+//                                           category: .ui)
             errorView(message: message)
         }
     }
