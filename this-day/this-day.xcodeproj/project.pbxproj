@@ -36,6 +36,9 @@
 		AD9592162C99CF570019BB13 /* WKQueryResponseNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592152C99CF550019BB13 /* WKQueryResponseNetworkModel.swift */; };
 		AD9592182C99CF770019BB13 /* WKPageNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592172C99CF750019BB13 /* WKPageNetworkModel.swift */; };
 		AD95921A2C99CF970019BB13 /* WKThumbnailNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592192C99CF950019BB13 /* WKThumbnailNetworkModel.swift */; };
+		AD95921D2C99D2240019BB13 /* ViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95921C2C99D21E0019BB13 /* ViewState.swift */; };
+		AD9592202C99D3380019BB13 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95921F2C99D3340019BB13 /* Article.swift */; };
+		AD9592222C99D4B30019BB13 /* ArticleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592212C99D4A80019BB13 /* ArticleViewModel.swift */; };
 		ADD1CF922C99932000739278 /* EventsRouterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD1CF912C99931B00739278 /* EventsRouterMock.swift */; };
 		ADD1CF962C99936F00739278 /* EventsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */; };
 /* End PBXBuildFile section */
@@ -83,6 +86,9 @@
 		AD9592152C99CF550019BB13 /* WKQueryResponseNetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKQueryResponseNetworkModel.swift; sourceTree = "<group>"; };
 		AD9592172C99CF750019BB13 /* WKPageNetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKPageNetworkModel.swift; sourceTree = "<group>"; };
 		AD9592192C99CF950019BB13 /* WKThumbnailNetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKThumbnailNetworkModel.swift; sourceTree = "<group>"; };
+		AD95921C2C99D21E0019BB13 /* ViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewState.swift; sourceTree = "<group>"; };
+		AD95921F2C99D3340019BB13 /* Article.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
+		AD9592212C99D4A80019BB13 /* ArticleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleViewModel.swift; sourceTree = "<group>"; };
 		ADD1CF912C99931B00739278 /* EventsRouterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsRouterMock.swift; sourceTree = "<group>"; };
 		ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -176,6 +182,7 @@
 				AD4D88FF2C985AEA003DD3C4 /* Screens */,
 				AD4D89092C986C96003DD3C4 /* Services */,
 				AD4D891B2C987F50003DD3C4 /* Extensions */,
+				AD95921B2C99D2170019BB13 /* Utils */,
 				AD4D88F12C9841D0003DD3C4 /* Assets.xcassets */,
 				AD4D88F32C9841D0003DD3C4 /* this_day.entitlements */,
 				AD4D88F42C9841D0003DD3C4 /* Preview Content */,
@@ -196,6 +203,7 @@
 			children = (
 				AD4D89002C985AF7003DD3C4 /* Events */,
 				AD4D89012C985B0D003DD3C4 /* EventDetail */,
+				AD95921E2C99D28C0019BB13 /* Article */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -259,6 +267,7 @@
 		AD4D89142C9878D9003DD3C4 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				AD95921F2C99D3340019BB13 /* Article.swift */,
 				AD4D89152C987EEF003DD3C4 /* HistoryEvents.swift */,
 				AD4D89172C987F05003DD3C4 /* Event.swift */,
 				AD4D89192C987F17003DD3C4 /* EventLink.swift */,
@@ -295,6 +304,22 @@
 				AD9592132C99CF380019BB13 /* WKResponseNetworkModel.swift */,
 			);
 			path = Wikipedia;
+			sourceTree = "<group>";
+		};
+		AD95921B2C99D2170019BB13 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				AD95921C2C99D21E0019BB13 /* ViewState.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		AD95921E2C99D28C0019BB13 /* Article */ = {
+			isa = PBXGroup;
+			children = (
+				AD9592212C99D4A80019BB13 /* ArticleViewModel.swift */,
+			);
+			path = Article;
 			sourceTree = "<group>";
 		};
 		ADD1CF8F2C99930900739278 /* Screens */ = {
@@ -479,10 +504,13 @@
 				AD95921A2C99CF970019BB13 /* WKThumbnailNetworkModel.swift in Sources */,
 				AD4D89162C987EEF003DD3C4 /* HistoryEvents.swift in Sources */,
 				AD4D89132C987050003DD3C4 /* EventLinkNetworkModel.swift in Sources */,
+				AD95921D2C99D2240019BB13 /* ViewState.swift in Sources */,
+				AD9592222C99D4B30019BB13 /* ArticleViewModel.swift in Sources */,
 				AD95920D2C99C9570019BB13 /* BaseNetworkService.swift in Sources */,
 				AD9592142C99CF3C0019BB13 /* WKResponseNetworkModel.swift in Sources */,
 				AD4D891A2C987F17003DD3C4 /* EventLink.swift in Sources */,
 				AD9592112C99CC510019BB13 /* WikipediaService.swift in Sources */,
+				AD9592202C99D3380019BB13 /* Article.swift in Sources */,
 				AD2609582C99763400687D36 /* URLSessionProtocol.swift in Sources */,
 				AD4D891D2C987F60003DD3C4 /* Date+Extension.swift in Sources */,
 				AD95920B2C99C8F80019BB13 /* NetworkServiceError.swift in Sources */,

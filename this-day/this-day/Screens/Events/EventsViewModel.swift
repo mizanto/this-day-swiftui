@@ -8,21 +8,15 @@
 import SwiftUI
 import Combine
 
-enum ViewState {
-    case loading
-    case loaded([Event])
-    case error(String)
-}
-
 protocol EventsViewModelProtocol: ObservableObject {
-    var state: ViewState { get }
+    var state: ViewState<[Event]> { get }
     var title: String { get }
     func fetchEvents(for date: Date)
     func view(for: Event) -> AnyView
 }
 
 class EventsViewModel: EventsViewModelProtocol {
-    @Published var state: ViewState = .loading
+    @Published var state: ViewState<[Event]> = .loading
     @Published var title: String = ""
 
     private let router: EventsRouterProtocol
