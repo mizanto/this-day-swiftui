@@ -30,7 +30,6 @@ final class NetworkServiceTests: XCTestCase {
     }
 
     func testFetchEventsSuccess() {
-        // Given: Mocked data and response
         sessionMock.data = fakeEventsData
         sessionMock.response = HTTPURLResponse(url: URL(string: "https://history.muffinlabs.com")!,
                                                statusCode: 200,
@@ -38,7 +37,6 @@ final class NetworkServiceTests: XCTestCase {
                                                headerFields: nil)!
         sessionMock.error = nil
 
-        // When: Fetching events
         let expectation = XCTestExpectation(description: "Fetch events successfully")
 
         networkService.fetchEvents(for: Date())
@@ -47,7 +45,6 @@ final class NetworkServiceTests: XCTestCase {
                     XCTFail("Expected success but got failure with error: \(error)")
                 }
             }, receiveValue: { events in
-                // Then: Validate the fetched events
                 XCTAssertEqual(events.count, 1)
                 XCTAssertEqual(events.first?.year, "681")
                 XCTAssertEqual(events.first?.text, "Pope Honorius I is posthumously excommunicated by the Sixth Ecumenical Council.")
@@ -60,17 +57,14 @@ final class NetworkServiceTests: XCTestCase {
     }
 
     func testFetchEventsNetworkError() {
-        // Given: A network error
         sessionMock.data = nil
         sessionMock.response = nil
         sessionMock.error = URLError(.notConnectedToInternet)
 
-        // When: Fetching events
         let expectation = XCTestExpectation(description: "Fetch events with network error")
 
         networkService.fetchEvents(for: Date())
             .sink(receiveCompletion: { completion in
-                // Then: Validate the network error
                 if case .failure(let error) = completion {
                     switch error {
                     case .networkError(let urlError as URLError):
@@ -89,7 +83,6 @@ final class NetworkServiceTests: XCTestCase {
     }
 
     func testFetchEventsDecodingError() {
-        // Given: Invalid JSON data
         let invalidJSONData = "Invalid JSON".data(using: .utf8)
         let response = HTTPURLResponse(url: URL(string: "https://history.muffinlabs.com")!,
                                        statusCode: 200,
@@ -100,12 +93,10 @@ final class NetworkServiceTests: XCTestCase {
         sessionMock.response = response
         sessionMock.error = nil
 
-        // When: Fetching events
         let expectation = XCTestExpectation(description: "Fetch events with decoding error")
 
         networkService.fetchEvents(for: Date())
             .sink(receiveCompletion: { completion in
-                // Then: Validate the decoding error
                 if case .failure(let error) = completion {
                     switch error {
                     case .decodingError:

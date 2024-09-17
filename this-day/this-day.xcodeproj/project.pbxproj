@@ -28,6 +28,9 @@
 		AD4D891A2C987F17003DD3C4 /* EventLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D89192C987F17003DD3C4 /* EventLink.swift */; };
 		AD4D891D2C987F60003DD3C4 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D891C2C987F60003DD3C4 /* Date+Extension.swift */; };
 		AD4D891F2C988810003DD3C4 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D891E2C988810003DD3C4 /* AppLogger.swift */; };
+		AD9592062C9994DA0019BB13 /* NetworkServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592052C9994DA0019BB13 /* NetworkServiceMock.swift */; };
+		ADD1CF922C99932000739278 /* EventsRouterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD1CF912C99931B00739278 /* EventsRouterMock.swift */; };
+		ADD1CF962C99936F00739278 /* EventsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +68,9 @@
 		AD4D89192C987F17003DD3C4 /* EventLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLink.swift; sourceTree = "<group>"; };
 		AD4D891C2C987F60003DD3C4 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		AD4D891E2C988810003DD3C4 /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
+		AD9592052C9994DA0019BB13 /* NetworkServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceMock.swift; sourceTree = "<group>"; };
+		ADD1CF912C99931B00739278 /* EventsRouterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsRouterMock.swift; sourceTree = "<group>"; };
+		ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +104,7 @@
 		AD2609512C99744B00687D36 /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
+				ADD1CF8F2C99930900739278 /* Screens */,
 				AD2609522C99745600687D36 /* Services */,
 			);
 			path = Mocks;
@@ -107,6 +114,7 @@
 			isa = PBXGroup;
 			children = (
 				AD2609532C99746C00687D36 /* URLSessionMock.swift */,
+				AD9592052C9994DA0019BB13 /* NetworkServiceMock.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -114,6 +122,7 @@
 		AD33EDBA2C997DCB00E38CA9 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				ADD1CF932C99935A00739278 /* Screens */,
 				AD33EDBB2C997DD800E38CA9 /* Services */,
 			);
 			path = Tests;
@@ -251,6 +260,38 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		ADD1CF8F2C99930900739278 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				ADD1CF902C99931300739278 /* Screens */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		ADD1CF902C99931300739278 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				ADD1CF912C99931B00739278 /* EventsRouterMock.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		ADD1CF932C99935A00739278 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				ADD1CF942C99936200739278 /* Events */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		ADD1CF942C99936200739278 /* Events */ = {
+			isa = PBXGroup;
+			children = (
+				ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */,
+			);
+			path = Events;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -375,7 +416,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD2609542C99746C00687D36 /* URLSessionMock.swift in Sources */,
+				ADD1CF922C99932000739278 /* EventsRouterMock.swift in Sources */,
+				AD9592062C9994DA0019BB13 /* NetworkServiceMock.swift in Sources */,
 				AD33EDBD2C997DE200E38CA9 /* NetworkServiceTests.swift in Sources */,
+				ADD1CF962C99936F00739278 /* EventsViewModelTests.swift in Sources */,
 				AD26094B2C9971BD00687D36 /* this_day_tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
