@@ -31,6 +31,11 @@
 		AD9592062C9994DA0019BB13 /* HistoryServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592052C9994DA0019BB13 /* HistoryServiceMock.swift */; };
 		AD95920B2C99C8F80019BB13 /* NetworkServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95920A2C99C8F60019BB13 /* NetworkServiceError.swift */; };
 		AD95920D2C99C9570019BB13 /* BaseNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95920C2C99C9570019BB13 /* BaseNetworkService.swift */; };
+		AD9592112C99CC510019BB13 /* WikipediaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592102C99CC510019BB13 /* WikipediaService.swift */; };
+		AD9592142C99CF3C0019BB13 /* WKResponseNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592132C99CF380019BB13 /* WKResponseNetworkModel.swift */; };
+		AD9592162C99CF570019BB13 /* WKQueryResponseNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592152C99CF550019BB13 /* WKQueryResponseNetworkModel.swift */; };
+		AD9592182C99CF770019BB13 /* WKPageNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592172C99CF750019BB13 /* WKPageNetworkModel.swift */; };
+		AD95921A2C99CF970019BB13 /* WKThumbnailNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592192C99CF950019BB13 /* WKThumbnailNetworkModel.swift */; };
 		ADD1CF922C99932000739278 /* EventsRouterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD1CF912C99931B00739278 /* EventsRouterMock.swift */; };
 		ADD1CF962C99936F00739278 /* EventsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */; };
 /* End PBXBuildFile section */
@@ -73,6 +78,11 @@
 		AD9592052C9994DA0019BB13 /* HistoryServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryServiceMock.swift; sourceTree = "<group>"; };
 		AD95920A2C99C8F60019BB13 /* NetworkServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceError.swift; sourceTree = "<group>"; };
 		AD95920C2C99C9570019BB13 /* BaseNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNetworkService.swift; sourceTree = "<group>"; };
+		AD9592102C99CC510019BB13 /* WikipediaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikipediaService.swift; sourceTree = "<group>"; };
+		AD9592132C99CF380019BB13 /* WKResponseNetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKResponseNetworkModel.swift; sourceTree = "<group>"; };
+		AD9592152C99CF550019BB13 /* WKQueryResponseNetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKQueryResponseNetworkModel.swift; sourceTree = "<group>"; };
+		AD9592172C99CF750019BB13 /* WKPageNetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKPageNetworkModel.swift; sourceTree = "<group>"; };
+		AD9592192C99CF950019BB13 /* WKThumbnailNetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKThumbnailNetworkModel.swift; sourceTree = "<group>"; };
 		ADD1CF912C99931B00739278 /* EventsRouterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsRouterMock.swift; sourceTree = "<group>"; };
 		ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -238,6 +248,7 @@
 		AD4D890D2C98700F003DD3C4 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				AD9592122C99CF120019BB13 /* Wikipedia */,
 				AD4D890E2C987028003DD3C4 /* EventsNetworkModel.swift */,
 				AD4D89102C98703C003DD3C4 /* EventNetworkModel.swift */,
 				AD4D89122C987050003DD3C4 /* EventLinkNetworkModel.swift */,
@@ -266,12 +277,24 @@
 		AD9592092C99C8E60019BB13 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				AD2609572C99763400687D36 /* URLSessionProtocol.swift */,
 				AD95920A2C99C8F60019BB13 /* NetworkServiceError.swift */,
 				AD95920C2C99C9570019BB13 /* BaseNetworkService.swift */,
 				AD4D890A2C986FFB003DD3C4 /* HistoryService.swift */,
-				AD2609572C99763400687D36 /* URLSessionProtocol.swift */,
+				AD9592102C99CC510019BB13 /* WikipediaService.swift */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		AD9592122C99CF120019BB13 /* Wikipedia */ = {
+			isa = PBXGroup;
+			children = (
+				AD9592192C99CF950019BB13 /* WKThumbnailNetworkModel.swift */,
+				AD9592172C99CF750019BB13 /* WKPageNetworkModel.swift */,
+				AD9592152C99CF550019BB13 /* WKQueryResponseNetworkModel.swift */,
+				AD9592132C99CF380019BB13 /* WKResponseNetworkModel.swift */,
+			);
+			path = Wikipedia;
 			sourceTree = "<group>";
 		};
 		ADD1CF8F2C99930900739278 /* Screens */ = {
@@ -445,16 +468,21 @@
 				AD4D89052C98636C003DD3C4 /* EventsRouter.swift in Sources */,
 				AD4D890F2C987028003DD3C4 /* EventsNetworkModel.swift in Sources */,
 				AD4D88F02C9841CF003DD3C4 /* EventsView.swift in Sources */,
+				AD9592162C99CF570019BB13 /* WKQueryResponseNetworkModel.swift in Sources */,
 				AD4D89032C985B23003DD3C4 /* EventsViewModel.swift in Sources */,
 				AD4D89182C987F05003DD3C4 /* Event.swift in Sources */,
 				AD4D89072C98664F003DD3C4 /* EventsViewBuilder.swift in Sources */,
 				AD4D891F2C988810003DD3C4 /* AppLogger.swift in Sources */,
+				AD9592182C99CF770019BB13 /* WKPageNetworkModel.swift in Sources */,
 				AD4D89112C98703C003DD3C4 /* EventNetworkModel.swift in Sources */,
 				AD4D88EE2C9841CF003DD3C4 /* ThisDayApp.swift in Sources */,
+				AD95921A2C99CF970019BB13 /* WKThumbnailNetworkModel.swift in Sources */,
 				AD4D89162C987EEF003DD3C4 /* HistoryEvents.swift in Sources */,
 				AD4D89132C987050003DD3C4 /* EventLinkNetworkModel.swift in Sources */,
 				AD95920D2C99C9570019BB13 /* BaseNetworkService.swift in Sources */,
+				AD9592142C99CF3C0019BB13 /* WKResponseNetworkModel.swift in Sources */,
 				AD4D891A2C987F17003DD3C4 /* EventLink.swift in Sources */,
+				AD9592112C99CC510019BB13 /* WikipediaService.swift in Sources */,
 				AD2609582C99763400687D36 /* URLSessionProtocol.swift in Sources */,
 				AD4D891D2C987F60003DD3C4 /* Date+Extension.swift in Sources */,
 				AD95920B2C99C8F80019BB13 /* NetworkServiceError.swift in Sources */,
