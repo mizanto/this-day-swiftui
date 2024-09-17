@@ -13,21 +13,21 @@ import SwiftUI
 
 final class EventsViewModelTests: XCTestCase {
     private var viewModel: EventsViewModel!
-    private var networkServiceMock: NetworkServiceMock!
+    private var historyServiceMock: HistoryServiceMock!
     private var routerMock: EventsRouterMock!
     private var cancellables: Set<AnyCancellable>!
 
     override func setUp() {
         super.setUp()
-        networkServiceMock = NetworkServiceMock()
+        historyServiceMock = HistoryServiceMock()
         routerMock = EventsRouterMock()
-        viewModel = EventsViewModel(networkService: networkServiceMock, router: routerMock)
+        viewModel = EventsViewModel(networkService: historyServiceMock, router: routerMock)
         cancellables = []
     }
 
     override func tearDown() {
         viewModel = nil
-        networkServiceMock = nil
+        historyServiceMock = nil
         routerMock = nil
         cancellables = nil
         super.tearDown()
@@ -42,7 +42,7 @@ final class EventsViewModelTests: XCTestCase {
             ]
         )
         let mockEvents = [networkModel]
-        networkServiceMock.events = mockEvents
+        historyServiceMock.events = mockEvents
 
         let expectation = XCTestExpectation(description: "Fetch events successfully")
 
@@ -64,7 +64,7 @@ final class EventsViewModelTests: XCTestCase {
     }
 
     func testFetchEventsNetworkError() {
-        networkServiceMock.error = .networkError(URLError(.notConnectedToInternet))
+        historyServiceMock.error = .networkError(URLError(.notConnectedToInternet))
 
         let expectation = XCTestExpectation(description: "Fetch events with network error")
 
@@ -84,7 +84,7 @@ final class EventsViewModelTests: XCTestCase {
 
     func testViewForEvent() {
         let routerMock = EventsRouterMock()
-        let viewModel = EventsViewModel(networkService: NetworkServiceMock(), router: routerMock)
+        let viewModel = EventsViewModel(networkService: HistoryServiceMock(), router: routerMock)
 
         let mockEvent = Event(year: "1",
                               text: "Test text",

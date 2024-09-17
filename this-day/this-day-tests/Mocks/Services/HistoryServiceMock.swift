@@ -1,5 +1,5 @@
 //
-//  NetworkServiceMock.swift
+//  HistoryServiceMock.swift
 //  this-day-tests
 //
 //  Created by Sergey Bendak on 17.09.2024.
@@ -10,7 +10,7 @@ import Combine
 
 @testable import this_day
 
-final class NetworkServiceMock: NetworkServiceProtocol {
+final class HistoryServiceMock: HistoryServiceProtocol {
     var events: [EventNetworkModel]?
     var error: NetworkServiceError?
 

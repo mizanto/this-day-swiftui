@@ -1,35 +1,24 @@
 //
-//  NetworkService.swift
+//  BaseNetworkService.swift
 //  this-day
 //
-//  Created by Sergey Bendak on 16.09.2024.
+//  Created by Sergey Bendak on 17.09.2024.
 //
 
 import Foundation
 import Combine
 
-enum NetworkServiceError: Error {
-    case invalidURL
-    case networkError(Error)
-    case decodingError(Error)
-}
-
-protocol NetworkServiceProtocol {
-    func fetchEvents(for date: Date) -> AnyPublisher<[EventNetworkModel], NetworkServiceError>
-}
-
-final class NetworkService: NetworkServiceProtocol {
-    private let baseURL = "https://history.muffinlabs.com"
-    private let session: URLSessionProtocol
+class BaseNetworkService {
+    let session: URLSessionProtocol
 
     init(session: URLSessionProtocol = URLSession.shared) {
         self.session = session
     }
 
-    private func fetchData<T: Decodable>(from url: URL) -> AnyPublisher<T, NetworkServiceError> {
+    /// Method to fetch and decode data from a given URL
+    func fetchData<T: Decodable>(from url: URL) -> AnyPublisher<T, NetworkServiceError> {
         AppLogger.shared.info("Fetching data from URL: \(url)", category: .network)
 
-        // Use the renamed session method to perform the network request
         return session.performRequestPublisher(for: url)
             .handleEvents(receiveSubscription: { _ in
                 AppLogger.shared.info("Started fetching data from \(url)", category: .network)
@@ -61,26 +50,6 @@ final class NetworkService: NetworkServiceProtocol {
                     return Fail(error: NetworkServiceError.decodingError(error))
                         .eraseToAnyPublisher()
                 }
-            }
-            .eraseToAnyPublisher()
-    }
-
-    func fetchEvents(for date: Date) -> AnyPublisher<[EventNetworkModel], NetworkServiceError> {
-        guard let month = date.month, let day = date.day else {
-            AppLogger.shared.error("Invalid date components for fetching history", category: .network)
-            return Fail(error: NetworkServiceError.invalidURL).eraseToAnyPublisher()
-        }
-
-        guard let url = URL(string: "\(baseURL)/date/\(month)/\(day)") else {
-            AppLogger.shared.error("Invalid URL for date: \(date)", category: .network)
-            return Fail(error: NetworkServiceError.invalidURL).eraseToAnyPublisher()
-        }
-
-        AppLogger.shared.info("Fetching history for date: \(date) with URL: \(url)", category: .network)
-
-        return fetchData(from: url)
-            .map { (response: EventsNetworkModel) in
-                return response.events
             }
             .eraseToAnyPublisher()
     }

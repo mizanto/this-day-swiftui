@@ -1,5 +1,5 @@
 //
-//  NetworkServiceTests.swift
+//  HistoryServiceTests.swift
 //  this-day-tests
 //
 //  Created by Sergey Bendak on 17.09.2024.
@@ -10,16 +10,16 @@ import Combine
 
 @testable import this_day
 
-final class NetworkServiceTests: XCTestCase {
+final class HistoryServiceTests: XCTestCase {
     private var cancellables: Set<AnyCancellable>!
     private var sessionMock: URLSessionMock!
-    private var networkService: NetworkService!
+    private var networkService: HistoryService!
 
     override func setUp() {
         super.setUp()
         cancellables = []
         sessionMock = URLSessionMock()
-        networkService = NetworkService(session: sessionMock)
+        networkService = HistoryService(session: sessionMock)
     }
 
     override func tearDown() {
@@ -114,7 +114,7 @@ final class NetworkServiceTests: XCTestCase {
     }
 }
 
-private extension NetworkServiceTests {
+private extension HistoryServiceTests {
     var fakeEventsData: Data {
                 """
                 {

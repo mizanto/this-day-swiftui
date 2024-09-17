@@ -26,10 +26,10 @@ class EventsViewModel: EventsViewModelProtocol {
     @Published var title: String = ""
 
     private let router: EventsRouterProtocol
-    private let networkService: NetworkServiceProtocol
+    private let networkService: HistoryServiceProtocol
     private var cancellables = Set<AnyCancellable>()
 
-    init(networkService: NetworkServiceProtocol = NetworkService(),
+    init(networkService: HistoryServiceProtocol = HistoryService(),
          router: EventsRouterProtocol) {
         self.networkService = networkService
         self.router = router
