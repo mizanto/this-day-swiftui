@@ -9,11 +9,18 @@ import SwiftUI
 
 @main
 struct ThisDayApp: App {
-    let historyService = HistoryService()
+
+    init() {
+        let historyService = HistoryService()
+        let wikipediaService = WikipediaService()
+
+        DIContainer.shared.register(historyService as HistoryServiceProtocol)
+        DIContainer.shared.register(wikipediaService as WikipediaServiceProtocol)
+    }
 
     var body: some Scene {
         WindowGroup {
-            EventsViewBuilder.build(historyService: historyService)
+            EventsViewBuilder.build()
         }
     }
 }

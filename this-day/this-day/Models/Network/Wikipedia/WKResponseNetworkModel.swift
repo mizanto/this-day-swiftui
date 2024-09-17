@@ -10,4 +10,3 @@ import Foundation
 struct WKResponseNetworkModel: Codable {
     let query: WKQueryResponseNetworkModel
 }
-

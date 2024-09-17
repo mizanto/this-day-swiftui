@@ -17,6 +17,7 @@ final class WikipediaService: BaseNetworkService, WikipediaServiceProtocol {
     private let baseURL = "https://en.wikipedia.org/w/api.php"
 
     func fetchArticle(title: String) -> AnyPublisher<String, NetworkServiceError> {
+        // swiftlint:disable:next line_length
         guard let url = URL(string: "\(baseURL)?action=query&prop=extracts&explaintext&format=json&titles=\(title)") else {
             return Fail(error: NetworkServiceError.invalidURL).eraseToAnyPublisher()
         }
@@ -37,6 +38,7 @@ final class WikipediaService: BaseNetworkService, WikipediaServiceProtocol {
     }
 
     func fetchImage(title: String) -> AnyPublisher<String, NetworkServiceError> {
+        // swiftlint:disable:next line_length
         guard let url = URL(string: "\(baseURL)?action=query&prop=pageimages&format=json&piprop=thumbnail|original&pithumbsize=500&titles=\(title)") else {
             return Fail(error: NetworkServiceError.invalidURL).eraseToAnyPublisher()
         }

@@ -18,10 +18,10 @@ class ArticleViewModel: ArticleViewModelProtocol {
     @Published var state: ViewState<Article> = .loading
     @Published var title: String
 
-    private let wikipediaService: WikipediaService
+    private let wikipediaService: WikipediaServiceProtocol
     private var cancellables = Set<AnyCancellable>()
 
-    init(topic: String, wikipediaService: WikipediaService = WikipediaService()) {
+    init(topic: String, wikipediaService: WikipediaServiceProtocol = WikipediaService()) {
         self.title = topic
         self.wikipediaService = wikipediaService
     }
@@ -35,7 +35,8 @@ class ArticleViewModel: ArticleViewModelProtocol {
         // Ignore an error, the image is optional
         let fetchImagePublisher = wikipediaService.fetchImage(title: topic)
             .catch { error -> AnyPublisher<String, NetworkServiceError> in
-                AppLogger.shared.error("Failed to fetch image for topic \(topic): \(error.localizedDescription)", category: .ui)
+                AppLogger.shared.error(
+                    "Failed to fetch image for topic \(topic): \(error.localizedDescription)", category: .ui)
                 return Just("")
                     .setFailureType(to: NetworkServiceError.self)
                     .eraseToAnyPublisher()

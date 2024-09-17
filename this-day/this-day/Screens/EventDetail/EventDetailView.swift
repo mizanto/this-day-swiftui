@@ -12,23 +12,32 @@ struct EventDetailView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            Text(event.text)
-                .font(.body)
-                .padding(.horizontal)
-                .padding(.vertical)
+            VStack(alignment: .leading, spacing: 8) {
+                Text(event.text)
+                    .font(.body)
+                    .padding(.horizontal)
+                    .multilineTextAlignment(.leading)
 
-            Text("Links:")
-                .font(.headline)
-                .padding(.horizontal)
+                Text("Links:")
+                    .font(.headline)
+                    .padding(.horizontal)
+            }
+            .padding(.top)
 
             VStack(alignment: .leading, spacing: 0) {
                 ForEach(event.links) { link in
-                    // TODO: add NavigationLink
-                    Text(link.title)
-                        .font(.body)
-                        .foregroundColor(.blue)
-                        .padding()
+                    NavigationLink(
+                        destination: ArticleViewBuilder.build(topic: link.title)
+                    ) {
+                        Text(link.title)
+                            .font(.body)
+                            .underline()
+                            .foregroundColor(.blue)
+                            .padding(.vertical, 12)
+                            .padding(.horizontal)
+                    }
                     Divider()
+                        .padding(.horizontal)
                 }
             }
             .background(Color(.systemGroupedBackground))

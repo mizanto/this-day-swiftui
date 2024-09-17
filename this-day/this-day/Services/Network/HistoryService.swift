@@ -20,14 +20,14 @@ final class HistoryService: BaseNetworkService, HistoryServiceProtocol {
             AppLogger.shared.error("Invalid date components for fetching history", category: .network)
             return Fail(error: NetworkServiceError.invalidURL).eraseToAnyPublisher()
         }
-        
+
         guard let url = URL(string: "\(baseURL)/date/\(month)/\(day)") else {
             AppLogger.shared.error("Invalid URL for date: \(date)", category: .network)
             return Fail(error: NetworkServiceError.invalidURL).eraseToAnyPublisher()
         }
-        
+
         AppLogger.shared.info("Fetching history for date: \(date) with URL: \(url)", category: .network)
-        
+
         return fetchData(from: url)
             .map { (response: EventsNetworkModel) in
                 return response.events
