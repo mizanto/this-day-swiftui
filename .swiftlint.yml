@@ -34,7 +34,7 @@ cyclomatic_complexity:
   error: 25
 
 included:
-  - this-day
+  - this-day/this-day
 
 excluded:
   - .build
