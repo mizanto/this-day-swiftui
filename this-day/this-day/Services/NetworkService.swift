@@ -20,11 +20,17 @@ protocol NetworkServiceProtocol {
 
 final class NetworkService: NetworkServiceProtocol {
     private let baseURL = "https://history.muffinlabs.com"
+    private let session: URLSessionProtocol
+
+    init(session: URLSessionProtocol = URLSession.shared) {
+        self.session = session
+    }
 
     private func fetchData<T: Decodable>(from url: URL) -> AnyPublisher<T, NetworkServiceError> {
         AppLogger.shared.info("Fetching data from URL: \(url)", category: .network)
 
-        return URLSession.shared.dataTaskPublisher(for: url)
+        // Use the renamed session method to perform the network request
+        return session.performRequestPublisher(for: url)
             .handleEvents(receiveSubscription: { _ in
                 AppLogger.shared.info("Started fetching data from \(url)", category: .network)
             }, receiveOutput: { _, response in

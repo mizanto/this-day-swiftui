@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		AD26094B2C9971BD00687D36 /* this_day_tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD26094A2C9971BD00687D36 /* this_day_tests.swift */; };
+		AD2609542C99746C00687D36 /* URLSessionMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD2609532C99746C00687D36 /* URLSessionMock.swift */; };
+		AD2609582C99763400687D36 /* URLSessionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD2609572C99763400687D36 /* URLSessionProtocol.swift */; };
 		AD4D88EE2C9841CF003DD3C4 /* ThisDayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D88ED2C9841CF003DD3C4 /* ThisDayApp.swift */; };
 		AD4D88F02C9841CF003DD3C4 /* EventsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D88EF2C9841CF003DD3C4 /* EventsView.swift */; };
 		AD4D88F22C9841D0003DD3C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD4D88F12C9841D0003DD3C4 /* Assets.xcassets */; };
@@ -40,6 +42,8 @@
 /* Begin PBXFileReference section */
 		AD2609482C9971BD00687D36 /* this-day-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "this-day-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD26094A2C9971BD00687D36 /* this_day_tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = this_day_tests.swift; sourceTree = "<group>"; };
+		AD2609532C99746C00687D36 /* URLSessionMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionMock.swift; sourceTree = "<group>"; };
+		AD2609572C99763400687D36 /* URLSessionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionProtocol.swift; sourceTree = "<group>"; };
 		AD4D88EA2C9841CF003DD3C4 /* this-day.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "this-day.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD4D88ED2C9841CF003DD3C4 /* ThisDayApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThisDayApp.swift; sourceTree = "<group>"; };
 		AD4D88EF2C9841CF003DD3C4 /* EventsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsView.swift; sourceTree = "<group>"; };
@@ -82,9 +86,26 @@
 		AD2609492C9971BD00687D36 /* this-day-tests */ = {
 			isa = PBXGroup;
 			children = (
+				AD2609512C99744B00687D36 /* Mocks */,
 				AD26094A2C9971BD00687D36 /* this_day_tests.swift */,
 			);
 			path = "this-day-tests";
+			sourceTree = "<group>";
+		};
+		AD2609512C99744B00687D36 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				AD2609522C99745600687D36 /* Services */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
+		AD2609522C99745600687D36 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				AD2609532C99746C00687D36 /* URLSessionMock.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		AD4D88E12C9841CF003DD3C4 = {
@@ -169,6 +190,7 @@
 			children = (
 				AD4D890A2C986FFB003DD3C4 /* NetworkService.swift */,
 				AD4D891E2C988810003DD3C4 /* AppLogger.swift */,
+				AD2609572C99763400687D36 /* URLSessionProtocol.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -333,6 +355,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AD2609542C99746C00687D36 /* URLSessionMock.swift in Sources */,
 				AD26094B2C9971BD00687D36 /* this_day_tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -353,6 +376,7 @@
 				AD4D89162C987EEF003DD3C4 /* HistoryEvents.swift in Sources */,
 				AD4D89132C987050003DD3C4 /* EventLinkNetworkModel.swift in Sources */,
 				AD4D891A2C987F17003DD3C4 /* EventLink.swift in Sources */,
+				AD2609582C99763400687D36 /* URLSessionProtocol.swift in Sources */,
 				AD4D891D2C987F60003DD3C4 /* Date+Extension.swift in Sources */,
 				AD4D88FE2C985356003DD3C4 /* EventDetailView.swift in Sources */,
 				AD4D890B2C986FFB003DD3C4 /* NetworkService.swift in Sources */,
