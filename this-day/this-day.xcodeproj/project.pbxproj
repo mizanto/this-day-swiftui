@@ -31,6 +31,8 @@
 		AD9592062C9994DA0019BB13 /* HistoryServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592052C9994DA0019BB13 /* HistoryServiceMock.swift */; };
 		AD95920B2C99C8F80019BB13 /* NetworkServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95920A2C99C8F60019BB13 /* NetworkServiceError.swift */; };
 		AD95920D2C99C9570019BB13 /* BaseNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95920C2C99C9570019BB13 /* BaseNetworkService.swift */; };
+		AD95922A2C9C1D580019BB13 /* WikipediaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592292C9C1D550019BB13 /* WikipediaService.swift */; };
+		AD95922C2C9C3A000019BB13 /* WikiParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95922B2C9C39F00019BB13 /* WikiParser.swift */; };
 		ADD1CF922C99932000739278 /* EventsRouterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD1CF912C99931B00739278 /* EventsRouterMock.swift */; };
 		ADD1CF962C99936F00739278 /* EventsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */; };
 /* End PBXBuildFile section */
@@ -73,6 +75,8 @@
 		AD9592052C9994DA0019BB13 /* HistoryServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryServiceMock.swift; sourceTree = "<group>"; };
 		AD95920A2C99C8F60019BB13 /* NetworkServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceError.swift; sourceTree = "<group>"; };
 		AD95920C2C99C9570019BB13 /* BaseNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNetworkService.swift; sourceTree = "<group>"; };
+		AD9592292C9C1D550019BB13 /* WikipediaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikipediaService.swift; sourceTree = "<group>"; };
+		AD95922B2C9C39F00019BB13 /* WikiParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikiParser.swift; sourceTree = "<group>"; };
 		ADD1CF912C99931B00739278 /* EventsRouterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsRouterMock.swift; sourceTree = "<group>"; };
 		ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -266,6 +270,8 @@
 		AD9592092C99C8E60019BB13 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				AD95922B2C9C39F00019BB13 /* WikiParser.swift */,
+				AD9592292C9C1D550019BB13 /* WikipediaService.swift */,
 				AD95920A2C99C8F60019BB13 /* NetworkServiceError.swift */,
 				AD95920C2C99C9570019BB13 /* BaseNetworkService.swift */,
 				AD4D890A2C986FFB003DD3C4 /* HistoryService.swift */,
@@ -442,6 +448,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AD95922C2C9C3A000019BB13 /* WikiParser.swift in Sources */,
 				AD4D89052C98636C003DD3C4 /* EventsRouter.swift in Sources */,
 				AD4D890F2C987028003DD3C4 /* EventsNetworkModel.swift in Sources */,
 				AD4D88F02C9841CF003DD3C4 /* EventsView.swift in Sources */,
@@ -455,6 +462,7 @@
 				AD4D89132C987050003DD3C4 /* EventLinkNetworkModel.swift in Sources */,
 				AD95920D2C99C9570019BB13 /* BaseNetworkService.swift in Sources */,
 				AD4D891A2C987F17003DD3C4 /* EventLink.swift in Sources */,
+				AD95922A2C9C1D580019BB13 /* WikipediaService.swift in Sources */,
 				AD2609582C99763400687D36 /* URLSessionProtocol.swift in Sources */,
 				AD4D891D2C987F60003DD3C4 /* Date+Extension.swift in Sources */,
 				AD95920B2C99C8F80019BB13 /* NetworkServiceError.swift in Sources */,

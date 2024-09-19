@@ -52,26 +52,12 @@ struct EventsView<ViewModel: EventsViewModelProtocol>: View {
 
     private func eventsListView(events: [Event]) -> some View {
         List(events) { event in
-            NavigationLink(destination: viewModel.view(for: event)) {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(event.year)
-                        .font(.headline)
-                    Text(event.text)
-                        .font(.body)
-                        .lineLimit(1)
-                    HStack {
-                        ForEach(event.links.prefix(2)) { link in
-                            Text(link.title)
-                                .font(.caption)
-                                .lineLimit(1)
-                                .padding(4)
-                                .background(.blue)
-                                .foregroundColor(.white)
-                                .cornerRadius(4)
-                        }
-                    }
-                    .padding(.vertical, 8)
-                }
+            VStack(alignment: .leading, spacing: 8) {
+                Text(event.year)
+                    .font(.headline)
+                Text(event.text)
+                    .font(.body)
+                    .multilineTextAlignment(.leading)
             }
         }
     }

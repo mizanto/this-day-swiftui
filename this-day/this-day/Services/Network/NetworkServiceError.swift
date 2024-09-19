@@ -11,4 +11,5 @@ enum NetworkServiceError: Error {
     case invalidURL
     case networkError(Error)
     case decodingError(Error)
+    case parsingError(String)
 }

@@ -47,6 +47,7 @@ class BaseNetworkService {
                         .eraseToAnyPublisher()
                 } catch {
                     AppLogger.shared.error("Decoding error for data from \(url): \(error)", category: .network)
+                    AppLogger.shared.debug(String(decoding: data, as: Unicode.UTF8.self), category: .network)
                     return Fail(error: NetworkServiceError.decodingError(error))
                         .eraseToAnyPublisher()
                 }

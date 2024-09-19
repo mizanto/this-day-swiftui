@@ -8,8 +8,10 @@
 import SwiftUI
 
 final class EventsViewBuilder {
-    static func build(historyService: HistoryServiceProtocol) -> some View {
-        let viewModel = EventsViewModel(networkService: historyService,
+    static func build(wikipediaService: WikipediaService) -> some View {
+//        let viewModel = EventsViewModel(networkService: historyService,
+//                                        router: EventsRouter())
+        let viewModel = EventsViewModel(wikipediaService: wikipediaService,
                                         router: EventsRouter())
         return EventsView(viewModel: viewModel)
     }

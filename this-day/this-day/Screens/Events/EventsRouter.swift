@@ -9,11 +9,11 @@ import SwiftUI
 import Foundation
 
 protocol EventsRouterProtocol {
-    func view(for event: Event) -> AnyView
+//    func view(for event: Event) -> AnyView
 }
 
 final class EventsRouter: EventsRouterProtocol {
-    func view(for event: Event) -> AnyView {
-        AnyView(EventDetailView(event: event))
-    }
+//    func view(for event: Event) -> AnyView {
+//        AnyView(EventDetailView(event: event))
+//    }
 }
