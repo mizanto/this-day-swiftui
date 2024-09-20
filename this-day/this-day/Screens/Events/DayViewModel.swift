@@ -1,5 +1,5 @@
 //
-//  EventsViewModel.swift
+//  DayViewModel.swift
 //  this-day
 //
 //  Created by Sergey Bendak on 16.09.2024.
@@ -8,23 +8,14 @@
 import SwiftUI
 import Combine
 
-enum ViewState {
+enum ViewState<T> {
     case loading
-    case loaded(Day)
+    case data(T)
     case error(String)
 }
 
-enum EventCategory: String, CaseIterable, Identifiable {
-    case events = "Events"
-    case births = "Births"
-    case deaths = "Deaths"
-    case holidays = "Holidays"
-
-    var id: String { self.rawValue }
-}
-
-protocol EventsViewModelProtocol: ObservableObject {
-    var state: ViewState { get }
+protocol DayViewModelProtocol: ObservableObject {
+    var state: ViewState<Day> { get }
     var title: String { get }
     var subtitle: String { get }
     var selectedCategory: EventCategory { get set }
@@ -33,13 +24,12 @@ protocol EventsViewModelProtocol: ObservableObject {
     func onTryAgain()
 }
 
-class EventsViewModel: EventsViewModelProtocol {
-    @Published var state: ViewState = .loading
+final class DayViewModel: DayViewModelProtocol {
+    @Published var state: ViewState<Day> = .loading
     @Published var title: String = ""
     @Published var subtitle: String = ""
     @Published var selectedCategory: EventCategory = .events
 
-    private let router: EventsRouterProtocol
     private let networkService: NetworkService
     private var cancellables = Set<AnyCancellable>()
 
@@ -50,10 +40,8 @@ class EventsViewModel: EventsViewModelProtocol {
         }
     }
 
-    init(networkService: NetworkService = NetworkService(),
-         router: EventsRouterProtocol) {
+    init(networkService: NetworkService = NetworkService()) {
         self.networkService = networkService
-        self.router = router
 
         $selectedCategory
             .sink { [weak self] category in
@@ -117,7 +105,7 @@ class EventsViewModel: EventsViewModelProtocol {
             events = day.holidays.map(Event.init(from:))
         }
 
-        state = .loaded(
+        state = .data(
             Day(text: day.text, events: events)
         )
     }

@@ -13,7 +13,7 @@ struct ThisDayApp: App {
 
     var body: some Scene {
         WindowGroup {
-            EventsViewBuilder.build(networkService: NetworkService())
+            DayViewBuilder.build(networkService: NetworkService())
         }
     }
 }
