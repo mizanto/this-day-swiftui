@@ -9,11 +9,11 @@ import SwiftUI
 
 @main
 struct ThisDayApp: App {
-    let wikipediaService = WikipediaService()
+    let networkService = NetworkService()
 
     var body: some Scene {
         WindowGroup {
-            EventsViewBuilder.build(wikipediaService: WikipediaService())
+            EventsViewBuilder.build(networkService: NetworkService())
         }
     }
 }

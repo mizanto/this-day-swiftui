@@ -8,17 +8,6 @@
 import Foundation
 
 struct EventNetworkModel: Codable {
-    let year: String
+    let title: String
     let text: String
-    let links: [EventLinkNetworkModel]
-}
-
-extension EventNetworkModel {
-    func toUIModel() -> Event {
-        return Event(
-            year: self.year,
-            text: self.text,
-            links: self.links.map { $0.toUIModel() }
-        )
-    }
 }

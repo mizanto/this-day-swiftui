@@ -18,10 +18,10 @@ struct EventsView<ViewModel: EventsViewModelProtocol>: View {
         NavigationView {
             content()
                 .navigationTitle(viewModel.title)
+                .navigationBarTitleDisplayMode(.inline)
         }
         .onAppear {
-            AppLogger.shared.info("EventsView appeared, starting to fetch events.", category: .ui)
-            viewModel.fetchEvents(for: Date())
+            viewModel.onAppear()
         }
     }
 
@@ -29,18 +29,28 @@ struct EventsView<ViewModel: EventsViewModelProtocol>: View {
     private func content() -> some View {
         switch viewModel.state {
         case .loading:
-            let _ = AppLogger.shared.info("Loading view is displayed.",
-                                          category: .ui)
             loadingView()
 
-        case .loaded(let events):
-            let _ = AppLogger.shared.info("Events loaded and list view is displayed with \(events.count) events.",
-                                          category: .ui)
-            eventsListView(events: events)
+        case .loaded(let day):
+            VStack {
+                Picker("Select Category", selection: $viewModel.selectedCategory) {
+                    ForEach(EventCategory.allCases) { category in
+                        Text(category.rawValue).tag(category)
+                    }
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                .padding(.horizontal)
+                .padding(.vertical, 4)
+
+                Text(day.text)
+                    .font(.headline)
+                    .padding(.horizontal)
+                    .padding(.top, 4)
+
+                eventsListView(events: day.events)
+            }
 
         case .error(let message):
-            let _ = AppLogger.shared.error("Error view is displayed with message: \(message)",
-                                           category: .ui)
             errorView(message: message)
         }
     }
@@ -52,14 +62,21 @@ struct EventsView<ViewModel: EventsViewModelProtocol>: View {
 
     private func eventsListView(events: [Event]) -> some View {
         List(events) { event in
-            VStack(alignment: .leading, spacing: 8) {
-                Text(event.year)
+            if event.text.isEmpty {
+                Text(event.title)
                     .font(.headline)
-                Text(event.text)
-                    .font(.body)
-                    .multilineTextAlignment(.leading)
+                    .padding(.vertical, 8)
+            } else {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(event.title)
+                        .font(.headline)
+                    Text(event.text)
+                        .font(.body)
+                        .multilineTextAlignment(.leading)
+                }
             }
         }
+        .listStyle(PlainListStyle())
     }
 
     private func errorView(message: String) -> some View {
@@ -70,7 +87,7 @@ struct EventsView<ViewModel: EventsViewModelProtocol>: View {
             Button(
                 action: {
                     AppLogger.shared.info("Retrying to fetch events after error: \(message)", category: .ui)
-                    viewModel.fetchEvents(for: Date())
+                    viewModel.onTryAgain()
                 },
                 label: {
                     Text("Try Again")

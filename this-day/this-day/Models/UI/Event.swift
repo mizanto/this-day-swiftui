@@ -9,7 +9,11 @@ import Foundation
 
 struct Event: Identifiable {
     let id = UUID()
-    let year: String
+    let title: String
     let text: String
-    let links: [EventLink]
+
+    init(from networkModel: EventNetworkModel) {
+        self.title = networkModel.title
+        self.text = networkModel.text
+    }
 }

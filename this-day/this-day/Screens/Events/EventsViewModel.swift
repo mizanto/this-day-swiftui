@@ -10,85 +10,75 @@ import Combine
 
 enum ViewState {
     case loading
-    case loaded([Event])
+    case loaded(Day)
     case error(String)
+}
+
+enum EventCategory: String, CaseIterable, Identifiable {
+    case events = "Events"
+    case births = "Births"
+    case deaths = "Deaths"
+    case holidays = "Holidays"
+
+    var id: String { self.rawValue }
 }
 
 protocol EventsViewModelProtocol: ObservableObject {
     var state: ViewState { get }
     var title: String { get }
-    func fetchEvents(for date: Date)
-//    func view(for: Event) -> AnyView
-}
+    var subtitle: String { get }
+    var selectedCategory: EventCategory { get set }
 
-//class EventsViewModel: EventsViewModelProtocol {
-//    @Published var state: ViewState = .loading
-//    @Published var title: String = ""
-//
-//    private let router: EventsRouterProtocol
-//    private let networkService: HistoryServiceProtocol
-//    private var cancellables = Set<AnyCancellable>()
-//
-//    init(networkService: HistoryServiceProtocol = HistoryService(),
-//         router: EventsRouterProtocol) {
-//        self.networkService = networkService
-//        self.router = router
-//    }
-//
-//    func fetchEvents(for date: Date) {
-//        AppLogger.shared.info("Starting to fetch events for date: \(date)", category: .ui)
-//
-//        state = .loading
-//        title = date.toFormat("MMMM dd")
-//
-//        networkService.fetchEvents(for: date)
-//            .receive(on: DispatchQueue.main)
-//            .sink(
-//                receiveCompletion: { [weak self] completion in
-//                    switch completion {
-//                    case .failure(let error):
-//                        AppLogger.shared.error("Failed to load events for date: \(date). Error: \(error)",
-//                                               category: .ui)
-//                        self?.state = .error("Failed to load events. Please try again.")
-//                    case .finished:
-//                        AppLogger.shared.info("Successfully finished fetching events for date: \(date)",
-//                                              category: .ui)
-//                    }
-//                },
-//                receiveValue: { [weak self] events in
-//                    AppLogger.shared.info("Loaded \(events.count) events for date: \(date)", category: .ui)
-//                    self?.state = .loaded(events.map { $0.toUIModel() })
-//                }
-//            )
-//            .store(in: &cancellables)
-//    }
-//
-//    func view(for event: Event) -> AnyView {
-//        return router.view(for: event)
-//    }
-//}
+    func onAppear()
+    func onTryAgain()
+}
 
 class EventsViewModel: EventsViewModelProtocol {
     @Published var state: ViewState = .loading
     @Published var title: String = ""
+    @Published var subtitle: String = ""
+    @Published var selectedCategory: EventCategory = .events
 
     private let router: EventsRouterProtocol
-    private let wikipediaService: WikipediaService
+    private let networkService: NetworkService
     private var cancellables = Set<AnyCancellable>()
 
-    init(wikipediaService: WikipediaService = WikipediaService(),
-         router: EventsRouterProtocol) {
-        self.wikipediaService = wikipediaService
-        self.router = router
+    private var day: DayNetworkModel? {
+        didSet {
+            guard let day else { return }
+            subtitle = day.text
+        }
     }
 
-    func fetchEvents(for date: Date) {
+    init(networkService: NetworkService = NetworkService(),
+         router: EventsRouterProtocol) {
+        self.networkService = networkService
+        self.router = router
+
+        $selectedCategory
+            .sink { [weak self] category in
+                self?.selectCategory(category)
+            }
+            .store(in: &cancellables)
+    }
+
+    func onAppear() {
+        AppLogger.shared.info("Events view appeared", category: .ui)
+        fetchEvents(for: Date())
+    }
+
+    func onTryAgain() {
+        AppLogger.shared.info("Trying to fetch events", category: .ui)
+        fetchEvents(for: Date())
+    }
+
+    private func fetchEvents(for date: Date) {
         AppLogger.shared.info("Starting to fetch events for date: \(date)", category: .ui)
 
         state = .loading
         title = date.toFormat("MMMM dd")
 
-        wikipediaService.fetchEvents(for: date)
+        networkService.fetchEvents(for: date)
             .receive(on: DispatchQueue.main)
             .sink(
                 receiveCompletion: { [weak self] completion in
@@ -102,25 +92,33 @@ class EventsViewModel: EventsViewModelProtocol {
                                               category: .ui)
                     }
                 },
-                receiveValue: { [weak self] wikipediaDay in
-                    AppLogger.shared.info("Loaded \(wikipediaDay.events.count) events for date: \(date)", category: .ui)
-                    // Преобразование WikipediaEvent в Event
-                    let events = wikipediaDay.events.map { $0.toEvent() }
-                    self?.state = .loaded(events)
+                receiveValue: { [weak self] day in
+                    AppLogger.shared.info("Loaded \(day.events.count) events for date: \(date)", category: .ui)
+                    self?.day = day
+                    self?.selectCategory(.events)
                 }
             )
             .store(in: &cancellables)
     }
 
-    // Этот метод используется для перехода на экран с деталями события
-//    func view(for event: Event) -> AnyView {
-//        router.routeToEventDetail(for: event)
-//    }
-}
+    private func selectCategory(_ category: EventCategory) {
+        guard let day else { return }
 
-extension WikipediaEvent {
-    // Преобразование из WikipediaEvent в Event
-    func toEvent() -> Event {
-        return Event(year: title, text: text, links: [])
+        let events: [Event]
+
+        switch category {
+        case .events:
+            events = day.events.map(Event.init(from:))
+        case .births:
+            events = day.births.map(Event.init(from:))
+        case .deaths:
+            events = day.deaths.map(Event.init(from:))
+        case .holidays:
+            events = day.holidays.map(Event.init(from:))
+        }
+
+        state = .loaded(
+            Day(text: day.text, events: events)
+        )
     }
 }

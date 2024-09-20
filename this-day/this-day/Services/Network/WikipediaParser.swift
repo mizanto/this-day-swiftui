@@ -1,5 +1,5 @@
 //
-//  WikiParser.swift
+//  WikipediaParser.swift
 //  this-day
 //
 //  Created by Sergey Bendak on 19.09.2024.
@@ -7,8 +7,8 @@
 
 import Foundation
 
-final class WikiParser {
-    
+final class WikipediaParser {
+
     // Enum for categories
     enum Category: String, CaseIterable {
         case events = "== Events =="
@@ -22,34 +22,39 @@ final class WikiParser {
 
         // Split the text into lines
         let lines = extract.components(separatedBy: "\n")
-        
+
         var cleanedLines: [String] = []
-        
+
         for line in lines {
             // Skip lines that are subcategories (surrounded by ===)
             if line.contains("===") {
                 continue
             }
-            
+
             // Remove the "-" symbol at the start of the line
             let cleanedLine = line.trimmingCharacters(in: .whitespacesAndNewlines)
                 .replacingOccurrences(of: "^-", with: "", options: .regularExpression)
                 .trimmingCharacters(in: .whitespacesAndNewlines)
-            
+
+            // Skip lines that end with ":"
+            if cleanedLine.hasSuffix(":") {
+                continue
+            }
+
             // Add the cleaned line to the array if it's not empty
             if !cleanedLine.isEmpty {
                 cleanedLines.append(cleanedLine)
             }
         }
-        
+
         // Join the cleaned lines back into a single string
         let cleanedExtract = cleanedLines.joined(separator: "\n")
         AppLogger.shared.debug("Finished cleaning extract", category: .parser)
 
         return cleanedExtract
     }
-    
-    func parseWikipediaDay(from extract: String) throws -> WikipediaDay {
+
+    func parseWikipediaDay(from extract: String) throws -> DayNetworkModel {
         AppLogger.shared.debug("Parsing Wikipedia day from extract", category: .parser)
 
         // Clean the text before parsing
@@ -72,10 +77,10 @@ final class WikiParser {
         let holidays = parseCategory(from: cleanedExtract, category: .holidays)
 
         // Create a WikipediaDay model
-        return WikipediaDay(text: introText, events: events, births: births, deaths: deaths, holidays: holidays)
+        return DayNetworkModel(text: introText, events: events, births: births, deaths: deaths, holidays: holidays)
     }
 
-    func parseCategory(from extract: String, category: Category) -> [WikipediaEvent] {
+    func parseCategory(from extract: String, category: Category) -> [EventNetworkModel] {
         AppLogger.shared.debug("Parsing category: \(category.rawValue)", category: .parser)
 
         // Find the start of the category
@@ -99,22 +104,24 @@ final class WikiParser {
         let lines = categoryText.components(separatedBy: "\n")
 
         // Parse non-empty lines as events or holidays
-        return lines.compactMap { line -> WikipediaEvent? in
+        return lines.compactMap { line -> EventNetworkModel? in
             let cleanedLine = line.trimmingCharacters(in: .whitespacesAndNewlines)
-            
+
             // Skip empty lines
             guard !cleanedLine.isEmpty else { return nil }
-            
+
             // Check if the line contains an event or holiday description
             if let separatorRange = cleanedLine.range(of: " – ") {
-                let title = String(cleanedLine[..<separatorRange.lowerBound]).trimmingCharacters(in: .whitespacesAndNewlines)
-                let text = String(cleanedLine[separatorRange.upperBound...]).trimmingCharacters(in: .whitespacesAndNewlines)
-                return WikipediaEvent(title: title, text: text)
+                let title = String(cleanedLine[..<separatorRange.lowerBound])
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                let text = String(cleanedLine[separatorRange.upperBound...])
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                return EventNetworkModel(title: title, text: text)
             } else if !cleanedLine.contains("==") {
                 // If no separator is found, treat the line as an event or holiday
-                return WikipediaEvent(title: cleanedLine, text: "")
+                return EventNetworkModel(title: cleanedLine, text: "")
             }
-            
+
             return nil
         }
     }

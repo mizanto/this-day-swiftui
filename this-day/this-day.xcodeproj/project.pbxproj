@@ -15,25 +15,19 @@
 		AD4D88F02C9841CF003DD3C4 /* EventsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D88EF2C9841CF003DD3C4 /* EventsView.swift */; };
 		AD4D88F22C9841D0003DD3C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD4D88F12C9841D0003DD3C4 /* Assets.xcassets */; };
 		AD4D88F62C9841D0003DD3C4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD4D88F52C9841D0003DD3C4 /* Preview Assets.xcassets */; };
-		AD4D88FE2C985356003DD3C4 /* EventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D88FD2C985356003DD3C4 /* EventDetailView.swift */; };
 		AD4D89032C985B23003DD3C4 /* EventsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D89022C985B23003DD3C4 /* EventsViewModel.swift */; };
 		AD4D89052C98636C003DD3C4 /* EventsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D89042C98636C003DD3C4 /* EventsRouter.swift */; };
 		AD4D89072C98664F003DD3C4 /* EventsViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D89062C98664F003DD3C4 /* EventsViewBuilder.swift */; };
-		AD4D890B2C986FFB003DD3C4 /* HistoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D890A2C986FFB003DD3C4 /* HistoryService.swift */; };
-		AD4D890F2C987028003DD3C4 /* EventsNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D890E2C987028003DD3C4 /* EventsNetworkModel.swift */; };
 		AD4D89112C98703C003DD3C4 /* EventNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D89102C98703C003DD3C4 /* EventNetworkModel.swift */; };
-		AD4D89132C987050003DD3C4 /* EventLinkNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D89122C987050003DD3C4 /* EventLinkNetworkModel.swift */; };
-		AD4D89162C987EEF003DD3C4 /* HistoryEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D89152C987EEF003DD3C4 /* HistoryEvents.swift */; };
 		AD4D89182C987F05003DD3C4 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D89172C987F05003DD3C4 /* Event.swift */; };
-		AD4D891A2C987F17003DD3C4 /* EventLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D89192C987F17003DD3C4 /* EventLink.swift */; };
 		AD4D891D2C987F60003DD3C4 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D891C2C987F60003DD3C4 /* Date+Extension.swift */; };
 		AD4D891F2C988810003DD3C4 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D891E2C988810003DD3C4 /* AppLogger.swift */; };
 		AD9592062C9994DA0019BB13 /* HistoryServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592052C9994DA0019BB13 /* HistoryServiceMock.swift */; };
 		AD95920B2C99C8F80019BB13 /* NetworkServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95920A2C99C8F60019BB13 /* NetworkServiceError.swift */; };
-		AD95920D2C99C9570019BB13 /* BaseNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95920C2C99C9570019BB13 /* BaseNetworkService.swift */; };
-		AD95922A2C9C1D580019BB13 /* WikipediaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592292C9C1D550019BB13 /* WikipediaService.swift */; };
-		AD95922C2C9C3A000019BB13 /* WikiParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95922B2C9C39F00019BB13 /* WikiParser.swift */; };
-		ADD1CF922C99932000739278 /* EventsRouterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD1CF912C99931B00739278 /* EventsRouterMock.swift */; };
+		AD95922A2C9C1D580019BB13 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592292C9C1D550019BB13 /* NetworkService.swift */; };
+		AD95922C2C9C3A000019BB13 /* WikipediaParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95922B2C9C39F00019BB13 /* WikipediaParser.swift */; };
+		AD95922E2C9D96E30019BB13 /* DayNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95922D2C9D96DA0019BB13 /* DayNetworkModel.swift */; };
+		AD9592302C9DA3280019BB13 /* Day.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95922F2C9DA3260019BB13 /* Day.swift */; };
 		ADD1CF962C99936F00739278 /* EventsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -59,25 +53,19 @@
 		AD4D88F12C9841D0003DD3C4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AD4D88F32C9841D0003DD3C4 /* this_day.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = this_day.entitlements; sourceTree = "<group>"; };
 		AD4D88F52C9841D0003DD3C4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		AD4D88FD2C985356003DD3C4 /* EventDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailView.swift; sourceTree = "<group>"; };
 		AD4D89022C985B23003DD3C4 /* EventsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewModel.swift; sourceTree = "<group>"; };
 		AD4D89042C98636C003DD3C4 /* EventsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsRouter.swift; sourceTree = "<group>"; };
 		AD4D89062C98664F003DD3C4 /* EventsViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewBuilder.swift; sourceTree = "<group>"; };
-		AD4D890A2C986FFB003DD3C4 /* HistoryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryService.swift; sourceTree = "<group>"; };
-		AD4D890E2C987028003DD3C4 /* EventsNetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsNetworkModel.swift; sourceTree = "<group>"; };
 		AD4D89102C98703C003DD3C4 /* EventNetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventNetworkModel.swift; sourceTree = "<group>"; };
-		AD4D89122C987050003DD3C4 /* EventLinkNetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLinkNetworkModel.swift; sourceTree = "<group>"; };
-		AD4D89152C987EEF003DD3C4 /* HistoryEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryEvents.swift; sourceTree = "<group>"; };
 		AD4D89172C987F05003DD3C4 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
-		AD4D89192C987F17003DD3C4 /* EventLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLink.swift; sourceTree = "<group>"; };
 		AD4D891C2C987F60003DD3C4 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		AD4D891E2C988810003DD3C4 /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
 		AD9592052C9994DA0019BB13 /* HistoryServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryServiceMock.swift; sourceTree = "<group>"; };
 		AD95920A2C99C8F60019BB13 /* NetworkServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceError.swift; sourceTree = "<group>"; };
-		AD95920C2C99C9570019BB13 /* BaseNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNetworkService.swift; sourceTree = "<group>"; };
-		AD9592292C9C1D550019BB13 /* WikipediaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikipediaService.swift; sourceTree = "<group>"; };
-		AD95922B2C9C39F00019BB13 /* WikiParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikiParser.swift; sourceTree = "<group>"; };
-		ADD1CF912C99931B00739278 /* EventsRouterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsRouterMock.swift; sourceTree = "<group>"; };
+		AD9592292C9C1D550019BB13 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		AD95922B2C9C39F00019BB13 /* WikipediaParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikipediaParser.swift; sourceTree = "<group>"; };
+		AD95922D2C9D96DA0019BB13 /* DayNetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayNetworkModel.swift; sourceTree = "<group>"; };
+		AD95922F2C9DA3260019BB13 /* Day.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day.swift; sourceTree = "<group>"; };
 		ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -189,7 +177,6 @@
 			isa = PBXGroup;
 			children = (
 				AD4D89002C985AF7003DD3C4 /* Events */,
-				AD4D89012C985B0D003DD3C4 /* EventDetail */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -203,14 +190,6 @@
 				AD4D89042C98636C003DD3C4 /* EventsRouter.swift */,
 			);
 			path = Events;
-			sourceTree = "<group>";
-		};
-		AD4D89012C985B0D003DD3C4 /* EventDetail */ = {
-			isa = PBXGroup;
-			children = (
-				AD4D88FD2C985356003DD3C4 /* EventDetailView.swift */,
-			);
-			path = EventDetail;
 			sourceTree = "<group>";
 		};
 		AD4D89082C986C89003DD3C4 /* App */ = {
@@ -242,9 +221,8 @@
 		AD4D890D2C98700F003DD3C4 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				AD4D890E2C987028003DD3C4 /* EventsNetworkModel.swift */,
+				AD95922D2C9D96DA0019BB13 /* DayNetworkModel.swift */,
 				AD4D89102C98703C003DD3C4 /* EventNetworkModel.swift */,
-				AD4D89122C987050003DD3C4 /* EventLinkNetworkModel.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -252,9 +230,8 @@
 		AD4D89142C9878D9003DD3C4 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				AD4D89152C987EEF003DD3C4 /* HistoryEvents.swift */,
+				AD95922F2C9DA3260019BB13 /* Day.swift */,
 				AD4D89172C987F05003DD3C4 /* Event.swift */,
-				AD4D89192C987F17003DD3C4 /* EventLink.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -270,11 +247,9 @@
 		AD9592092C99C8E60019BB13 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				AD95922B2C9C39F00019BB13 /* WikiParser.swift */,
-				AD9592292C9C1D550019BB13 /* WikipediaService.swift */,
+				AD95922B2C9C39F00019BB13 /* WikipediaParser.swift */,
+				AD9592292C9C1D550019BB13 /* NetworkService.swift */,
 				AD95920A2C99C8F60019BB13 /* NetworkServiceError.swift */,
-				AD95920C2C99C9570019BB13 /* BaseNetworkService.swift */,
-				AD4D890A2C986FFB003DD3C4 /* HistoryService.swift */,
 				AD2609572C99763400687D36 /* URLSessionProtocol.swift */,
 			);
 			path = Network;
@@ -291,7 +266,6 @@
 		ADD1CF902C99931300739278 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				ADD1CF912C99931B00739278 /* EventsRouterMock.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -436,7 +410,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD2609542C99746C00687D36 /* URLSessionMock.swift in Sources */,
-				ADD1CF922C99932000739278 /* EventsRouterMock.swift in Sources */,
 				AD9592062C9994DA0019BB13 /* HistoryServiceMock.swift in Sources */,
 				AD33EDBD2C997DE200E38CA9 /* HistoryServiceTests.swift in Sources */,
 				ADD1CF962C99936F00739278 /* EventsViewModelTests.swift in Sources */,
@@ -448,26 +421,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AD95922C2C9C3A000019BB13 /* WikiParser.swift in Sources */,
+				AD95922C2C9C3A000019BB13 /* WikipediaParser.swift in Sources */,
 				AD4D89052C98636C003DD3C4 /* EventsRouter.swift in Sources */,
-				AD4D890F2C987028003DD3C4 /* EventsNetworkModel.swift in Sources */,
 				AD4D88F02C9841CF003DD3C4 /* EventsView.swift in Sources */,
 				AD4D89032C985B23003DD3C4 /* EventsViewModel.swift in Sources */,
 				AD4D89182C987F05003DD3C4 /* Event.swift in Sources */,
 				AD4D89072C98664F003DD3C4 /* EventsViewBuilder.swift in Sources */,
 				AD4D891F2C988810003DD3C4 /* AppLogger.swift in Sources */,
 				AD4D89112C98703C003DD3C4 /* EventNetworkModel.swift in Sources */,
+				AD9592302C9DA3280019BB13 /* Day.swift in Sources */,
 				AD4D88EE2C9841CF003DD3C4 /* ThisDayApp.swift in Sources */,
-				AD4D89162C987EEF003DD3C4 /* HistoryEvents.swift in Sources */,
-				AD4D89132C987050003DD3C4 /* EventLinkNetworkModel.swift in Sources */,
-				AD95920D2C99C9570019BB13 /* BaseNetworkService.swift in Sources */,
-				AD4D891A2C987F17003DD3C4 /* EventLink.swift in Sources */,
-				AD95922A2C9C1D580019BB13 /* WikipediaService.swift in Sources */,
+				AD95922E2C9D96E30019BB13 /* DayNetworkModel.swift in Sources */,
+				AD95922A2C9C1D580019BB13 /* NetworkService.swift in Sources */,
 				AD2609582C99763400687D36 /* URLSessionProtocol.swift in Sources */,
 				AD4D891D2C987F60003DD3C4 /* Date+Extension.swift in Sources */,
 				AD95920B2C99C8F80019BB13 /* NetworkServiceError.swift in Sources */,
-				AD4D88FE2C985356003DD3C4 /* EventDetailView.swift in Sources */,
-				AD4D890B2C986FFB003DD3C4 /* HistoryService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
