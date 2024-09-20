@@ -30,30 +30,27 @@ struct DayView<ViewModel: DayViewModelProtocol>: View {
         switch viewModel.state {
         case .loading:
             showLoading(message: "Loading...")
-        case .data(let day):
-            dayView(for: day)
+        case .data(let events):
+            dayView(for: events)
         case .error(let message):
             showError(
                 message: message,
-                action: {
-                    AppLogger.shared.info("Retrying to fetch events after error: \(message)", category: .ui)
-                    viewModel.onTryAgain()
-                }
+                action: viewModel.onTryAgain
             )
         }
     }
 
-    private func dayView(for day: Day) -> some View {
+    private func dayView(for events: [Event]) -> some View {
         VStack {
             CategoryPicker(selectedCategory: $viewModel.selectedCategory)
                 .padding(.horizontal)
 
-            Text(day.text)
+            Text(viewModel.subtitle)
                 .font(.headline)
                 .padding(.horizontal, 8)
                 .padding(.top, 8)
 
-            List(day.events) { event in
+            List(events) { event in
                 EventRow(event: event)
             }
             .listStyle(PlainListStyle())

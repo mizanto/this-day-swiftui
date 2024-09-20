@@ -32,6 +32,7 @@
 		AD9592372C9DC9C90019BB13 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592362C9DC9C90019BB13 /* ErrorView.swift */; };
 		AD9592392C9DCBAE0019BB13 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592382C9DCBAE0019BB13 /* LoadingView.swift */; };
 		AD95923B2C9DCDD60019BB13 /* EventRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95923A2C9DCDD60019BB13 /* EventRow.swift */; };
+		AD95923E2C9DD53E0019BB13 /* ViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95923D2C9DD53C0019BB13 /* ViewState.swift */; };
 		ADD1CF962C99936F00739278 /* EventsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -74,6 +75,7 @@
 		AD9592362C9DC9C90019BB13 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		AD9592382C9DCBAE0019BB13 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		AD95923A2C9DCDD60019BB13 /* EventRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventRow.swift; sourceTree = "<group>"; };
+		AD95923D2C9DD53C0019BB13 /* ViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewState.swift; sourceTree = "<group>"; };
 		ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -167,6 +169,7 @@
 				AD4D88FF2C985AEA003DD3C4 /* Screens */,
 				AD4D89092C986C96003DD3C4 /* Services */,
 				AD4D891B2C987F50003DD3C4 /* Extensions */,
+				AD95923C2C9DD52D0019BB13 /* Utils */,
 				AD4D88F12C9841D0003DD3C4 /* Assets.xcassets */,
 				AD4D88F32C9841D0003DD3C4 /* this_day.entitlements */,
 				AD4D88F42C9841D0003DD3C4 /* Preview Content */,
@@ -273,6 +276,14 @@
 				AD95923A2C9DCDD60019BB13 /* EventRow.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		AD95923C2C9DD52D0019BB13 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				AD95923D2C9DD53C0019BB13 /* ViewState.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		ADD1CF8F2C99930900739278 /* Screens */ = {
@@ -443,6 +454,7 @@
 			files = (
 				AD95922C2C9C3A000019BB13 /* WikipediaParser.swift in Sources */,
 				AD9592322C9DC8C30019BB13 /* View+Extension.swift in Sources */,
+				AD95923E2C9DD53E0019BB13 /* ViewState.swift in Sources */,
 				AD4D88F02C9841CF003DD3C4 /* DayView.swift in Sources */,
 				AD4D89032C985B23003DD3C4 /* DayViewModel.swift in Sources */,
 				AD4D89182C987F05003DD3C4 /* Event.swift in Sources */,

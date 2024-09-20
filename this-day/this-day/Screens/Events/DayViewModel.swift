@@ -8,14 +8,8 @@
 import SwiftUI
 import Combine
 
-enum ViewState<T> {
-    case loading
-    case data(T)
-    case error(String)
-}
-
 protocol DayViewModelProtocol: ObservableObject {
-    var state: ViewState<Day> { get }
+    var state: ViewState<[Event]> { get }
     var title: String { get }
     var subtitle: String { get }
     var selectedCategory: EventCategory { get set }
@@ -25,14 +19,17 @@ protocol DayViewModelProtocol: ObservableObject {
 }
 
 final class DayViewModel: DayViewModelProtocol {
-    @Published var state: ViewState<Day> = .loading
+    @Published var state: ViewState<[Event]> = .loading
     @Published var title: String = ""
     @Published var subtitle: String = ""
-    @Published var selectedCategory: EventCategory = .events
-
+    @Published var selectedCategory: EventCategory = .events {
+        didSet {
+            selectCategory(selectedCategory)
+        }
+    }
+    private let currentDate: Date = Date()
     private let networkService: NetworkService
     private var cancellables = Set<AnyCancellable>()
-
     private var day: DayNetworkModel? {
         didSet {
             guard let day else { return }
@@ -42,29 +39,25 @@ final class DayViewModel: DayViewModelProtocol {
 
     init(networkService: NetworkService = NetworkService()) {
         self.networkService = networkService
-
-        $selectedCategory
-            .sink { [weak self] category in
-                self?.selectCategory(category)
-            }
-            .store(in: &cancellables)
     }
 
     func onAppear() {
         AppLogger.shared.info("Events view appeared", category: .ui)
-        fetchEvents(for: Date())
+
+        title = currentDate.toFormat("MMMM dd")
+        fetchEvents(for: currentDate)
     }
 
     func onTryAgain() {
-        AppLogger.shared.info("Trying to fetch events", category: .ui)
-        fetchEvents(for: Date())
+        AppLogger.shared.info("Trying to fetch events after error", category: .ui)
+
+        fetchEvents(for: currentDate)
     }
 
     private func fetchEvents(for date: Date) {
         AppLogger.shared.info("Starting to fetch events for date: \(date)", category: .ui)
 
         state = .loading
-        title = date.toFormat("MMMM dd")
 
         networkService.fetchEvents(for: date)
             .receive(on: DispatchQueue.main)
@@ -83,7 +76,7 @@ final class DayViewModel: DayViewModelProtocol {
                 receiveValue: { [weak self] day in
                     AppLogger.shared.info("Loaded \(day.events.count) events for date: \(date)", category: .ui)
                     self?.day = day
-                    self?.selectCategory(.events)
+                    self?.selectedCategory = .events
                 }
             )
             .store(in: &cancellables)
@@ -96,17 +89,21 @@ final class DayViewModel: DayViewModelProtocol {
 
         switch category {
         case .events:
-            events = day.events.map(Event.init(from:))
+            events = day.events.mapToEvents()
         case .births:
-            events = day.births.map(Event.init(from:))
+            events = day.births.mapToEvents()
         case .deaths:
-            events = day.deaths.map(Event.init(from:))
+            events = day.deaths.mapToEvents()
         case .holidays:
-            events = day.holidays.map(Event.init(from:))
+            events = day.holidays.mapToEvents()
         }
 
-        state = .data(
-            Day(text: day.text, events: events)
-        )
+        state = .data(events)
+    }
+}
+
+private extension Array where Element == EventNetworkModel {
+    func mapToEvents() -> [Event] {
+        map(Event.init(from:))
     }
 }
