@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AD26094B2C9971BD00687D36 /* this_day_tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD26094A2C9971BD00687D36 /* this_day_tests.swift */; };
 		AD2609542C99746C00687D36 /* URLSessionMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD2609532C99746C00687D36 /* URLSessionMock.swift */; };
 		AD2609582C99763400687D36 /* URLSessionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD2609572C99763400687D36 /* URLSessionProtocol.swift */; };
 		AD33EDBD2C997DE200E38CA9 /* NetworkServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD33EDBC2C997DE200E38CA9 /* NetworkServiceTests.swift */; };
@@ -48,7 +47,6 @@
 
 /* Begin PBXFileReference section */
 		AD2609482C9971BD00687D36 /* this-day-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "this-day-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		AD26094A2C9971BD00687D36 /* this_day_tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = this_day_tests.swift; sourceTree = "<group>"; };
 		AD2609532C99746C00687D36 /* URLSessionMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionMock.swift; sourceTree = "<group>"; };
 		AD2609572C99763400687D36 /* URLSessionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionProtocol.swift; sourceTree = "<group>"; };
 		AD33EDBC2C997DE200E38CA9 /* NetworkServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceTests.swift; sourceTree = "<group>"; };
@@ -102,7 +100,6 @@
 			children = (
 				AD2609512C99744B00687D36 /* Mocks */,
 				AD33EDBA2C997DCB00E38CA9 /* Tests */,
-				AD26094A2C9971BD00687D36 /* this_day_tests.swift */,
 			);
 			path = "this-day-tests";
 			sourceTree = "<group>";
@@ -444,7 +441,6 @@
 				AD9592062C9994DA0019BB13 /* NetworkServiceMock.swift in Sources */,
 				AD33EDBD2C997DE200E38CA9 /* NetworkServiceTests.swift in Sources */,
 				ADD1CF962C99936F00739278 /* EventsViewModelTests.swift in Sources */,
-				AD26094B2C9971BD00687D36 /* this_day_tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -28,7 +28,7 @@ final class DayViewModel: DayViewModelProtocol {
         }
     }
     private let currentDate: Date = Date()
-    private let networkService: NetworkService
+    private let networkService: NetworkServiceProtocol
     private var cancellables = Set<AnyCancellable>()
     private var day: DayNetworkModel? {
         didSet {
@@ -37,7 +37,7 @@ final class DayViewModel: DayViewModelProtocol {
         }
     }
 
-    init(networkService: NetworkService = NetworkService()) {
+    init(networkService: NetworkServiceProtocol = NetworkService()) {
         self.networkService = networkService
     }
 
@@ -84,6 +84,8 @@ final class DayViewModel: DayViewModelProtocol {
 
     private func selectCategory(_ category: EventCategory) {
         guard let day else { return }
+        
+        AppLogger.shared.debug("Selecting category \(category.rawValue)")
 
         let events: [Event]
 
