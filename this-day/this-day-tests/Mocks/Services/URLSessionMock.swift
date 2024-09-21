@@ -23,6 +23,7 @@ final class URLSessionMock: URLSessionProtocol {
                 if let error = self.error {
                     promise(.failure(error))  // Return mock error if present
                 } else if let data = self.data, let response = self.response {
+                    AppLogger.shared.debug("Mock data and response: \(String(decoding: data, as: UTF8.self))")
                     promise(.success((data: data, response: response)))  // Return mock data and response if no error
                 } else {
                     // If both data and error are nil, return a generic error

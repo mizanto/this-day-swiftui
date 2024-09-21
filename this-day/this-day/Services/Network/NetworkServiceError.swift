@@ -12,4 +12,5 @@ enum NetworkServiceError: Error {
     case networkError(Error)
     case decodingError(Error)
     case parsingError(String)
+    case unknownError(String)
 }

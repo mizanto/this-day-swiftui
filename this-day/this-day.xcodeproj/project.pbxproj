@@ -10,7 +10,7 @@
 		AD26094B2C9971BD00687D36 /* this_day_tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD26094A2C9971BD00687D36 /* this_day_tests.swift */; };
 		AD2609542C99746C00687D36 /* URLSessionMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD2609532C99746C00687D36 /* URLSessionMock.swift */; };
 		AD2609582C99763400687D36 /* URLSessionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD2609572C99763400687D36 /* URLSessionProtocol.swift */; };
-		AD33EDBD2C997DE200E38CA9 /* HistoryServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD33EDBC2C997DE200E38CA9 /* HistoryServiceTests.swift */; };
+		AD33EDBD2C997DE200E38CA9 /* NetworkServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD33EDBC2C997DE200E38CA9 /* NetworkServiceTests.swift */; };
 		AD4D88EE2C9841CF003DD3C4 /* ThisDayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D88ED2C9841CF003DD3C4 /* ThisDayApp.swift */; };
 		AD4D88F02C9841CF003DD3C4 /* DayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D88EF2C9841CF003DD3C4 /* DayView.swift */; };
 		AD4D88F22C9841D0003DD3C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD4D88F12C9841D0003DD3C4 /* Assets.xcassets */; };
@@ -21,7 +21,7 @@
 		AD4D89182C987F05003DD3C4 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D89172C987F05003DD3C4 /* Event.swift */; };
 		AD4D891D2C987F60003DD3C4 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D891C2C987F60003DD3C4 /* Date+Extension.swift */; };
 		AD4D891F2C988810003DD3C4 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D891E2C988810003DD3C4 /* AppLogger.swift */; };
-		AD9592062C9994DA0019BB13 /* HistoryServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592052C9994DA0019BB13 /* HistoryServiceMock.swift */; };
+		AD9592062C9994DA0019BB13 /* NetworkServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592052C9994DA0019BB13 /* NetworkServiceMock.swift */; };
 		AD95920B2C99C8F80019BB13 /* NetworkServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95920A2C99C8F60019BB13 /* NetworkServiceError.swift */; };
 		AD95922A2C9C1D580019BB13 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592292C9C1D550019BB13 /* NetworkService.swift */; };
 		AD95922C2C9C3A000019BB13 /* WikipediaParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95922B2C9C39F00019BB13 /* WikipediaParser.swift */; };
@@ -51,7 +51,7 @@
 		AD26094A2C9971BD00687D36 /* this_day_tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = this_day_tests.swift; sourceTree = "<group>"; };
 		AD2609532C99746C00687D36 /* URLSessionMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionMock.swift; sourceTree = "<group>"; };
 		AD2609572C99763400687D36 /* URLSessionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionProtocol.swift; sourceTree = "<group>"; };
-		AD33EDBC2C997DE200E38CA9 /* HistoryServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryServiceTests.swift; sourceTree = "<group>"; };
+		AD33EDBC2C997DE200E38CA9 /* NetworkServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceTests.swift; sourceTree = "<group>"; };
 		AD4D88EA2C9841CF003DD3C4 /* this-day.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "this-day.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD4D88ED2C9841CF003DD3C4 /* ThisDayApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThisDayApp.swift; sourceTree = "<group>"; };
 		AD4D88EF2C9841CF003DD3C4 /* DayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayView.swift; sourceTree = "<group>"; };
@@ -64,7 +64,7 @@
 		AD4D89172C987F05003DD3C4 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		AD4D891C2C987F60003DD3C4 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		AD4D891E2C988810003DD3C4 /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
-		AD9592052C9994DA0019BB13 /* HistoryServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryServiceMock.swift; sourceTree = "<group>"; };
+		AD9592052C9994DA0019BB13 /* NetworkServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceMock.swift; sourceTree = "<group>"; };
 		AD95920A2C99C8F60019BB13 /* NetworkServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceError.swift; sourceTree = "<group>"; };
 		AD9592292C9C1D550019BB13 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		AD95922B2C9C39F00019BB13 /* WikipediaParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikipediaParser.swift; sourceTree = "<group>"; };
@@ -120,7 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				AD2609532C99746C00687D36 /* URLSessionMock.swift */,
-				AD9592052C9994DA0019BB13 /* HistoryServiceMock.swift */,
+				AD9592052C9994DA0019BB13 /* NetworkServiceMock.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -137,7 +137,7 @@
 		AD33EDBB2C997DD800E38CA9 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				AD33EDBC2C997DE200E38CA9 /* HistoryServiceTests.swift */,
+				AD33EDBC2C997DE200E38CA9 /* NetworkServiceTests.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -441,8 +441,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD2609542C99746C00687D36 /* URLSessionMock.swift in Sources */,
-				AD9592062C9994DA0019BB13 /* HistoryServiceMock.swift in Sources */,
-				AD33EDBD2C997DE200E38CA9 /* HistoryServiceTests.swift in Sources */,
+				AD9592062C9994DA0019BB13 /* NetworkServiceMock.swift in Sources */,
+				AD33EDBD2C997DE200E38CA9 /* NetworkServiceTests.swift in Sources */,
 				ADD1CF962C99936F00739278 /* EventsViewModelTests.swift in Sources */,
 				AD26094B2C9971BD00687D36 /* this_day_tests.swift in Sources */,
 			);
