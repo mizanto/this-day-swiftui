@@ -33,6 +33,8 @@
 		AD95923B2C9DCDD60019BB13 /* EventRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95923A2C9DCDD60019BB13 /* EventRow.swift */; };
 		AD95923E2C9DD53E0019BB13 /* ViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95923D2C9DD53C0019BB13 /* ViewState.swift */; };
 		ADD1CF962C99936F00739278 /* EventsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */; };
+		ADF08E312CA02B6400CB877A /* ResponseNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF08E302CA02B6000CB877A /* ResponseNetworkModel.swift */; };
+		ADF08E332CA02DF100CB877A /* WikipediaURLBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF08E322CA02DF000CB877A /* WikipediaURLBuilder.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +77,8 @@
 		AD95923A2C9DCDD60019BB13 /* EventRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventRow.swift; sourceTree = "<group>"; };
 		AD95923D2C9DD53C0019BB13 /* ViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewState.swift; sourceTree = "<group>"; };
 		ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewModelTests.swift; sourceTree = "<group>"; };
+		ADF08E302CA02B6000CB877A /* ResponseNetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseNetworkModel.swift; sourceTree = "<group>"; };
+		ADF08E322CA02DF000CB877A /* WikipediaURLBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikipediaURLBuilder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -229,6 +233,7 @@
 		AD4D890D2C98700F003DD3C4 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				ADF08E302CA02B6000CB877A /* ResponseNetworkModel.swift */,
 				AD95922D2C9D96DA0019BB13 /* DayNetworkModel.swift */,
 				AD4D89102C98703C003DD3C4 /* EventNetworkModel.swift */,
 			);
@@ -256,6 +261,7 @@
 		AD9592092C99C8E60019BB13 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				ADF08E322CA02DF000CB877A /* WikipediaURLBuilder.swift */,
 				AD95922B2C9C39F00019BB13 /* WikipediaParser.swift */,
 				AD9592292C9C1D550019BB13 /* NetworkService.swift */,
 				AD95920A2C99C8F60019BB13 /* NetworkServiceError.swift */,
@@ -458,6 +464,8 @@
 				AD95923B2C9DCDD60019BB13 /* EventRow.swift in Sources */,
 				AD9592372C9DC9C90019BB13 /* ErrorView.swift in Sources */,
 				AD4D891F2C988810003DD3C4 /* AppLogger.swift in Sources */,
+				ADF08E312CA02B6400CB877A /* ResponseNetworkModel.swift in Sources */,
+				ADF08E332CA02DF100CB877A /* WikipediaURLBuilder.swift in Sources */,
 				AD4D89112C98703C003DD3C4 /* EventNetworkModel.swift in Sources */,
 				AD9592302C9DA3280019BB13 /* Day.swift in Sources */,
 				AD4D88EE2C9841CF003DD3C4 /* ThisDayApp.swift in Sources */,

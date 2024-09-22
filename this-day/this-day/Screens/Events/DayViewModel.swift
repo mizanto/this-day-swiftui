@@ -84,7 +84,6 @@ final class DayViewModel: DayViewModelProtocol {
 
     private func selectCategory(_ category: EventCategory) {
         guard let day else { return }
-        
         AppLogger.shared.debug("Selecting category \(category.rawValue)")
 
         let events: [Event]
