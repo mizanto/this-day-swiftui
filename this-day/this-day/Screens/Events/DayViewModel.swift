@@ -74,7 +74,8 @@ final class DayViewModel: DayViewModelProtocol {
                     }
                 },
                 receiveValue: { [weak self] day in
-                    AppLogger.shared.info("Loaded \(day.events.count) events for date: \(date)", category: .ui)
+                    // swiftlint:disable:next line_length
+                    AppLogger.shared.info("Loaded \(day.events.count) events, \(day.births.count) births, \(day.deaths.count) deaths and \(day.holidays.count) holidays for date: \(date)", category: .ui)
                     self?.day = day
                     self?.selectedCategory = .events
                 }
@@ -84,7 +85,7 @@ final class DayViewModel: DayViewModelProtocol {
 
     private func selectCategory(_ category: EventCategory) {
         guard let day else { return }
-        AppLogger.shared.debug("Selecting category \(category.rawValue)")
+        AppLogger.shared.debug("Selecting category <\(category.rawValue)>")
 
         let events: [Event]
 

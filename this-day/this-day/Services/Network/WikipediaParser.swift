@@ -76,8 +76,12 @@ final class WikipediaParser {
         let deaths = parseCategory(from: cleanedExtract, category: .deaths)
         let holidays = parseCategory(from: cleanedExtract, category: .holidays)
 
-        // Create a WikipediaDay model
-        return DayNetworkModel(text: introText, events: events, births: births, deaths: deaths, holidays: holidays)
+        // Create and return the DayNetworkModel
+        return DayNetworkModel(text: introText,
+                               events: events,
+                               births: births,
+                               deaths: deaths,
+                               holidays: holidays)
     }
 
     func parseCategory(from extract: String, category: Category) -> [EventNetworkModel] {
@@ -103,7 +107,6 @@ final class WikipediaParser {
         // Split the category text into lines
         let lines = categoryText.components(separatedBy: "\n")
 
-        // Parse non-empty lines as events or holidays
         return lines.compactMap { line -> EventNetworkModel? in
             let cleanedLine = line.trimmingCharacters(in: .whitespacesAndNewlines)
 
@@ -116,10 +119,20 @@ final class WikipediaParser {
                     .trimmingCharacters(in: .whitespacesAndNewlines)
                 let text = String(cleanedLine[separatorRange.upperBound...])
                     .trimmingCharacters(in: .whitespacesAndNewlines)
+
+                if category == .births || category == .deaths {
+                    // Special handling for births and deaths
+                    if let firstCommaIndex = text.firstIndex(of: ",") {
+                        let textPart = String(text[..<firstCommaIndex]).trimmingCharacters(in: .whitespacesAndNewlines)
+                        let additionalPart = String(text[firstCommaIndex...].dropFirst())
+                            .trimmingCharacters(in: .whitespacesAndNewlines)
+                        return EventNetworkModel(title: title, text: textPart, additional: additionalPart)
+                    }
+                }
                 return EventNetworkModel(title: title, text: text)
             } else if !cleanedLine.contains("==") {
                 // If no separator is found, treat the line as an event or holiday
-                return EventNetworkModel(title: cleanedLine, text: "")
+                return EventNetworkModel(title: cleanedLine)
             }
 
             return nil

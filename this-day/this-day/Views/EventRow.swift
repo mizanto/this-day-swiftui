@@ -11,13 +11,22 @@ struct EventRow: View {
     let event: Event
 
     var body: some View {
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 0) {
                 Text(event.title)
                     .font(.headline)
+                    .padding(.bottom, 8)
 
-                if !event.text.isEmpty {
-                    Text(event.text)
+                if let text = event.text, !text.isEmpty {
+                    Text(text)
                         .font(.body)
+                        .multilineTextAlignment(.leading)
+                        .padding(.bottom, 4)
+                }
+
+                if let additional = event.additionalInfo, !additional.isEmpty {
+                    Text(additional)
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
                         .multilineTextAlignment(.leading)
                 }
             }
@@ -26,5 +35,5 @@ struct EventRow: View {
 }
 
 #Preview {
-    EventRow(event: Event(from: .init(title: "Title", text: "Text")))
+    EventRow(event: Event(from: .init(title: "Title", text: "Text", additional: "Addiitonal")))
 }
