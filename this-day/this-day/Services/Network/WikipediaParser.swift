@@ -70,14 +70,11 @@ final class WikipediaParser {
 
         // Find the end of the category — either the start of the next category or the end of the text
         let remainingText = extract[categoryRange.upperBound...]
-        let nextCategoryRange = remainingText.range(of: "== ")
+        
+        // Find the range of the next category or the end of the text if no further category exists
+        let nextCategoryRange = remainingText.range(of: "== ") ?? remainingText.endIndex..<remainingText.endIndex
 
-        let categoryText: Substring
-        if let nextRange = nextCategoryRange {
-            categoryText = remainingText[..<nextRange.lowerBound]
-        } else {
-            categoryText = remainingText
-        }
+        let categoryText = remainingText[..<nextCategoryRange.lowerBound]
 
         // Split the category text into lines
         let lines = categoryText.components(separatedBy: "\n")

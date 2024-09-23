@@ -47,7 +47,14 @@ final class DayViewModelTests: XCTestCase {
                 self?.viewModel.onAppear()
             },
             asserts: { [weak self] events in
-                guard let self else { return }
+                guard let self else {
+                    XCTFail("self is nil")
+                    return
+                }
+                guard let events = events as? [DefaultEvent] else {
+                    XCTFail("Invalid events type")
+                    return
+                }
                 XCTAssertEqual(events.count, 1)
                 XCTAssertEqual(events.first?.year, day.events.first?.year)
                 XCTAssertEqual(events.first?.title, day.events.first?.title)
@@ -78,7 +85,14 @@ final class DayViewModelTests: XCTestCase {
                 self?.viewModel.onTryAgain()
             },
             asserts: { [weak self] events in
-                guard let self else { return }
+                guard let self else {
+                    XCTFail("self is nil")
+                    return
+                }
+                guard let events = events as? [DefaultEvent] else {
+                    XCTFail("Invalid events type")
+                    return
+                }
                 XCTAssertEqual(events.count, 1)
                 XCTAssertEqual(events.first?.year, day.events.first?.year)
                 XCTAssertEqual(events.first?.title, day.events.first?.title)
@@ -97,63 +111,140 @@ final class DayViewModelTests: XCTestCase {
             }
         )
     }
-
-    func testCategorySelection() {
-        verifyCategorySelection(category: .events)
-        verifyCategorySelection(category: .births)
-        verifyCategorySelection(category: .deaths)
-        verifyCategorySelection(category: .holidays)
-    }
-
-    // MARK: - Helper Methods
     
-    private func setupMockDay(category: EventCategory) -> DayNetworkModel {
-        let text = "Test text"
-        let event = EventNetworkModel(year: "Test title", title: "Test title")
-        
-        return DayNetworkModel(
-            text: text,
-            events: category == .events ? [event] : [],
-            births: category == .births ? [event] : [],
-            deaths: category == .deaths ? [event] : [],
-            holidays: category == .holidays ? [event] : []
-        )
-    }
-
-    private func verifyCategorySelection(category: EventCategory) {
-        let day = setupMockDay(category: category)
+    func testEventsSelection() {
+        let day = setupMockDay(category: .events)
         networkServiceMock.day = day
-        
-        let eventsToCheck: [EventNetworkModel]
-        switch category {
-        case .events: eventsToCheck = day.events
-        case .births: eventsToCheck = day.births
-        case .deaths: eventsToCheck = day.deaths
-        case .holidays: eventsToCheck = day.holidays
-        }
         
         viewModel.onAppear()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
             guard let self else { return }
             self.assertViewModelValidState(
-                expectationDescription: "Selected category should change to \(category.rawValue)",
+                expectationDescription: "Selected category should change to events",
                 stateChangeAction: { [weak self] in
-                    self?.viewModel.selectedCategory = category
+                    self?.viewModel.selectedCategory = .events
                 },
                 asserts: { [weak self] events in
+                    guard let events = events as? [DefaultEvent] else {
+                        XCTFail("Invalid events type")
+                        return
+                    }
                     XCTAssertEqual(events.count, 1)
-                    XCTAssertEqual(events.first?.year, eventsToCheck.first?.year)
-                    XCTAssertEqual(events.first?.title, eventsToCheck.first?.title)
+                    XCTAssertEqual(events.first?.year, day.events.first?.year)
+                    XCTAssertEqual(events.first?.title, day.events.first?.title)
                     XCTAssertEqual(self?.viewModel.subtitle, day.text)
                 }
             )
         }
     }
     
+    func testBirthsSelection() {
+        let day = setupMockDay(category: .births)
+        networkServiceMock.day = day
+        
+        viewModel.onAppear()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+            guard let self else { return }
+            self.assertViewModelValidState(
+                expectationDescription: "Selected category should change to events",
+                stateChangeAction: { [weak self] in
+                    self?.viewModel.selectedCategory = .births
+                },
+                asserts: { [weak self] events in
+                    guard let events = events as? [ExtendedEvent] else {
+                        XCTFail("Invalid events type")
+                        return
+                    }
+                    XCTAssertEqual(events.count, 1)
+                    XCTAssertEqual(events.first?.year, day.births.first?.year)
+                    XCTAssertEqual(events.first?.title, day.births.first?.title)
+                    XCTAssertEqual(events.first?.subtitle, day.births.first?.additional)
+                    XCTAssertEqual(self?.viewModel.subtitle, day.text)
+                }
+            )
+        }
+    }
+    
+    func testDeathsSelection() {
+        let day = setupMockDay(category: .deaths)
+        networkServiceMock.day = day
+        
+        viewModel.onAppear()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+            guard let self else { return }
+            self.assertViewModelValidState(
+                expectationDescription: "Selected category should change to events",
+                stateChangeAction: { [weak self] in
+                    self?.viewModel.selectedCategory = .deaths
+                },
+                asserts: { [weak self] events in
+                    guard let events = events as? [ExtendedEvent] else {
+                        XCTFail("Invalid events type")
+                        return
+                    }
+                    XCTAssertEqual(events.count, 1)
+                    XCTAssertEqual(events.first?.year, day.deaths.first?.year)
+                    XCTAssertEqual(events.first?.title, day.deaths.first?.title)
+                    XCTAssertEqual(events.first?.subtitle, day.deaths.first?.additional)
+                    XCTAssertEqual(self?.viewModel.subtitle, day.text)
+                }
+            )
+        }
+    }
+    
+    func testHolidaysSelection() {
+        let day = setupMockDay(category: .holidays)
+        networkServiceMock.day = day
+        
+        viewModel.onAppear()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+            guard let self else { return }
+            self.assertViewModelValidState(
+                expectationDescription: "Selected category should change to events",
+                stateChangeAction: { [weak self] in
+                    self?.viewModel.selectedCategory = .holidays
+                },
+                asserts: { [weak self] events in
+                    guard let events = events as? [ShortEvent] else {
+                        XCTFail("Invalid events type")
+                        return
+                    }
+                    XCTAssertEqual(events.count, 1)
+                    XCTAssertEqual(events.first?.title, day.deaths.first?.title)
+                    XCTAssertEqual(self?.viewModel.subtitle, day.text)
+                }
+            )
+        }
+    }
+
+    // MARK: - Helper Methods
+    
+    private func setupMockDay(category: EventCategory) -> DayNetworkModel {
+        let text = "Test text"
+        
+        switch category {
+        case .events:
+            return DayNetworkModel(
+                text: text, events: [EventNetworkModel(year: "1111", title: "Title")], births: [], deaths: [], holidays: []
+            )
+        case .births, .deaths:
+            return DayNetworkModel(
+                text: text, events: [], births: [EventNetworkModel(year: "1111", title: "Title", additional: "Additional")], deaths: [], holidays: []
+            )
+        case .holidays:
+            return DayNetworkModel(
+                text: text, events: [], births: [], deaths: [], holidays: [EventNetworkModel(title: "Title")]
+            )
+        }
+    }
+    
     private func assertViewModelValidState(expectationDescription: String,
                                            stateChangeAction: @escaping () -> Void,
-                                           asserts: @escaping ([Event]) -> Void) {
+                                           asserts: @escaping ([any EventProtocol]) -> Void) {
         let expectation = XCTestExpectation(description: expectationDescription)
         
         viewModel.$state
