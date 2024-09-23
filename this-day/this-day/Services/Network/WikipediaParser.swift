@@ -20,68 +20,43 @@ final class WikipediaParser {
     func cleanExtract(from extract: String) -> String {
         AppLogger.shared.debug("Cleaning extract by removing subcategories and unwanted symbols", category: .parser)
 
-        // Split the text into lines
-        let lines = extract.components(separatedBy: "\n")
-
-        var cleanedLines: [String] = []
-
-        for line in lines {
-            // Skip lines that are subcategories (surrounded by ===)
-            if line.contains("===") {
-                continue
+        let cleanedLines = extract
+            .components(separatedBy: "\n")
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter {
+                !$0.isEmpty && !$0.hasPrefix("===") && !$0.hasSuffix(":") && !$0.hasPrefix("-")
             }
 
-            // Remove the "-" symbol at the start of the line
-            let cleanedLine = line.trimmingCharacters(in: .whitespacesAndNewlines)
-                .replacingOccurrences(of: "^-", with: "", options: .regularExpression)
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-
-            // Skip lines that end with ":"
-            if cleanedLine.hasSuffix(":") {
-                continue
-            }
-
-            // Add the cleaned line to the array if it's not empty
-            if !cleanedLine.isEmpty {
-                cleanedLines.append(cleanedLine)
-            }
-        }
-
-        // Join the cleaned lines back into a single string
-        let cleanedExtract = cleanedLines.joined(separator: "\n")
         AppLogger.shared.debug("Finished cleaning extract", category: .parser)
-
-        return cleanedExtract
+        return cleanedLines.joined(separator: "\n")
     }
 
     func parseWikipediaDay(from extract: String) throws -> DayNetworkModel {
         AppLogger.shared.debug("Parsing Wikipedia day from extract", category: .parser)
 
-        // Clean the text before parsing
         let cleanedExtract = cleanExtract(from: extract)
 
-        // Extract the main text before the first category
-        let introRange = cleanedExtract.range(of: "==")
-        guard let introRange else {
+        guard let introRange = cleanedExtract.range(of: "==") else {
             AppLogger.shared.error("No section headings found in Wikipedia extract", category: .parser)
-            let context = DecodingError.Context(codingPath: [],
-                                                debugDescription: "No section headings found in the Wikipedia extract.")
-            throw DecodingError.dataCorrupted(context)
+            throw DecodingError.dataCorrupted(
+                .init(codingPath: [], debugDescription: "No section headings found in the Wikipedia extract."))
         }
-        let introText = String(cleanedExtract[..<introRange.lowerBound]).trimmingCharacters(in: .whitespacesAndNewlines)
 
-        // Parse categories using the enum
-        let events = parseCategory(from: cleanedExtract, category: .events)
-        let births = parseCategory(from: cleanedExtract, category: .births)
-        let deaths = parseCategory(from: cleanedExtract, category: .deaths)
-        let holidays = parseCategory(from: cleanedExtract, category: .holidays)
+        let introText = String(cleanedExtract[..<introRange.lowerBound])
+            .trimmingCharacters(in: .whitespacesAndNewlines)
 
-        // Create and return the DayNetworkModel
-        return DayNetworkModel(text: introText,
-                               events: events,
-                               births: births,
-                               deaths: deaths,
-                               holidays: holidays)
+        let parsedCategories = Category.allCases
+            .reduce(into: [Category: [EventNetworkModel]]()) { result, category in
+                result[category] = parseCategory(from: cleanedExtract, category: category)
+            }
+
+        return DayNetworkModel(
+            text: introText,
+            events: parsedCategories[.events] ?? [],
+            births: parsedCategories[.births] ?? [],
+            deaths: parsedCategories[.deaths] ?? [],
+            holidays: parsedCategories[.holidays] ?? []
+        )
     }
 
     func parseCategory(from extract: String, category: Category) -> [EventNetworkModel] {
@@ -109,33 +84,30 @@ final class WikipediaParser {
 
         return lines.compactMap { line -> EventNetworkModel? in
             let cleanedLine = line.trimmingCharacters(in: .whitespacesAndNewlines)
-
-            // Skip empty lines
-            guard !cleanedLine.isEmpty else { return nil }
-
-            // Check if the line contains an event or holiday description
-            if let separatorRange = cleanedLine.range(of: " – ") {
-                let year = String(cleanedLine[..<separatorRange.lowerBound])
-                    .trimmingCharacters(in: .whitespacesAndNewlines)
-                let title = String(cleanedLine[separatorRange.upperBound...])
-                    .trimmingCharacters(in: .whitespacesAndNewlines)
-
-                if category == .births || category == .deaths {
-                    // Special handling for births and deaths
-                    if let firstCommaIndex = title.firstIndex(of: ",") {
-                        let titlePart = String(title[..<firstCommaIndex]).trimmingCharacters(in: .whitespacesAndNewlines)
-                        let additionalPart = String(title[firstCommaIndex...].dropFirst())
-                            .trimmingCharacters(in: .whitespacesAndNewlines)
-                        return EventNetworkModel(year: year, title: titlePart, additional: additionalPart)
-                    }
-                }
-                return EventNetworkModel(year: year, title: title)
-            } else if !cleanedLine.contains("==") {
-                // If no separator is found, treat the line as an event or holiday
-                return EventNetworkModel(title: cleanedLine)
-            }
-
-            return nil
+            return convertToModel(from: cleanedLine, category: category)
         }
+    }
+
+    func convertToModel(from line: String, category: Category) -> EventNetworkModel? {
+        guard !line.isEmpty else { return nil }
+
+        let components = line.split(separator: "–", maxSplits: 1)
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+
+        guard components.count == 2 else {
+            return category == .events || category == .holidays ? EventNetworkModel(title: line) : nil
+        }
+
+        let year = components[0]
+        let title = components[1]
+
+        if category == .births || category == .deaths, let commaIndex = title.firstIndex(of: ",") {
+            let titlePart = title[..<commaIndex].trimmingCharacters(in: .whitespacesAndNewlines)
+            let additionalPart = title[title.index(after: commaIndex)...]
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+            return EventNetworkModel(year: year, title: String(titlePart), additional: String(additionalPart))
+        }
+
+        return EventNetworkModel(year: year, title: title)
     }
 }
