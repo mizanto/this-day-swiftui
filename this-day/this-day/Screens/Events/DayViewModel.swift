@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 protocol DayViewModelProtocol: ObservableObject {
-    var state: ViewState<[Event]> { get }
+    var state: ViewState<[any EventProtocol]> { get }
     var title: String { get }
     var subtitle: String { get }
     var selectedCategory: EventCategory { get set }
@@ -19,7 +19,7 @@ protocol DayViewModelProtocol: ObservableObject {
 }
 
 final class DayViewModel: DayViewModelProtocol {
-    @Published var state: ViewState<[Event]> = .loading
+    @Published var state: ViewState<[any EventProtocol]> = .loading
     @Published var title: String = ""
     @Published var subtitle: String = ""
     @Published var selectedCategory: EventCategory = .events {
@@ -87,17 +87,17 @@ final class DayViewModel: DayViewModelProtocol {
         guard let day else { return }
         AppLogger.shared.debug("Selecting category <\(category.rawValue)>")
 
-        let events: [Event]
+        let events: [any EventProtocol]
 
         switch category {
         case .events:
-            events = day.events.mapToEvents()
+            events = day.events.mapToDefaultEvents()
         case .births:
-            events = day.births.mapToEvents()
+            events = day.births.mapToExtendedEvents()
         case .deaths:
-            events = day.deaths.mapToEvents()
+            events = day.deaths.mapToExtendedEvents()
         case .holidays:
-            events = day.holidays.mapToEvents()
+            events = day.holidays.mapToShortEvents()
         }
 
         state = .data(events)
@@ -105,7 +105,26 @@ final class DayViewModel: DayViewModelProtocol {
 }
 
 private extension Array where Element == EventNetworkModel {
-    func mapToEvents() -> [Event] {
-        map(Event.init(from:))
+
+    func mapToShortEvents() -> [ShortEvent] {
+        compactMap { event in
+            guard let title = event.title else { return nil }
+            return ShortEvent(title: title)
+        }
+    }
+
+    func mapToDefaultEvents() -> [DefaultEvent] {
+        compactMap { event in
+            guard let year = event.year, let title = event.title else { return nil}
+            return DefaultEvent(year: year, title: title)
+        }
+    }
+
+    func mapToExtendedEvents() -> [ExtendedEvent] {
+        compactMap { event in
+            guard let year = event.year, let title = event.title,
+                  let subtitle = event.additional else { return nil}
+            return ExtendedEvent(year: year, title: title, subtitle: subtitle)
+        }
     }
 }

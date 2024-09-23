@@ -40,17 +40,17 @@ struct DayView<ViewModel: DayViewModelProtocol>: View {
         }
     }
 
-    private func dayView(for events: [Event]) -> some View {
+    private func dayView(for events: [any EventProtocol]) -> some View {
         VStack {
             CategoryPicker(selectedCategory: $viewModel.selectedCategory)
                 .padding(.horizontal)
 
             Text(viewModel.subtitle)
                 .font(.headline)
-                .padding(.horizontal, 8)
+                .padding(.horizontal)
                 .padding(.top, 8)
 
-            List(events) { event in
+            List(events, id: \.id) { event in
                 row(for: viewModel.selectedCategory, event: event)
                     .listRowSeparator(.hidden)
                     .listRowInsets(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
@@ -60,11 +60,17 @@ struct DayView<ViewModel: DayViewModelProtocol>: View {
     }
 
     @ViewBuilder
-    private func row(for category: EventCategory, event: Event) -> some View {
-        if category == .holidays {
-            TextRow(text: event.title ?? "")
+    private func row(for category: EventCategory, event: any EventProtocol) -> some View {
+        if let event = event as? ShortEvent {
+            ShortEventRow(event: event)
+        } else if let event = event as? DefaultEvent {
+            DefaultEventRow(event: event)
+        } else if let event = event as? ExtendedEvent {
+            ExtendedEventRow(event: event)
         } else {
-            TimelineRow(event: event)
+            Text("Unknown event type")
+                .foregroundColor(.red)
+                .italic()
         }
     }
 }
