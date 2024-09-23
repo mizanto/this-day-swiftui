@@ -30,11 +30,12 @@
 		AD9592352C9DC9530019BB13 /* CategoryPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592342C9DC9530019BB13 /* CategoryPicker.swift */; };
 		AD9592372C9DC9C90019BB13 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592362C9DC9C90019BB13 /* ErrorView.swift */; };
 		AD9592392C9DCBAE0019BB13 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592382C9DCBAE0019BB13 /* LoadingView.swift */; };
-		AD95923B2C9DCDD60019BB13 /* EventRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95923A2C9DCDD60019BB13 /* EventRow.swift */; };
+		AD95923B2C9DCDD60019BB13 /* TimelineRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95923A2C9DCDD60019BB13 /* TimelineRow.swift */; };
 		AD95923E2C9DD53E0019BB13 /* ViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95923D2C9DD53C0019BB13 /* ViewState.swift */; };
 		ADD1CF962C99936F00739278 /* EventsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */; };
 		ADF08E312CA02B6400CB877A /* ResponseNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF08E302CA02B6000CB877A /* ResponseNetworkModel.swift */; };
 		ADF08E332CA02DF100CB877A /* WikipediaURLBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF08E322CA02DF000CB877A /* WikipediaURLBuilder.swift */; };
+		ADF4F2992CA171F80057F9CA /* TextRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF4F2982CA171F70057F9CA /* TextRow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,11 +75,12 @@
 		AD9592342C9DC9530019BB13 /* CategoryPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryPicker.swift; sourceTree = "<group>"; };
 		AD9592362C9DC9C90019BB13 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		AD9592382C9DCBAE0019BB13 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
-		AD95923A2C9DCDD60019BB13 /* EventRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventRow.swift; sourceTree = "<group>"; };
+		AD95923A2C9DCDD60019BB13 /* TimelineRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineRow.swift; sourceTree = "<group>"; };
 		AD95923D2C9DD53C0019BB13 /* ViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewState.swift; sourceTree = "<group>"; };
 		ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewModelTests.swift; sourceTree = "<group>"; };
 		ADF08E302CA02B6000CB877A /* ResponseNetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseNetworkModel.swift; sourceTree = "<group>"; };
 		ADF08E322CA02DF000CB877A /* WikipediaURLBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikipediaURLBuilder.swift; sourceTree = "<group>"; };
+		ADF4F2982CA171F70057F9CA /* TextRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextRow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -276,7 +278,8 @@
 				AD9592342C9DC9530019BB13 /* CategoryPicker.swift */,
 				AD9592362C9DC9C90019BB13 /* ErrorView.swift */,
 				AD9592382C9DCBAE0019BB13 /* LoadingView.swift */,
-				AD95923A2C9DCDD60019BB13 /* EventRow.swift */,
+				AD95923A2C9DCDD60019BB13 /* TimelineRow.swift */,
+				ADF4F2982CA171F70057F9CA /* TextRow.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -461,7 +464,7 @@
 				AD4D89032C985B23003DD3C4 /* DayViewModel.swift in Sources */,
 				AD4D89182C987F05003DD3C4 /* Event.swift in Sources */,
 				AD4D89072C98664F003DD3C4 /* DayViewBuilder.swift in Sources */,
-				AD95923B2C9DCDD60019BB13 /* EventRow.swift in Sources */,
+				AD95923B2C9DCDD60019BB13 /* TimelineRow.swift in Sources */,
 				AD9592372C9DC9C90019BB13 /* ErrorView.swift in Sources */,
 				AD4D891F2C988810003DD3C4 /* AppLogger.swift in Sources */,
 				ADF08E312CA02B6400CB877A /* ResponseNetworkModel.swift in Sources */,
@@ -470,6 +473,7 @@
 				AD9592302C9DA3280019BB13 /* Day.swift in Sources */,
 				AD4D88EE2C9841CF003DD3C4 /* ThisDayApp.swift in Sources */,
 				AD95922E2C9D96E30019BB13 /* DayNetworkModel.swift in Sources */,
+				ADF4F2992CA171F80057F9CA /* TextRow.swift in Sources */,
 				AD95922A2C9C1D580019BB13 /* NetworkService.swift in Sources */,
 				AD2609582C99763400687D36 /* URLSessionProtocol.swift in Sources */,
 				AD9592352C9DC9530019BB13 /* CategoryPicker.swift in Sources */,

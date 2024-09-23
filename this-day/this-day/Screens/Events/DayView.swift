@@ -51,9 +51,20 @@ struct DayView<ViewModel: DayViewModelProtocol>: View {
                 .padding(.top, 8)
 
             List(events) { event in
-                EventRow(event: event)
+                row(for: viewModel.selectedCategory, event: event)
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
             }
             .listStyle(PlainListStyle())
+        }
+    }
+
+    @ViewBuilder
+    private func row(for category: EventCategory, event: Event) -> some View {
+        if category == .holidays {
+            TextRow(text: event.title ?? "")
+        } else {
+            TimelineRow(event: event)
         }
     }
 }

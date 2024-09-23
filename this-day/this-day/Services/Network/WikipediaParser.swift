@@ -115,21 +115,21 @@ final class WikipediaParser {
 
             // Check if the line contains an event or holiday description
             if let separatorRange = cleanedLine.range(of: " – ") {
-                let title = String(cleanedLine[..<separatorRange.lowerBound])
+                let year = String(cleanedLine[..<separatorRange.lowerBound])
                     .trimmingCharacters(in: .whitespacesAndNewlines)
-                let text = String(cleanedLine[separatorRange.upperBound...])
+                let title = String(cleanedLine[separatorRange.upperBound...])
                     .trimmingCharacters(in: .whitespacesAndNewlines)
 
                 if category == .births || category == .deaths {
                     // Special handling for births and deaths
-                    if let firstCommaIndex = text.firstIndex(of: ",") {
-                        let textPart = String(text[..<firstCommaIndex]).trimmingCharacters(in: .whitespacesAndNewlines)
-                        let additionalPart = String(text[firstCommaIndex...].dropFirst())
+                    if let firstCommaIndex = title.firstIndex(of: ",") {
+                        let titlePart = String(title[..<firstCommaIndex]).trimmingCharacters(in: .whitespacesAndNewlines)
+                        let additionalPart = String(title[firstCommaIndex...].dropFirst())
                             .trimmingCharacters(in: .whitespacesAndNewlines)
-                        return EventNetworkModel(title: title, text: textPart, additional: additionalPart)
+                        return EventNetworkModel(year: year, title: titlePart, additional: additionalPart)
                     }
                 }
-                return EventNetworkModel(title: title, text: text)
+                return EventNetworkModel(year: year, title: title)
             } else if !cleanedLine.contains("==") {
                 // If no separator is found, treat the line as an event or holiday
                 return EventNetworkModel(title: cleanedLine)
