@@ -9,7 +9,7 @@ import Foundation
 
 struct DayNetworkModel: Codable {
     let text: String
-    let events: [EventNetworkModel]
+    let general: [EventNetworkModel]
     let births: [EventNetworkModel]
     let deaths: [EventNetworkModel]
     let holidays: [EventNetworkModel]

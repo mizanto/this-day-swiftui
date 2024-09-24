@@ -61,9 +61,9 @@ final class WikipediaParserTests: XCTestCase {
         
         XCTAssertEqual(result.text, "Introduction text")
         
-        XCTAssertEqual(result.events.count, 1)
-        XCTAssertEqual(result.events.first?.year, "1912")
-        XCTAssertEqual(result.events.first?.title, "Titanic sinks.")
+        XCTAssertEqual(result.general.count, 1)
+        XCTAssertEqual(result.general.first?.year, "1912")
+        XCTAssertEqual(result.general.first?.title, "Titanic sinks.")
         
         XCTAssertEqual(result.births.count, 1)
         XCTAssertEqual(result.births.first?.year, "1890")

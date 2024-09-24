@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23231" systemVersion="24A335" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="DayEntity" representedClassName="DayEntity" syncable="YES">
+        <attribute name="added" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="String"/>
+        <attribute name="text" attributeType="String"/>
+        <relationship name="events" toMany="YES" deletionRule="Cascade" destinationEntity="EventEntity" inverseName="day" inverseEntity="EventEntity"/>
+    </entity>
+    <entity name="EventEntity" representedClassName="EventEntity" syncable="YES">
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="subtitle" optional="YES" attributeType="String"/>
+        <attribute name="title" attributeType="String"/>
+        <attribute name="type" attributeType="String"/>
+        <attribute name="year" optional="YES" attributeType="String"/>
+        <relationship name="day" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DayEntity" inverseName="events" inverseEntity="DayEntity"/>
+    </entity>
+</model>

@@ -52,7 +52,7 @@ final class WikipediaParser {
 
         return DayNetworkModel(
             text: introText,
-            events: parsedCategories[.events] ?? [],
+            general: parsedCategories[.events] ?? [],
             births: parsedCategories[.births] ?? [],
             deaths: parsedCategories[.deaths] ?? [],
             holidays: parsedCategories[.holidays] ?? []

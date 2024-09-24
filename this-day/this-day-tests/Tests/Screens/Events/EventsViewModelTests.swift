@@ -56,8 +56,8 @@ final class DayViewModelTests: XCTestCase {
                     return
                 }
                 XCTAssertEqual(events.count, 1)
-                XCTAssertEqual(events.first?.year, day.events.first?.year)
-                XCTAssertEqual(events.first?.title, day.events.first?.title)
+                XCTAssertEqual(events.first?.year, day.general.first?.year)
+                XCTAssertEqual(events.first?.title, day.general.first?.title)
                 XCTAssertEqual(self.viewModel.subtitle, day.text)
                 XCTAssertEqual(self.viewModel.title, self.currentDateFormatted())
             }
@@ -94,8 +94,8 @@ final class DayViewModelTests: XCTestCase {
                     return
                 }
                 XCTAssertEqual(events.count, 1)
-                XCTAssertEqual(events.first?.year, day.events.first?.year)
-                XCTAssertEqual(events.first?.title, day.events.first?.title)
+                XCTAssertEqual(events.first?.year, day.general.first?.year)
+                XCTAssertEqual(events.first?.title, day.general.first?.title)
                 XCTAssertEqual(self.viewModel.subtitle, day.text)
             }
         )
@@ -131,8 +131,8 @@ final class DayViewModelTests: XCTestCase {
                         return
                     }
                     XCTAssertEqual(events.count, 1)
-                    XCTAssertEqual(events.first?.year, day.events.first?.year)
-                    XCTAssertEqual(events.first?.title, day.events.first?.title)
+                    XCTAssertEqual(events.first?.year, day.general.first?.year)
+                    XCTAssertEqual(events.first?.title, day.general.first?.title)
                     XCTAssertEqual(self?.viewModel.subtitle, day.text)
                 }
             )

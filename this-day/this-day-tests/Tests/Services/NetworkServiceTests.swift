@@ -46,7 +46,7 @@ final class NetworkServiceTests: XCTestCase {
                 }
             }, receiveValue: { day in
                 XCTAssertTrue(day.text.isEmpty)
-                XCTAssertEqual(day.events.count, 0)
+                XCTAssertEqual(day.general.count, 0)
                 XCTAssertEqual(day.births.count, 0)
                 XCTAssertEqual(day.deaths.count, 0)
                 XCTAssertEqual(day.holidays.count, 0)

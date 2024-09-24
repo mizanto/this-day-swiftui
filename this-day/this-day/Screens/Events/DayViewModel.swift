@@ -75,7 +75,7 @@ final class DayViewModel: DayViewModelProtocol {
                 },
                 receiveValue: { [weak self] day in
                     // swiftlint:disable:next line_length
-                    AppLogger.shared.info("Loaded \(day.events.count) events, \(day.births.count) births, \(day.deaths.count) deaths and \(day.holidays.count) holidays for date: \(date)", category: .ui)
+                    AppLogger.shared.info("Loaded \(day.general.count) events, \(day.births.count) births, \(day.deaths.count) deaths and \(day.holidays.count) holidays for date: \(date)", category: .ui)
                     self?.day = day
                     self?.selectedCategory = .events
                 }
@@ -91,7 +91,7 @@ final class DayViewModel: DayViewModelProtocol {
 
         switch category {
         case .events:
-            events = day.events.mapToDefaultEvents()
+            events = day.general.mapToDefaultEvents()
         case .births:
             events = day.births.mapToExtendedEvents()
         case .deaths:
