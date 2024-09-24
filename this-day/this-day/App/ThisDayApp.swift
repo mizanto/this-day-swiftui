@@ -9,11 +9,18 @@ import SwiftUI
 
 @main
 struct ThisDayApp: App {
+    let persistenceController = PersistenceController.shared
+    let storageService: StorageService
     let networkService = NetworkService()
+    
+    init () {
+        storageService = StorageService(context: persistenceController.container.viewContext)
+    }
 
     var body: some Scene {
         WindowGroup {
-            DayViewBuilder.build(networkService: NetworkService())
+            DayViewBuilder.build(networkService: networkService,
+                                 storageService: storageService)
         }
     }
 }

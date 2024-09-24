@@ -76,5 +76,5 @@ struct DayView<ViewModel: DayViewModelProtocol>: View {
 }
 
 #Preview {
-    DayView(viewModel: DayViewModel())
+//    DayView(viewModel: DayViewModel())
 }

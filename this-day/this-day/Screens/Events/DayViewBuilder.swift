@@ -8,8 +8,10 @@
 import SwiftUI
 
 final class DayViewBuilder {
-    static func build(networkService: NetworkService) -> some View {
-        let viewModel = DayViewModel(networkService: networkService)
+    static func build(networkService: NetworkServiceProtocol,
+                      storageService: StorageServiceProtocol) -> some View {
+        let viewModel = DayViewModel(networkService: networkService,
+                                     storageService: storageService)
         return DayView(viewModel: viewModel)
     }
 }

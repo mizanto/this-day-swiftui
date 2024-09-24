@@ -26,13 +26,15 @@
 		AD53AA432CA1F1430024FD31 /* WikipediaParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA422CA1F1430024FD31 /* WikipediaParserTests.swift */; };
 		AD53AA472CA2A6360024FD31 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA452CA2A6360024FD31 /* Model.xcdatamodeld */; };
 		AD53AA5A2CA2B64F0024FD31 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA592CA2B64E0024FD31 /* PersistenceController.swift */; };
-		AD53AA5F2CA2B82C0024FD31 /* DayEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA5B2CA2B82C0024FD31 /* DayEntity+CoreDataClass.swift */; };
-		AD53AA602CA2B82C0024FD31 /* DayEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA5C2CA2B82C0024FD31 /* DayEntity+CoreDataProperties.swift */; };
-		AD53AA612CA2B82C0024FD31 /* EventEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA5D2CA2B82C0024FD31 /* EventEntity+CoreDataClass.swift */; };
-		AD53AA622CA2B82C0024FD31 /* EventEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA5E2CA2B82C0024FD31 /* EventEntity+CoreDataProperties.swift */; };
 		AD53AA642CA2B97C0024FD31 /* EventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA632CA2B97A0024FD31 /* EventType.swift */; };
 		AD53AA672CA2BAF20024FD31 /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA662CA2BAF10024FD31 /* StorageService.swift */; };
 		AD53AA6A2CA2BD640024FD31 /* StorageServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA692CA2BD640024FD31 /* StorageServiceError.swift */; };
+		AD53AA6C2CA2C2C80024FD31 /* DayEntity+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA6B2CA2C2C30024FD31 /* DayEntity+Helpers.swift */; };
+		AD53AA6E2CA2C2EA0024FD31 /* EventEntity+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA6D2CA2C2E90024FD31 /* EventEntity+Helpers.swift */; };
+		AD53AA732CA30C1E0024FD31 /* DayEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA6F2CA30C1E0024FD31 /* DayEntity+CoreDataClass.swift */; };
+		AD53AA742CA30C1E0024FD31 /* DayEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA702CA30C1E0024FD31 /* DayEntity+CoreDataProperties.swift */; };
+		AD53AA752CA30C1E0024FD31 /* EventEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA712CA30C1E0024FD31 /* EventEntity+CoreDataClass.swift */; };
+		AD53AA762CA30C1E0024FD31 /* EventEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA722CA30C1E0024FD31 /* EventEntity+CoreDataProperties.swift */; };
 		AD9592062C9994DA0019BB13 /* NetworkServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592052C9994DA0019BB13 /* NetworkServiceMock.swift */; };
 		AD95920B2C99C8F80019BB13 /* NetworkServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95920A2C99C8F60019BB13 /* NetworkServiceError.swift */; };
 		AD95922A2C9C1D580019BB13 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592292C9C1D550019BB13 /* NetworkService.swift */; };
@@ -83,13 +85,15 @@
 		AD53AA422CA1F1430024FD31 /* WikipediaParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikipediaParserTests.swift; sourceTree = "<group>"; };
 		AD53AA462CA2A6360024FD31 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		AD53AA592CA2B64E0024FD31 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
-		AD53AA5B2CA2B82C0024FD31 /* DayEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
-		AD53AA5C2CA2B82C0024FD31 /* DayEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		AD53AA5D2CA2B82C0024FD31 /* EventEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
-		AD53AA5E2CA2B82C0024FD31 /* EventEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		AD53AA632CA2B97A0024FD31 /* EventType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventType.swift; sourceTree = "<group>"; };
 		AD53AA662CA2BAF10024FD31 /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
 		AD53AA692CA2BD640024FD31 /* StorageServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageServiceError.swift; sourceTree = "<group>"; };
+		AD53AA6B2CA2C2C30024FD31 /* DayEntity+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayEntity+Helpers.swift"; sourceTree = "<group>"; };
+		AD53AA6D2CA2C2E90024FD31 /* EventEntity+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventEntity+Helpers.swift"; sourceTree = "<group>"; };
+		AD53AA6F2CA30C1E0024FD31 /* DayEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		AD53AA702CA30C1E0024FD31 /* DayEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		AD53AA712CA30C1E0024FD31 /* EventEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		AD53AA722CA30C1E0024FD31 /* EventEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		AD9592052C9994DA0019BB13 /* NetworkServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceMock.swift; sourceTree = "<group>"; };
 		AD95920A2C99C8F60019BB13 /* NetworkServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceError.swift; sourceTree = "<group>"; };
 		AD9592292C9C1D550019BB13 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
@@ -314,10 +318,12 @@
 			isa = PBXGroup;
 			children = (
 				AD53AA632CA2B97A0024FD31 /* EventType.swift */,
-				AD53AA5B2CA2B82C0024FD31 /* DayEntity+CoreDataClass.swift */,
-				AD53AA5C2CA2B82C0024FD31 /* DayEntity+CoreDataProperties.swift */,
-				AD53AA5D2CA2B82C0024FD31 /* EventEntity+CoreDataClass.swift */,
-				AD53AA5E2CA2B82C0024FD31 /* EventEntity+CoreDataProperties.swift */,
+				AD53AA6F2CA30C1E0024FD31 /* DayEntity+CoreDataClass.swift */,
+				AD53AA702CA30C1E0024FD31 /* DayEntity+CoreDataProperties.swift */,
+				AD53AA6B2CA2C2C30024FD31 /* DayEntity+Helpers.swift */,
+				AD53AA712CA30C1E0024FD31 /* EventEntity+CoreDataClass.swift */,
+				AD53AA722CA30C1E0024FD31 /* EventEntity+CoreDataProperties.swift */,
+				AD53AA6D2CA2C2E90024FD31 /* EventEntity+Helpers.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -518,16 +524,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AD53AA5F2CA2B82C0024FD31 /* DayEntity+CoreDataClass.swift in Sources */,
-				AD53AA602CA2B82C0024FD31 /* DayEntity+CoreDataProperties.swift in Sources */,
-				AD53AA612CA2B82C0024FD31 /* EventEntity+CoreDataClass.swift in Sources */,
-				AD53AA622CA2B82C0024FD31 /* EventEntity+CoreDataProperties.swift in Sources */,
 				AD95922C2C9C3A000019BB13 /* WikipediaParser.swift in Sources */,
 				AD9592322C9DC8C30019BB13 /* View+Extension.swift in Sources */,
 				AD95923E2C9DD53E0019BB13 /* ViewState.swift in Sources */,
 				AD4D88F02C9841CF003DD3C4 /* DayView.swift in Sources */,
 				AD53AA3E2CA1858E0024FD31 /* DefaultEvent.swift in Sources */,
 				AD4D89032C985B23003DD3C4 /* DayViewModel.swift in Sources */,
+				AD53AA6C2CA2C2C80024FD31 /* DayEntity+Helpers.swift in Sources */,
 				AD4D89182C987F05003DD3C4 /* ShortEvent.swift in Sources */,
 				AD4D89072C98664F003DD3C4 /* DayViewBuilder.swift in Sources */,
 				AD95923B2C9DCDD60019BB13 /* ExtendedEventRow.swift in Sources */,
@@ -536,6 +539,7 @@
 				AD4D891F2C988810003DD3C4 /* AppLogger.swift in Sources */,
 				AD53AA472CA2A6360024FD31 /* Model.xcdatamodeld in Sources */,
 				ADF08E312CA02B6400CB877A /* ResponseNetworkModel.swift in Sources */,
+				AD53AA6E2CA2C2EA0024FD31 /* EventEntity+Helpers.swift in Sources */,
 				ADF08E332CA02DF100CB877A /* WikipediaURLBuilder.swift in Sources */,
 				AD4D89112C98703C003DD3C4 /* EventNetworkModel.swift in Sources */,
 				AD4D88EE2C9841CF003DD3C4 /* ThisDayApp.swift in Sources */,
@@ -544,6 +548,10 @@
 				ADF4F2992CA171F80057F9CA /* ShortEventRow.swift in Sources */,
 				AD95922A2C9C1D580019BB13 /* NetworkService.swift in Sources */,
 				AD2609582C99763400687D36 /* URLSessionProtocol.swift in Sources */,
+				AD53AA732CA30C1E0024FD31 /* DayEntity+CoreDataClass.swift in Sources */,
+				AD53AA742CA30C1E0024FD31 /* DayEntity+CoreDataProperties.swift in Sources */,
+				AD53AA752CA30C1E0024FD31 /* EventEntity+CoreDataClass.swift in Sources */,
+				AD53AA762CA30C1E0024FD31 /* EventEntity+CoreDataProperties.swift in Sources */,
 				AD53AA6A2CA2BD640024FD31 /* StorageServiceError.swift in Sources */,
 				AD9592352C9DC9530019BB13 /* CategoryPicker.swift in Sources */,
 				AD4D891D2C987F60003DD3C4 /* Date+Extension.swift in Sources */,

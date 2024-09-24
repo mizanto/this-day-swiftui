@@ -19,12 +19,30 @@ extension DayEntity {
     @NSManaged public var id: String?
     @NSManaged public var text: String?
     @NSManaged public var added: Date?
-    @NSManaged public var events: NSSet?
+    @NSManaged public var events: NSOrderedSet?
 
 }
 
 // MARK: Generated accessors for events
 extension DayEntity {
+
+    @objc(insertObject:inEventsAtIndex:)
+    @NSManaged public func insertIntoEvents(_ value: EventEntity, at idx: Int)
+
+    @objc(removeObjectFromEventsAtIndex:)
+    @NSManaged public func removeFromEvents(at idx: Int)
+
+    @objc(insertEvents:atIndexes:)
+    @NSManaged public func insertIntoEvents(_ values: [EventEntity], at indexes: NSIndexSet)
+
+    @objc(removeEventsAtIndexes:)
+    @NSManaged public func removeFromEvents(at indexes: NSIndexSet)
+
+    @objc(replaceObjectInEventsAtIndex:withObject:)
+    @NSManaged public func replaceEvents(at idx: Int, with value: EventEntity)
+
+    @objc(replaceEventsAtIndexes:withEvents:)
+    @NSManaged public func replaceEvents(at indexes: NSIndexSet, with values: [EventEntity])
 
     @objc(addEventsObject:)
     @NSManaged public func addToEvents(_ value: EventEntity)
@@ -33,37 +51,11 @@ extension DayEntity {
     @NSManaged public func removeFromEvents(_ value: EventEntity)
 
     @objc(addEvents:)
-    @NSManaged public func addToEvents(_ values: NSSet)
+    @NSManaged public func addToEvents(_ values: NSOrderedSet)
 
     @objc(removeEvents:)
-    @NSManaged public func removeFromEvents(_ values: NSSet)
+    @NSManaged public func removeFromEvents(_ values: NSOrderedSet)
 
 }
 
 extension DayEntity : Identifiable {}
-
-extension DayEntity {
-    static func from(networkModel: DayNetworkModel, date: Date, context: NSManagedObjectContext) -> DayEntity {
-        let dayEntity = DayEntity(context: context)
-        dayEntity.id = date.toFormat("MM_dd")
-        dayEntity.text = networkModel.text
-        dayEntity.added = Date()
-
-        let eventTypes: [(events: [EventNetworkModel], type: EventType)] = [
-            (networkModel.general, .general),
-            (networkModel.births, .birth),
-            (networkModel.deaths, .death),
-            (networkModel.holidays, .holiday)
-        ]
-
-        for (events, type) in eventTypes {
-            for eventNetworkModel in events {
-                let eventEntity = EventEntity.from(networkModel: eventNetworkModel, type: type, context: context)
-                eventEntity.day = dayEntity
-                dayEntity.addToEvents(eventEntity)
-            }
-        }
-
-        return dayEntity
-    }
-}

@@ -26,15 +26,3 @@ extension EventEntity {
 }
 
 extension EventEntity : Identifiable {}
-
-extension EventEntity {
-    static func from(networkModel: EventNetworkModel, type: EventType, context: NSManagedObjectContext) -> EventEntity {
-        let eventEntity = EventEntity(context: context)
-        eventEntity.id = UUID()
-        eventEntity.title = networkModel.title
-        eventEntity.year = networkModel.year
-        eventEntity.subtitle = networkModel.additional
-        eventEntity.eventType = type
-        return eventEntity
-    }
-}
