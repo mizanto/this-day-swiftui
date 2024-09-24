@@ -108,23 +108,21 @@ private extension Array where Element == EventNetworkModel {
 
     func mapToShortEvents() -> [ShortEvent] {
         compactMap { event in
-            guard let title = event.title else { return nil }
-            return ShortEvent(title: title)
+            return ShortEvent(title: event.title)
         }
     }
 
     func mapToDefaultEvents() -> [DefaultEvent] {
         compactMap { event in
-            guard let year = event.year, let title = event.title else { return nil}
-            return DefaultEvent(year: year, title: title)
+            guard let year = event.year else { return nil}
+            return DefaultEvent(year: year, title: event.title)
         }
     }
 
     func mapToExtendedEvents() -> [ExtendedEvent] {
         compactMap { event in
-            guard let year = event.year, let title = event.title,
-                  let subtitle = event.additional else { return nil}
-            return ExtendedEvent(year: year, title: title, subtitle: subtitle)
+            guard let year = event.year, let subtitle = event.additional else { return nil}
+            return ExtendedEvent(year: year, title: event.title, subtitle: subtitle)
         }
     }
 }

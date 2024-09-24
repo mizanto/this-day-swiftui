@@ -8,11 +8,11 @@
 import Foundation
 
 struct EventNetworkModel: Codable {
-    let year: String?
-    let title: String?
-    let additional: String?
+    let year: String? // nil for hollidays
+    let title: String
+    let additional: String? // nil for events and hollidays
 
-    init(year: String? = nil, title: String? = nil, additional: String? = nil) {
+    init(year: String? = nil, title: String, additional: String? = nil) {
         self.year = year
         self.title = title
         self.additional = additional
