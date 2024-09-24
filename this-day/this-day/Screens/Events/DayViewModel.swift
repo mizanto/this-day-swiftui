@@ -33,11 +33,13 @@ final class DayViewModel: DayViewModelProtocol {
     private let storageService: StorageServiceProtocol
     private var cancellables = Set<AnyCancellable>()
     private var day: DayEntity? {
-            didSet {
-                guard let day else { return }
-                subtitle = day.text ?? ""
-            }
+        didSet {
+            guard let day else { return }
+            subtitle = day.text ?? ""
+            cacheEvents(for: day)
         }
+    }
+    private var uiModels: [EventCategory: [any EventProtocol]] = [:]
 
     init(networkService: NetworkServiceProtocol = NetworkService(),
          storageService: StorageServiceProtocol) {
@@ -107,28 +109,24 @@ final class DayViewModel: DayViewModelProtocol {
     }
 
     private func selectCategory(_ category: EventCategory) {
-        guard let day else { return }
         AppLogger.shared.debug("Selecting category <\(category.rawValue)>")
 
-        let events: [any EventProtocol]
-
-        switch category {
-        case .events:
-            events = mapEvents(from: day.eventsArray, for: .general)
-        case .births:
-            events = mapEvents(from: day.eventsArray, for: .birth)
-        case .deaths:
-            events = mapEvents(from: day.eventsArray, for: .death)
-        case .holidays:
-            events = mapEvents(from: day.eventsArray, for: .holiday)
-        }
-
+        let events = uiModels[category] ?? []
         state = .data(events)
     }
-    
+
     private func mapEvents(from events: [EventEntity], for type: EventType) -> [any EventProtocol] {
         let filteredEvents = events.filter { $0.eventType == type }
         return filteredEvents.map { $0.toDisplayModel() }
+    }
+
+    private func cacheEvents(for day: DayEntity) {
+        uiModels = [
+            .events: mapEvents(from: day.eventsArray, for: .general),
+            .births: mapEvents(from: day.eventsArray, for: .birth),
+            .deaths: mapEvents(from: day.eventsArray, for: .death),
+            .holidays: mapEvents(from: day.eventsArray, for: .holiday)
+        ]
     }
 }
 

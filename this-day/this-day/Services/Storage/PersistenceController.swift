@@ -24,10 +24,12 @@ class PersistenceController {
 
         container.loadPersistentStores { storeDescription, error in
             if let error = error as NSError? {
-                AppLogger.shared.error("Failed to load persistent stores: \(error), \(error.userInfo)", category: .database)
+                let message = "Failed to load persistent stores: \(error), \(error.userInfo)"
+                AppLogger.shared.error(message, category: .database)
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             } else {
-                AppLogger.shared.info("Successfully loaded persistent store at \(storeDescription.url?.absoluteString ?? "Unknown URL")", category: .database)
+                let urlInfo = storeDescription.url?.absoluteString ?? "Unknown URL"
+                AppLogger.shared.info("Successfully loaded persistent store at \(urlInfo)", category: .database)
             }
         }
     }

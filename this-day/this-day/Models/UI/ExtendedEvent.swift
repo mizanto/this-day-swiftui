@@ -12,7 +12,7 @@ struct ExtendedEvent: EventProtocol {
     let year: String
     let title: String
     let subtitle: String
-    
+
     init(id: UUID = UUID(), year: String, title: String, subtitle: String) {
         self.id = id
         self.year = year

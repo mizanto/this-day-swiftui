@@ -9,10 +9,10 @@
 import Foundation
 import CoreData
 
-
 extension DayEntity {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<DayEntity> {
+    @nonobjc
+    public class func fetchRequest() -> NSFetchRequest<DayEntity> {
         return NSFetchRequest<DayEntity>(entityName: "DayEntity")
     }
 
@@ -55,7 +55,6 @@ extension DayEntity {
 
     @objc(removeEvents:)
     @NSManaged public func removeFromEvents(_ values: NSOrderedSet)
-
 }
 
-extension DayEntity : Identifiable {}
+extension DayEntity: Identifiable {}

@@ -19,7 +19,7 @@ extension EventEntity {
         eventEntity.eventType = type
         return eventEntity
     }
-    
+
     func toDisplayModel() -> any EventProtocol {
         switch self.eventType {
         case .holiday:

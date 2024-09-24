@@ -11,7 +11,7 @@ struct DefaultEvent: EventProtocol {
     let id: UUID
     let year: String
     let title: String
-    
+
     init(id: UUID = UUID(), year: String, title: String) {
         self.id = id
         self.year = year

@@ -23,7 +23,7 @@ class StorageService: StorageServiceProtocol {
     func fetchDay(for id: String) throws -> DayEntity {
         let request: NSFetchRequest<DayEntity> = DayEntity.fetchRequest()
         request.predicate = NSPredicate(format: "id == %@", id)
-        
+
         do {
             let days = try context.fetch(request)
             if let day = days.first {
