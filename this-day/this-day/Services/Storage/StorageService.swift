@@ -1,0 +1,59 @@
+//
+//  StorageService.swift
+//  this-day
+//
+//  Created by Sergey Bendak on 24.09.2024.
+//
+
+import Foundation
+import CoreData
+
+protocol StorageServiceProtocol {
+    func fetchDay(for id: String) throws -> DayEntity
+    func saveDay(networkModel: DayNetworkModel, for date: Date) throws
+}
+
+class StorageService: StorageServiceProtocol {
+    private let context: NSManagedObjectContext
+
+    init(context: NSManagedObjectContext) {
+        self.context = context
+    }
+
+    func fetchDay(for id: String) throws -> DayEntity {
+        let request: NSFetchRequest<DayEntity> = DayEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@", id)
+        
+        do {
+            let days = try context.fetch(request)
+            if let day = days.first {
+                return day
+            } else {
+                AppLogger.shared.error("No DayEntity found for id \(id)", category: .database)
+                throw StorageServiceError.dataNotFound("No DayEntity found for id \(id)")
+            }
+        } catch {
+            AppLogger.shared.error("Error fetching DayEntity for id \(id): \(error)", category: .database)
+            throw StorageServiceError.fetchError(error)
+        }
+    }
+
+    func saveDay(networkModel: DayNetworkModel, for date: Date) throws {
+        let idString = date.toFormat("MM_dd")
+
+        // Trying to remove previously saved data for the day if exists
+        if let existingDay = try? fetchDay(for: idString) {
+            context.delete(existingDay)
+        }
+
+        _ = DayEntity.from(networkModel: networkModel, date: date, context: context)
+
+        do {
+            try context.save()
+            AppLogger.shared.info("Successfully saved DayEntity for id: \(idString)", category: .database)
+        } catch {
+            AppLogger.shared.error("Failed to save DayEntity for id \(idString): \(error)", category: .database)
+            throw StorageServiceError.saveError(error)
+        }
+    }
+}

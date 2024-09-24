@@ -31,6 +31,8 @@
 		AD53AA612CA2B82C0024FD31 /* EventEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA5D2CA2B82C0024FD31 /* EventEntity+CoreDataClass.swift */; };
 		AD53AA622CA2B82C0024FD31 /* EventEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA5E2CA2B82C0024FD31 /* EventEntity+CoreDataProperties.swift */; };
 		AD53AA642CA2B97C0024FD31 /* EventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA632CA2B97A0024FD31 /* EventType.swift */; };
+		AD53AA672CA2BAF20024FD31 /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA662CA2BAF10024FD31 /* StorageService.swift */; };
+		AD53AA6A2CA2BD640024FD31 /* StorageServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA692CA2BD640024FD31 /* StorageServiceError.swift */; };
 		AD9592062C9994DA0019BB13 /* NetworkServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592052C9994DA0019BB13 /* NetworkServiceMock.swift */; };
 		AD95920B2C99C8F80019BB13 /* NetworkServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95920A2C99C8F60019BB13 /* NetworkServiceError.swift */; };
 		AD95922A2C9C1D580019BB13 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592292C9C1D550019BB13 /* NetworkService.swift */; };
@@ -86,6 +88,8 @@
 		AD53AA5D2CA2B82C0024FD31 /* EventEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		AD53AA5E2CA2B82C0024FD31 /* EventEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		AD53AA632CA2B97A0024FD31 /* EventType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventType.swift; sourceTree = "<group>"; };
+		AD53AA662CA2BAF10024FD31 /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
+		AD53AA692CA2BD640024FD31 /* StorageServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageServiceError.swift; sourceTree = "<group>"; };
 		AD9592052C9994DA0019BB13 /* NetworkServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceMock.swift; sourceTree = "<group>"; };
 		AD95920A2C99C8F60019BB13 /* NetworkServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceError.swift; sourceTree = "<group>"; };
 		AD9592292C9C1D550019BB13 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
@@ -298,6 +302,8 @@
 		AD53AA442CA2A5A70024FD31 /* Storage */ = {
 			isa = PBXGroup;
 			children = (
+				AD53AA692CA2BD640024FD31 /* StorageServiceError.swift */,
+				AD53AA662CA2BAF10024FD31 /* StorageService.swift */,
 				AD53AA592CA2B64E0024FD31 /* PersistenceController.swift */,
 				AD53AA452CA2A6360024FD31 /* Model.xcdatamodeld */,
 			);
@@ -538,11 +544,13 @@
 				ADF4F2992CA171F80057F9CA /* ShortEventRow.swift in Sources */,
 				AD95922A2C9C1D580019BB13 /* NetworkService.swift in Sources */,
 				AD2609582C99763400687D36 /* URLSessionProtocol.swift in Sources */,
+				AD53AA6A2CA2BD640024FD31 /* StorageServiceError.swift in Sources */,
 				AD9592352C9DC9530019BB13 /* CategoryPicker.swift in Sources */,
 				AD4D891D2C987F60003DD3C4 /* Date+Extension.swift in Sources */,
 				AD9592392C9DCBAE0019BB13 /* LoadingView.swift in Sources */,
 				AD95920B2C99C8F80019BB13 /* NetworkServiceError.swift in Sources */,
 				AD53AA3C2CA182FF0024FD31 /* DefaultEventRow.swift in Sources */,
+				AD53AA672CA2BAF20024FD31 /* StorageService.swift in Sources */,
 				AD53AA402CA185AD0024FD31 /* ExtendedEvent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
