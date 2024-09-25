@@ -95,21 +95,12 @@ final class DayViewModel: DayViewModelProtocol {
                                               category: .ui)
                     }
                 },
-                receiveValue: { [weak self] dayNetwork in
+                receiveValue: { [weak self] model in
                     guard let self else { return }
                     // swiftlint:disable:next line_length
-                    AppLogger.shared.info("Loaded \(dayNetwork.general.count) events, \(dayNetwork.births.count) births, \(dayNetwork.deaths.count) deaths and \(dayNetwork.holidays.count) holidays for date: \(date)", category: .ui)
+                    AppLogger.shared.info("Loaded \(model.general.count) events, \(model.births.count) births, \(model.deaths.count) deaths and \(model.holidays.count) holidays for date: \(date)", category: .ui)
 
-                    do {
-                        try self.storageService.saveDay(networkModel: dayNetwork, for: date)
-                        let dayEntity = try self.storageService.fetchDay(for: date.toFormat("MM_dd"))
-                        self.day = dayEntity
-                        self.selectedCategory = .events
-                    } catch {
-                        AppLogger.shared.error("Failed to save or fetch events for date: \(date). Error: \(error)",
-                                               category: .ui)
-                        self.state = .error("Failed to load events. Please try again.")
-                    }
+                    self.save(networkModel: model, for: date)
                 }
             )
             .store(in: &cancellables)
@@ -129,9 +120,11 @@ final class DayViewModel: DayViewModelProtocol {
             } else {
                 try storageService.addToBookmarks(event: event)
             }
+            AppLogger.shared.info("Successfully toggled bookmark for event \(eventID)", category: .database)
 
-            if let dayID = self.day?.id {
-                day = try storageService.fetchDay(for: dayID)
+            if let index = day?.eventsArray.firstIndex(where: { $0.id == eventID }) {
+                day?.replaceEvents(at: index, with: event)
+                cacheEvents(for: day)
                 selectCategory(selectedCategory)
             }
         } catch {
@@ -149,6 +142,19 @@ final class DayViewModel: DayViewModelProtocol {
         // TODO: add logic for sharing
     }
 
+    private func save(networkModel: DayNetworkModel, for date: Date) {
+        do {
+            try storageService.saveDay(networkModel: networkModel, for: date)
+            if let dayEntity = try storageService.fetchDay(for: date.toFormat("MM_dd")) {
+                self.day = dayEntity
+                self.selectedCategory = .events
+            }
+        } catch {
+            AppLogger.shared.error("Failed to save or fetch events for date: \(date). Error: \(error)", category: .ui)
+            self.state = .error("Failed to load events. Please try again.")
+        }
+    }
+
     private func selectCategory(_ category: EventCategory) {
         AppLogger.shared.debug("Selecting category <\(category.rawValue)>")
 
@@ -161,7 +167,9 @@ final class DayViewModel: DayViewModelProtocol {
         return filteredEvents.map { $0.toDisplayModel() }
     }
 
-    private func cacheEvents(for day: DayEntity) {
+    private func cacheEvents(for day: DayEntity?) {
+        guard let day else { return }
+
         uiModels = [
             .events: mapEvents(from: day.eventsArray, for: .general),
             .births: mapEvents(from: day.eventsArray, for: .birth),
