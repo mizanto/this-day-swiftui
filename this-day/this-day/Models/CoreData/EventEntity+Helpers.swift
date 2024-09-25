@@ -24,15 +24,15 @@ extension EventEntity {
         switch self.eventType {
         case .holiday:
             return ShortEvent(
-                id: self.id ?? UUID(),
-                title: self.title ?? "",
+                id: self.id,
+                title: self.title,
                 inBookmarks: self.inBookmarks
             )
         case .general, .birth, .death:
             return ExtendedEvent(
-                id: self.id ?? UUID(),
+                id: self.id,
                 year: self.year ?? "",
-                title: self.title ?? "",
+                title: self.title,
                 subtitle: self.subtitle,
                 inBookmarks: self.inBookmarks
             )

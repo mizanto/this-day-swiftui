@@ -38,7 +38,7 @@ final class DayViewModel: DayViewModelProtocol {
     private var day: DayEntity? {
         didSet {
             guard let day else { return }
-            subtitle = day.text ?? ""
+            subtitle = day.text
             cacheEvents(for: day)
         }
     }

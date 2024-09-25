@@ -17,7 +17,7 @@ enum EventType: String {
 extension EventEntity {
     var eventType: EventType {
         get {
-            return EventType(rawValue: type ?? "") ?? .general
+            return EventType(rawValue: type) ?? .general
         }
         set {
             type = newValue.rawValue

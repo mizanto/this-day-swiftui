@@ -16,9 +16,9 @@ extension DayEntity {
         return NSFetchRequest<DayEntity>(entityName: "DayEntity")
     }
 
-    @NSManaged public var id: String?
-    @NSManaged public var text: String?
-    @NSManaged public var added: Date?
+    @NSManaged public var id: String
+    @NSManaged public var text: String
+    @NSManaged public var added: Date
     @NSManaged public var events: NSOrderedSet?
 
 }
@@ -58,4 +58,4 @@ extension DayEntity {
 
 }
 
-extension DayEntity : Identifiable {}
+extension DayEntity: Identifiable {}
