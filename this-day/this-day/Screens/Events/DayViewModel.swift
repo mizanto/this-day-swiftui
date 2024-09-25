@@ -12,6 +12,7 @@ protocol DayViewModelProtocol: ObservableObject {
     var state: ViewState<[any EventProtocol]> { get }
     var title: String { get }
     var subtitle: String { get }
+    var itemsForSahre: ShareableItems? { get set }
     var selectedCategory: EventCategory { get set }
 
     func onAppear()
@@ -25,6 +26,7 @@ final class DayViewModel: DayViewModelProtocol {
     @Published var state: ViewState<[any EventProtocol]> = .loading
     @Published var title: String = ""
     @Published var subtitle: String = ""
+    @Published var itemsForSahre: ShareableItems?
     @Published var selectedCategory: EventCategory = .events {
         didSet {
             selectCategory(selectedCategory)
@@ -145,7 +147,15 @@ final class DayViewModel: DayViewModelProtocol {
 
     func shareEvent(id: UUID) {
         AppLogger.shared.debug("Sharing event \(id)")
-        // TODO: add logic for sharing
+
+        guard let event = try? storageService.fetchEvent(for: id) else {
+            AppLogger.shared.error("Failed to fetch event for sharing with id \(id)", category: .ui)
+            return
+        }
+
+        let shareContent = event.toSharingString(for: currentDate)
+        itemsForSahre = ShareableItems(items: [shareContent])
+        AppLogger.shared.info("Prepared sharing content: \(shareContent)", category: .ui)
     }
 
     private func save(networkModel: DayNetworkModel, for date: Date) {

@@ -34,6 +34,8 @@
 		AD53AA7D2CA3F8BB0024FD31 /* EventEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA792CA3F8BB0024FD31 /* EventEntity+CoreDataClass.swift */; };
 		AD53AA7E2CA3F8BB0024FD31 /* EventEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA7A2CA3F8BB0024FD31 /* EventEntity+CoreDataProperties.swift */; };
 		AD53AA802CA4068C0024FD31 /* RowActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA7F2CA4068B0024FD31 /* RowActions.swift */; };
+		AD53AA822CA435150024FD31 /* ShareableItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA812CA435140024FD31 /* ShareableItems.swift */; };
+		AD53AA842CA4358F0024FD31 /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA832CA4358E0024FD31 /* ActivityViewController.swift */; };
 		AD9592062C9994DA0019BB13 /* NetworkServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592052C9994DA0019BB13 /* NetworkServiceMock.swift */; };
 		AD95920B2C99C8F80019BB13 /* NetworkServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95920A2C99C8F60019BB13 /* NetworkServiceError.swift */; };
 		AD95922A2C9C1D580019BB13 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592292C9C1D550019BB13 /* NetworkService.swift */; };
@@ -92,6 +94,8 @@
 		AD53AA792CA3F8BB0024FD31 /* EventEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		AD53AA7A2CA3F8BB0024FD31 /* EventEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		AD53AA7F2CA4068B0024FD31 /* RowActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowActions.swift; sourceTree = "<group>"; };
+		AD53AA812CA435140024FD31 /* ShareableItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareableItems.swift; sourceTree = "<group>"; };
+		AD53AA832CA4358E0024FD31 /* ActivityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
 		AD9592052C9994DA0019BB13 /* NetworkServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceMock.swift; sourceTree = "<group>"; };
 		AD95920A2C99C8F60019BB13 /* NetworkServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceError.swift; sourceTree = "<group>"; };
 		AD9592292C9C1D550019BB13 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
@@ -339,6 +343,7 @@
 		AD9592332C9DC9400019BB13 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				AD53AA832CA4358E0024FD31 /* ActivityViewController.swift */,
 				AD53AA7F2CA4068B0024FD31 /* RowActions.swift */,
 				AD9592342C9DC9530019BB13 /* CategoryPicker.swift */,
 				AD9592362C9DC9C90019BB13 /* ErrorView.swift */,
@@ -350,6 +355,7 @@
 		AD95923C2C9DD52D0019BB13 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				AD53AA812CA435140024FD31 /* ShareableItems.swift */,
 				AD95923D2C9DD53C0019BB13 /* ViewState.swift */,
 			);
 			path = Utils;
@@ -537,6 +543,7 @@
 				ADF08E312CA02B6400CB877A /* ResponseNetworkModel.swift in Sources */,
 				AD53AA6E2CA2C2EA0024FD31 /* EventEntity+Helpers.swift in Sources */,
 				ADF08E332CA02DF100CB877A /* WikipediaURLBuilder.swift in Sources */,
+				AD53AA822CA435150024FD31 /* ShareableItems.swift in Sources */,
 				AD4D89112C98703C003DD3C4 /* EventNetworkModel.swift in Sources */,
 				AD4D88EE2C9841CF003DD3C4 /* ThisDayApp.swift in Sources */,
 				AD95922E2C9D96E30019BB13 /* DayNetworkModel.swift in Sources */,
@@ -548,6 +555,7 @@
 				AD53AA7B2CA3F8BB0024FD31 /* DayEntity+CoreDataClass.swift in Sources */,
 				AD53AA7C2CA3F8BB0024FD31 /* DayEntity+CoreDataProperties.swift in Sources */,
 				AD53AA7D2CA3F8BB0024FD31 /* EventEntity+CoreDataClass.swift in Sources */,
+				AD53AA842CA4358F0024FD31 /* ActivityViewController.swift in Sources */,
 				AD53AA7E2CA3F8BB0024FD31 /* EventEntity+CoreDataProperties.swift in Sources */,
 				AD53AA6A2CA2BD640024FD31 /* StorageServiceError.swift in Sources */,
 				AD9592352C9DC9530019BB13 /* CategoryPicker.swift in Sources */,
