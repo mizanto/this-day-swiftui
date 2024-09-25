@@ -14,18 +14,22 @@ import SwiftUI
 final class DayViewModelTests: XCTestCase {
     private var viewModel: DayViewModel!
     private var networkServiceMock: NetworkServiceMock!
+    private var storageServiceMock: StorageServiceMock!
     private var cancellables: Set<AnyCancellable>!
     
     override func setUp() {
         super.setUp()
         networkServiceMock = NetworkServiceMock()
-        viewModel = DayViewModel(networkService: networkServiceMock)
+        _ = PersistenceController(inMemory: true)
+        storageServiceMock = StorageServiceMock(context: PersistenceController.shared.container.viewContext)
+        viewModel = DayViewModel(networkService: networkServiceMock, storageService: storageServiceMock)
         cancellables = []
     }
     
     override func tearDown() {
         viewModel = nil
         networkServiceMock = nil
+        storageServiceMock = nil
         cancellables = nil
         super.tearDown()
     }
@@ -37,7 +41,7 @@ final class DayViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.selectedCategory, .events)
     }
     
-    func testOnAppearFetchDataSuccess() {
+    func testOnAppearWithoutCacheSuccess() {
         let day = setupMockDay(category: .events)
         networkServiceMock.day = day
         
@@ -51,15 +55,49 @@ final class DayViewModelTests: XCTestCase {
                     XCTFail("self is nil")
                     return
                 }
-                guard let events = events as? [DefaultEvent] else {
+                guard let events = events as? [ExtendedEvent] else {
                     XCTFail("Invalid events type")
                     return
                 }
-                XCTAssertEqual(events.count, 1)
-                XCTAssertEqual(events.first?.year, day.general.first?.year)
-                XCTAssertEqual(events.first?.title, day.general.first?.title)
-                XCTAssertEqual(self.viewModel.subtitle, day.text)
-                XCTAssertEqual(self.viewModel.title, self.currentDateFormatted())
+                XCTAssertTrue(storageServiceMock.fetchDayCalled, "Fetch day not called")
+                XCTAssertTrue(storageServiceMock.saveDayCalled, "Save day not called")
+                XCTAssertEqual(storageServiceMock.days.count, 1, "Invalid days count")
+                XCTAssertTrue(networkServiceMock.fetchEventsCalled, "Fetch events not called")
+                XCTAssertEqual(events.count, 1, "Invalid events count")
+                XCTAssertEqual(events.first?.year, day.general.first?.year, "Invalid year")
+                XCTAssertEqual(events.first?.title, day.general.first?.title, "Invalid title")
+                XCTAssertEqual(self.viewModel.title, self.currentDateFormatted(), "Invalid title")
+            }
+        )
+    }
+    
+    func testOnAppearWithCacheSuccess() {
+        let networkModel = setupMockDay(category: .events)
+        try? storageServiceMock.saveDay(networkModel: networkModel, for: Date())
+        storageServiceMock.saveDayCalled = false
+        
+        assertViewModelValidState(
+            expectationDescription: "Fetch day successfully",
+            stateChangeAction: { [weak self] in
+                self?.viewModel.onAppear()
+            },
+            asserts: { [weak self] events in
+                guard let self else {
+                    XCTFail("self is nil")
+                    return
+                }
+                guard let events = events as? [ExtendedEvent] else {
+                    XCTFail("Invalid events type")
+                    return
+                }
+                XCTAssertTrue(storageServiceMock.fetchDayCalled, "Fetch day not called")
+                XCTAssertFalse(storageServiceMock.saveDayCalled, "Save day called")
+                XCTAssertEqual(storageServiceMock.days.count, 1, "Invalid days count")
+                XCTAssertFalse(networkServiceMock.fetchEventsCalled, "Fetch events called")
+                XCTAssertEqual(events.count, 1, "Invalid events count")
+                XCTAssertEqual(events.first?.year, networkModel.general.first?.year, "Invalid year")
+                XCTAssertEqual(events.first?.title, networkModel.general.first?.title, "Invalid title")
+                XCTAssertEqual(self.viewModel.title, self.currentDateFormatted(), "Invalid title")
             }
         )
     }
@@ -79,6 +117,7 @@ final class DayViewModelTests: XCTestCase {
         let day = setupMockDay(category: .events)
         networkServiceMock.day = day
         
+        
         assertViewModelValidState(
             expectationDescription: "Refetch day successfully",
             stateChangeAction: { [weak self] in
@@ -89,14 +128,17 @@ final class DayViewModelTests: XCTestCase {
                     XCTFail("self is nil")
                     return
                 }
-                guard let events = events as? [DefaultEvent] else {
+                guard let events = events as? [ExtendedEvent] else {
                     XCTFail("Invalid events type")
                     return
                 }
-                XCTAssertEqual(events.count, 1)
-                XCTAssertEqual(events.first?.year, day.general.first?.year)
-                XCTAssertEqual(events.first?.title, day.general.first?.title)
-                XCTAssertEqual(self.viewModel.subtitle, day.text)
+                XCTAssertTrue(storageServiceMock.fetchDayCalled, "Fetch day not called")
+                XCTAssertTrue(storageServiceMock.saveDayCalled, "Save day not called")
+                XCTAssertEqual(storageServiceMock.days.count, 1, "Invalid days count")
+                XCTAssertTrue(networkServiceMock.fetchEventsCalled, "Fetch events not called")
+                XCTAssertEqual(events.count, 1, "Invalid events count")
+                XCTAssertEqual(events.first?.year, day.general.first?.year, "Invalid year \(events.first?.year)")
+                XCTAssertEqual(events.first?.title, day.general.first?.title, "Invalid title \(events.first?.title)")
             }
         )
     }
@@ -126,7 +168,7 @@ final class DayViewModelTests: XCTestCase {
                     self?.viewModel.selectedCategory = .events
                 },
                 asserts: { [weak self] events in
-                    guard let events = events as? [DefaultEvent] else {
+                    guard let events = events as? [ExtendedEvent] else {
                         XCTFail("Invalid events type")
                         return
                     }
@@ -220,6 +262,42 @@ final class DayViewModelTests: XCTestCase {
             )
         }
     }
+    
+    func testAddEventToBookmarks() {
+        let dayNetworkModel = setupMockDay(category: .events)
+        let date = Date()
+        try? storageServiceMock.saveDay(networkModel: dayNetworkModel, for: date)
+        guard let event = storageServiceMock.events.first?.value else {
+            XCTFail("No event in storage")
+            return
+        }
+        
+        viewModel.toggleBookmark(for: event.id)
+        
+        XCTAssertTrue(storageServiceMock.events.first!.value.inBookmarks)
+        XCTAssertTrue(storageServiceMock.addToBookmarksCalled)
+        XCTAssertFalse(storageServiceMock.removeFromBookmarksCalled)
+    }
+    
+    func testRemoveEventFromBookmarks() {
+        let dayNetworkModel = setupMockDay(category: .events)
+        let date = Date()
+        try? storageServiceMock.saveDay(networkModel: dayNetworkModel, for: date)
+        guard let event = storageServiceMock.events.first?.value else {
+            XCTFail("No event in storage")
+            return
+        }
+        // add to bookmarks
+        viewModel.toggleBookmark(for: event.id)
+        storageServiceMock.addToBookmarksCalled = false
+        
+        // remove from bookmarks
+        viewModel.toggleBookmark(for: event.id)
+        
+        XCTAssertFalse(storageServiceMock.events.first!.value.inBookmarks)
+        XCTAssertTrue(storageServiceMock.removeFromBookmarksCalled)
+        XCTAssertFalse(storageServiceMock.addToBookmarksCalled)
+    }
 
     // MARK: - Helper Methods
     
@@ -229,15 +307,15 @@ final class DayViewModelTests: XCTestCase {
         switch category {
         case .events:
             return DayNetworkModel(
-                text: text, events: [EventNetworkModel(year: "1111", title: "Title")], births: [], deaths: [], holidays: []
+                text: text, general: [EventNetworkModel(year: "1111", title: "Title")], births: [], deaths: [], holidays: []
             )
         case .births, .deaths:
             return DayNetworkModel(
-                text: text, events: [], births: [EventNetworkModel(year: "1111", title: "Title", additional: "Additional")], deaths: [], holidays: []
+                text: text, general: [], births: [EventNetworkModel(year: "1111", title: "Title", additional: "Additional")], deaths: [], holidays: []
             )
         case .holidays:
             return DayNetworkModel(
-                text: text, events: [], births: [], deaths: [], holidays: [EventNetworkModel(title: "Title")]
+                text: text, general: [], births: [], deaths: [], holidays: [EventNetworkModel(title: "Title")]
             )
         }
     }

@@ -14,8 +14,12 @@ final class NetworkServiceMock: NetworkServiceProtocol {
     
     var day: DayNetworkModel?
     var error: NetworkServiceError?
+    
+    var fetchEventsCalled: Bool = false
 
     func fetchEvents(for date: Date) -> AnyPublisher<DayNetworkModel, NetworkServiceError> {
+        fetchEventsCalled = true
+        
         if let error = error {
             return Fail(error: error).eraseToAnyPublisher()
         } else if let day = day {

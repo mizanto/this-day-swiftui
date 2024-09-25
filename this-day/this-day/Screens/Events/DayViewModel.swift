@@ -162,8 +162,9 @@ final class DayViewModel: DayViewModelProtocol {
         do {
             try storageService.saveDay(networkModel: networkModel, for: date)
             if let dayEntity = try storageService.fetchDay(for: date.toFormat("MM_dd")) {
-                self.day = dayEntity
-                self.selectedCategory = .events
+                day = dayEntity
+                cacheEvents(for: dayEntity)
+                selectedCategory = .events
             }
         } catch {
             AppLogger.shared.error("Failed to save or fetch events for date: \(date). Error: \(error)", category: .ui)

@@ -36,6 +36,7 @@
 		AD53AA802CA4068C0024FD31 /* RowActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA7F2CA4068B0024FD31 /* RowActions.swift */; };
 		AD53AA822CA435150024FD31 /* ShareableItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA812CA435140024FD31 /* ShareableItems.swift */; };
 		AD53AA842CA4358F0024FD31 /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA832CA4358E0024FD31 /* ActivityViewController.swift */; };
+		AD53AA862CA459890024FD31 /* StorageServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA852CA459850024FD31 /* StorageServiceMock.swift */; };
 		AD9592062C9994DA0019BB13 /* NetworkServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592052C9994DA0019BB13 /* NetworkServiceMock.swift */; };
 		AD95920B2C99C8F80019BB13 /* NetworkServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95920A2C99C8F60019BB13 /* NetworkServiceError.swift */; };
 		AD95922A2C9C1D580019BB13 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592292C9C1D550019BB13 /* NetworkService.swift */; };
@@ -96,6 +97,7 @@
 		AD53AA7F2CA4068B0024FD31 /* RowActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowActions.swift; sourceTree = "<group>"; };
 		AD53AA812CA435140024FD31 /* ShareableItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareableItems.swift; sourceTree = "<group>"; };
 		AD53AA832CA4358E0024FD31 /* ActivityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
+		AD53AA852CA459850024FD31 /* StorageServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageServiceMock.swift; sourceTree = "<group>"; };
 		AD9592052C9994DA0019BB13 /* NetworkServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceMock.swift; sourceTree = "<group>"; };
 		AD95920A2C99C8F60019BB13 /* NetworkServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceError.swift; sourceTree = "<group>"; };
 		AD9592292C9C1D550019BB13 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 			children = (
 				AD2609532C99746C00687D36 /* URLSessionMock.swift */,
 				AD9592052C9994DA0019BB13 /* NetworkServiceMock.swift */,
+				AD53AA852CA459850024FD31 /* StorageServiceMock.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -520,6 +523,7 @@
 				AD9592062C9994DA0019BB13 /* NetworkServiceMock.swift in Sources */,
 				AD33EDBD2C997DE200E38CA9 /* NetworkServiceTests.swift in Sources */,
 				ADD1CF962C99936F00739278 /* EventsViewModelTests.swift in Sources */,
+				AD53AA862CA459890024FD31 /* StorageServiceMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
