@@ -13,14 +13,13 @@ struct ThisDayApp: App {
     let storageService: StorageService
     let networkService = NetworkService()
 
-    init () {
+    init() {
         storageService = StorageService(context: persistenceController.container.viewContext)
     }
 
     var body: some Scene {
         WindowGroup {
-            DayViewBuilder.build(networkService: networkService,
-                                 storageService: storageService)
+            MainTabView(networkService: networkService, storageService: storageService)
         }
     }
 }
