@@ -57,12 +57,16 @@ final class DayViewModel: DayViewModelProtocol {
         let idString = currentDate.toFormat("MM_dd")
 
         do {
-            let dayEntity = try storageService.fetchDay(for: idString)
-            AppLogger.shared.info("Data found in storage for day with id: \(idString)", category: .ui)
-            day = dayEntity
-            selectedCategory = .events
+            if let dayEntity = try storageService.fetchDay(for: idString) {
+                AppLogger.shared.info("Data found in storage for day with id: \(idString)", category: .ui)
+                day = dayEntity
+                selectedCategory = .events
+            } else {
+                AppLogger.shared.info("No data in storage for id: \(idString). Fetching from network.", category: .ui)
+                fetchEvents(for: currentDate)
+            }
         } catch {
-            AppLogger.shared.info("No data in storage for id: \(idString). Fetching from network.", category: .ui)
+            AppLogger.shared.error("Error fetching data for day with id: \(idString): \(error)", category: .ui)
             fetchEvents(for: currentDate)
         }
     }
@@ -113,8 +117,13 @@ final class DayViewModel: DayViewModelProtocol {
 
     func toggleBookmark(for eventID: UUID) {
         do {
+            guard let event = try storageService.fetchEvent(for: eventID) else {
+                AppLogger.shared.error("Failed to toggle bookmark for event \(eventID). Event not found.",
+                                       category: .ui)
+                return
+            }
+
             // Check if the event is currently a favorite
-            let event = try storageService.fetchEvent(for: eventID)
             if event.inBookmarks {
                 try storageService.removeFromBookmarks(event: event)
             } else {

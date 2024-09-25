@@ -9,9 +9,9 @@ import Foundation
 import CoreData
 
 protocol StorageServiceProtocol {
-    func fetchDay(for id: String) throws -> DayEntity
+    func fetchDay(for id: String) throws -> DayEntity?
     func saveDay(networkModel: DayNetworkModel, for date: Date) throws
-    func fetchEvent(for id: UUID) throws -> EventEntity
+    func fetchEvent(for id: UUID) throws -> EventEntity?
     func addToBookmarks(event: EventEntity) throws
     func removeFromBookmarks(event: EventEntity) throws
     func fetchBookmarks() throws -> [EventEntity]
@@ -24,18 +24,13 @@ class StorageService: StorageServiceProtocol {
         self.context = context
     }
 
-    func fetchDay(for id: String) throws -> DayEntity {
+    func fetchDay(for id: String) throws -> DayEntity? {
         let request: NSFetchRequest<DayEntity> = DayEntity.fetchRequest()
         request.predicate = NSPredicate(format: "id == %@", id)
 
         do {
             let days = try context.fetch(request)
-            if let day = days.first {
-                return day
-            } else {
-                AppLogger.shared.error("No DayEntity found for id \(id)", category: .database)
-                throw StorageServiceError.dataNotFound("No DayEntity found for id \(id)")
-            }
+            return days.first
         } catch {
             AppLogger.shared.error("Error fetching DayEntity for id \(id): \(error)", category: .database)
             throw StorageServiceError.fetchError(error)
@@ -45,13 +40,11 @@ class StorageService: StorageServiceProtocol {
     func saveDay(networkModel: DayNetworkModel, for date: Date) throws {
         let idString = date.toFormat("MM_dd")
 
-        // Trying to remove previously saved data for the day if exists
-        if let existingDay = try? fetchDay(for: idString) {
+        if let existingDay = try fetchDay(for: idString) {
             context.delete(existingDay)
         }
 
         _ = DayEntity.from(networkModel: networkModel, date: date, context: context)
-
         do {
             try context.save()
             AppLogger.shared.info("Successfully saved DayEntity for id: \(idString)", category: .database)
@@ -61,16 +54,16 @@ class StorageService: StorageServiceProtocol {
         }
     }
 
-    func fetchEvent(for id: UUID) throws -> EventEntity {
+    func fetchEvent(for id: UUID) throws -> EventEntity? {
         let request: NSFetchRequest<EventEntity> = EventEntity.fetchRequest()
         request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
 
-        let events = try context.fetch(request)
-        if let event = events.first {
-            return event
-        } else {
-            AppLogger.shared.error("No EventEntity found for id \(id)", category: .database)
-            throw StorageServiceError.dataNotFound("No EventEntity found for id \(id)")
+        do {
+            let events = try context.fetch(request)
+            return events.first  // Возвращаем nil, если не найдено
+        } catch {
+            AppLogger.shared.error("Error fetching EventEntity for id \(id): \(error)", category: .database)
+            throw StorageServiceError.fetchError(error)
         }
     }
 
