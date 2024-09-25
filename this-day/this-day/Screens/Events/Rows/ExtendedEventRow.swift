@@ -9,6 +9,11 @@ import SwiftUI
 
 struct ExtendedEventRow: View {
     let event: ExtendedEvent
+    let onBookmarkPressed: (UUID) -> Void
+    let onCopyPressed: (UUID) -> Void
+    let onSharePressed: (UUID) -> Void
+    
+    @State private var inBookmarks: Bool = false
 
     var body: some View {
         HStack(alignment: .top) {
@@ -20,17 +25,41 @@ struct ExtendedEventRow: View {
                 Text(event.title)
                     .font(.body)
                     .multilineTextAlignment(.leading)
-                    .padding(.bottom, 4)
+                    .padding(.bottom, 8)
 
-                Text(event.subtitle)
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.leading)
+                if let subtitle = event.subtitle, !subtitle.isEmpty {
+                    Text(subtitle)
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.leading)
+                        .padding(.bottom, 8)
+                }
+
+                RowActions(
+                    inBookmarks: $inBookmarks,
+                    onBookmarkTap: { onBookmarkPressed(event.id) },
+                    onCopyTap: { onCopyPressed(event.id) },
+                    onShareTap: { onSharePressed(event.id) }
+                )
             }
+            .padding(.trailing)
+        }
+        .onAppear {
+            inBookmarks = event.inBookmarks
         }
     }
 }
 
 #Preview {
-    ExtendedEventRow(event: ExtendedEvent(year: "1998", title: "Text", subtitle: "Subtitle"))
+    ExtendedEventRow(
+        event: ExtendedEvent(
+            year: "1998",
+            title: "Text",
+            subtitle: "Subtitle",
+            inBookmarks: false
+        ),
+        onBookmarkPressed: { _ in },
+        onCopyPressed: { _ in },
+        onSharePressed: { _ in }
+    )
 }

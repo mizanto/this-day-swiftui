@@ -16,6 +16,9 @@ protocol DayViewModelProtocol: ObservableObject {
 
     func onAppear()
     func onTryAgain()
+    func toggleBookmark(for eventID: UUID)
+    func copyToClipboardEvent(id: UUID)
+    func shareEvent(id: UUID)
 }
 
 final class DayViewModel: DayViewModelProtocol {
@@ -55,7 +58,7 @@ final class DayViewModel: DayViewModelProtocol {
 
         do {
             let dayEntity = try storageService.fetchDay(for: idString)
-            AppLogger.shared.info("Data found in storage for id: \(idString)", category: .ui)
+            AppLogger.shared.info("Data found in storage for day with id: \(idString)", category: .ui)
             day = dayEntity
             selectedCategory = .events
         } catch {
@@ -106,6 +109,35 @@ final class DayViewModel: DayViewModelProtocol {
                 }
             )
             .store(in: &cancellables)
+    }
+
+    func toggleBookmark(for eventID: UUID) {
+        do {
+            // Check if the event is currently a favorite
+            let event = try storageService.fetchEvent(for: eventID)
+            if event.inBookmarks {
+                try storageService.removeFromBookmarks(event: event)
+            } else {
+                try storageService.addToBookmarks(event: event)
+            }
+
+            if let dayID = self.day?.id {
+                day = try storageService.fetchDay(for: dayID)
+                selectCategory(selectedCategory)
+            }
+        } catch {
+            AppLogger.shared.error("Failed to toggle bookmark for event \(eventID): \(error)", category: .ui)
+        }
+    }
+
+    func copyToClipboardEvent(id: UUID) {
+        AppLogger.shared.debug("Copying event \(id) to clipboard")
+        // TODO: add logic for copying to clipboard
+    }
+
+    func shareEvent(id: UUID) {
+        AppLogger.shared.debug("Sharing event \(id)")
+        // TODO: add logic for sharing
     }
 
     private func selectCategory(_ category: EventCategory) {

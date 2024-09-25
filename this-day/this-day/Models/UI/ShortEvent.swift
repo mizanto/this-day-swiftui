@@ -14,9 +14,11 @@ protocol EventProtocol: Identifiable {
 struct ShortEvent: EventProtocol {
     let id: UUID
     let title: String
+    let inBookmarks: Bool
 
-    init(id: UUID = UUID(), title: String) {
+    init(id: UUID = UUID(), title: String, inBookmarks: Bool) {
         self.id = id
         self.title = title
+        self.inBookmarks = inBookmarks
     }
 }

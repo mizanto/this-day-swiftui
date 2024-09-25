@@ -11,6 +11,10 @@ import CoreData
 protocol StorageServiceProtocol {
     func fetchDay(for id: String) throws -> DayEntity
     func saveDay(networkModel: DayNetworkModel, for date: Date) throws
+    func fetchEvent(for id: UUID) throws -> EventEntity
+    func addToBookmarks(event: EventEntity) throws
+    func removeFromBookmarks(event: EventEntity) throws
+    func fetchBookmarks() throws -> [EventEntity]
 }
 
 class StorageService: StorageServiceProtocol {
@@ -54,6 +58,54 @@ class StorageService: StorageServiceProtocol {
         } catch {
             AppLogger.shared.error("Failed to save DayEntity for id \(idString): \(error)", category: .database)
             throw StorageServiceError.saveError(error)
+        }
+    }
+
+    func fetchEvent(for id: UUID) throws -> EventEntity {
+        let request: NSFetchRequest<EventEntity> = EventEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
+
+        let events = try context.fetch(request)
+        if let event = events.first {
+            return event
+        } else {
+            AppLogger.shared.error("No EventEntity found for id \(id)", category: .database)
+            throw StorageServiceError.dataNotFound("No EventEntity found for id \(id)")
+        }
+    }
+
+    func addToBookmarks(event: EventEntity) throws {
+        do {
+            event.inBookmarks = true
+            try context.save()
+            AppLogger.shared.info("Successfully added event \(event.id) to favorites", category: .database)
+        } catch {
+            AppLogger.shared.error("Failed to add event \(event.id) to favorites: \(error)", category: .database)
+            throw StorageServiceError.saveError(error)
+        }
+    }
+
+    func removeFromBookmarks(event: EventEntity) throws {
+        do {
+            event.inBookmarks = false
+            try context.save()
+            AppLogger.shared.info("Successfully removed event \(event.id) from favorites", category: .database)
+        } catch {
+            AppLogger.shared.error("Failed to remove event \(event.id) from favorites: \(error)", category: .database)
+            throw StorageServiceError.saveError(error)
+        }
+    }
+
+    func fetchBookmarks() throws -> [EventEntity] {
+        let request: NSFetchRequest<EventEntity> = EventEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "inBookmarks == true")
+
+        do {
+            let favoriteEvents = try context.fetch(request)
+            return favoriteEvents
+        } catch {
+            AppLogger.shared.error("Failed to fetch favorite events: \(error)", category: .database)
+            throw StorageServiceError.fetchError(error)
         }
     }
 }

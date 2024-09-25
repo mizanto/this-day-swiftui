@@ -2,7 +2,7 @@
 //  EventEntity+CoreDataClass.swift
 //  this-day
 //
-//  Created by Sergey Bendak on 24.09.2024.
+//  Created by Sergey Bendak on 25.09.2024.
 //
 //
 

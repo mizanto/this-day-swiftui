@@ -23,15 +23,18 @@ extension EventEntity {
     func toDisplayModel() -> any EventProtocol {
         switch self.eventType {
         case .holiday:
-            return ShortEvent(id: self.id ?? UUID(), title: self.title ?? "")
-        case .general:
-            return DefaultEvent(id: self.id ?? UUID(), year: self.year ?? "", title: self.title ?? "")
-        case .birth, .death:
+            return ShortEvent(
+                id: self.id ?? UUID(),
+                title: self.title ?? "",
+                inBookmarks: self.inBookmarks
+            )
+        case .general, .birth, .death:
             return ExtendedEvent(
                 id: self.id ?? UUID(),
                 year: self.year ?? "",
                 title: self.title ?? "",
-                subtitle: self.subtitle ?? ""
+                subtitle: self.subtitle,
+                inBookmarks: self.inBookmarks
             )
         }
     }
