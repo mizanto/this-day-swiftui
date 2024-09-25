@@ -137,8 +137,8 @@ final class DayViewModelTests: XCTestCase {
                 XCTAssertEqual(storageServiceMock.days.count, 1, "Invalid days count")
                 XCTAssertTrue(networkServiceMock.fetchEventsCalled, "Fetch events not called")
                 XCTAssertEqual(events.count, 1, "Invalid events count")
-                XCTAssertEqual(events.first?.year, day.general.first?.year, "Invalid year \(events.first?.year)")
-                XCTAssertEqual(events.first?.title, day.general.first?.title, "Invalid title \(events.first?.title)")
+                XCTAssertEqual(events.first!.year, day.general.first!.year, "Invalid year \(events.first!.year)")
+                XCTAssertEqual(events.first!.title, day.general.first!.title, "Invalid title \(events.first!.title)")
             }
         )
     }
