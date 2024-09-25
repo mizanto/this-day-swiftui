@@ -133,8 +133,14 @@ final class DayViewModel: DayViewModelProtocol {
     }
 
     func copyToClipboardEvent(id: UUID) {
-        AppLogger.shared.debug("Copying event \(id) to clipboard")
-        // TODO: add logic for copying to clipboard
+        guard let event = try? storageService.fetchEvent(for: id) else {
+            AppLogger.shared.error("Failed to copy event \(id) to clipboard. Event not found.", category: .ui)
+            return
+        }
+
+        let stringToCopy = event.toSharingString(for: currentDate)
+        UIPasteboard.general.string = stringToCopy
+        AppLogger.shared.info("Event \(id) copied to clipboard: \(stringToCopy)", category: .ui)
     }
 
     func shareEvent(id: UUID) {
@@ -178,26 +184,3 @@ final class DayViewModel: DayViewModelProtocol {
         ]
     }
 }
-
-//private extension Array where Element == EventNetworkModel {
-//
-//    func mapToShortEvents() -> [ShortEvent] {
-//        compactMap { event in
-//            return ShortEvent(title: event.title)
-//        }
-//    }
-//
-//    func mapToDefaultEvents() -> [DefaultEvent] {
-//        compactMap { event in
-//            guard let year = event.year else { return nil}
-//            return DefaultEvent(year: year, title: event.title)
-//        }
-//    }
-//
-//    func mapToExtendedEvents() -> [ExtendedEvent] {
-//        compactMap { event in
-//            guard let year = event.year, let subtitle = event.additional else { return nil}
-//            return ExtendedEvent(year: year, title: event.title, subtitle: subtitle)
-//        }
-//    }
-//}
