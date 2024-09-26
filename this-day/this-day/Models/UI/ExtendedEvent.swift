@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ExtendedEvent: EventProtocol {
+struct ExtendedEvent: EventProtocol, Equatable {
     let id: UUID
     let year: String
     let title: String

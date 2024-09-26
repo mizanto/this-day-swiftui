@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ExtendedEventRow: View {
-    @State var event: ExtendedEvent
+    let event: ExtendedEvent
     @State private var inBookmarks: Bool = false
     
     let onBookmarkPressed: (UUID) -> Void
@@ -43,6 +43,9 @@ struct ExtendedEventRow: View {
                 )
             }
             .padding(.trailing)
+            .onChange(of: event) { _, newValue in
+                inBookmarks = newValue.inBookmarks
+            }
         }
         .onAppear {
             inBookmarks = event.inBookmarks
