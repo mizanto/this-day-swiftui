@@ -8,6 +8,20 @@
 import CoreData
 
 extension EventEntity {
+
+    var stringDate: String? {
+        if eventType == .holiday {
+            return day?.date.toFormat("MMMM dd")
+        } else {
+            guard let year, let stringDate = day?.date.toFormat("MMMM dd") else { return nil }
+            return stringDate + ", \(year)"
+        }
+    }
+
+    var inBookmarks: Bool {
+        return bookmark != nil
+    }
+
     static func from(networkModel: EventNetworkModel,
                      type: EventType,
                      context: NSManagedObjectContext) -> EventEntity {

@@ -31,7 +31,7 @@ struct DayView<ViewModel: DayViewModelProtocol>: View {
     @ViewBuilder
     private func content() -> some View {
         switch viewModel.state {
-        case .loading:
+        case .initial, .loading:
             showLoading(message: "Loading...")
         case .data(let events):
             dayView(for: events)

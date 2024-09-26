@@ -2,7 +2,7 @@
 //  EventEntity+CoreDataProperties.swift
 //  this-day
 //
-//  Created by Sergey Bendak on 25.09.2024.
+//  Created by Sergey Bendak on 26.09.2024.
 //
 //
 
@@ -17,12 +17,12 @@ extension EventEntity {
     }
 
     @NSManaged public var id: UUID
-    @NSManaged public var year: String?
-    @NSManaged public var title: String
     @NSManaged public var subtitle: String?
+    @NSManaged public var title: String
     @NSManaged public var type: String
-    @NSManaged public var inBookmarks: Bool
+    @NSManaged public var year: String?
     @NSManaged public var day: DayEntity?
+    @NSManaged public var bookmark: BookmarkEntity?
 
 }
 

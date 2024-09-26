@@ -17,13 +17,14 @@ struct RowActions: View {
     var body: some View {
         HStack {
             Image(systemName: inBookmarks ? "bookmark.fill" : "bookmark")
-                .foregroundStyle(inBookmarks ? .yellow : .gray)
+                .foregroundStyle(inBookmarks ? .orange : .gray)
                 .scaledToFit()
                 .onTapGesture {
                     onBookmarkTap()
                     inBookmarks.toggle()
                 }
                 .imageScale(.small)
+
             Image(systemName: "document.on.document")
                 .foregroundStyle(.gray)
                 .onTapGesture {
@@ -31,12 +32,14 @@ struct RowActions: View {
                 }
                 .imageScale(.small)
                 .padding(.horizontal, 48)
+
             Image(systemName: "square.and.arrow.up")
                 .foregroundStyle(.gray)
                 .imageScale(.small)
                 .onTapGesture {
                     onShareTap()
                 }
+
             Spacer()
         }
     }

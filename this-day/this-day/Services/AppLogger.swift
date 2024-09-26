@@ -40,6 +40,10 @@ final class AppLogger {
         category.logger.debug("\(message, privacy: .public)")
     }
 
+    func warning(_ message: String, category: LogCategory = .default) {
+        category.logger.warning("\(message, privacy: .public)")
+    }
+
     func log(_ message: String, level: OSLogType, category: LogCategory = .default) {
         let logger = category.logger
         switch level {

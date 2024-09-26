@@ -22,9 +22,9 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
 
     private let storageService: StorageServiceProtocol
 
-    private var events: [EventEntity] = [] {
+    private var bookmarks: [BookmarkEntity] = [] {
         didSet {
-            cacheEvents(events)
+            cacheBookmarks(bookmarks)
         }
     }
     private var uiModels: [BookmarkEvent] = []
@@ -38,23 +38,19 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
         state = .loading
 
         do {
-            events = try storageService.fetchBookmarks().reversed()
+            bookmarks = try storageService.fetchBookmarks()
             state = .data(uiModels)
-            AppLogger.shared.debug("Fetched \(events.count) bookmarks", category: .ui)
+            AppLogger.shared.debug("Fetched \(bookmarks.count) bookmarks", category: .ui)
         } catch {
             AppLogger.shared.error("Failed to fetch bookmarks: \(error)", category: .ui)
             state = .error("Failed to fetch bookmarks")
         }
     }
 
-    func removeBookmark(for eventID: UUID) {
-        guard let event = events.first(where: { $0.id == eventID }) else {
-            AppLogger.shared.error("Failed to remove bookmark: Event not found", category: .ui)
-            return
-        }
+    func removeBookmark(for id: UUID) {
         do {
-            try storageService.removeFromBookmarks(event: event)
-            events = try storageService.fetchBookmarks()
+            try storageService.removeBookmark(id: id)
+            bookmarks = try storageService.fetchBookmarks()
             state = .data(uiModels)
         } catch {
             AppLogger.shared.error("Failed to remove bookmark: \(error)", category: .ui)
@@ -69,14 +65,13 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
         // TODO: Need to implement
     }
 
-    private func cacheEvents(_ events: [EventEntity]) {
-        uiModels = events.map { event in
-            // TODO: Update after entity fix
-            let dateString = event.eventType == .holiday ? "September 26" : "September 26, \(event.year ?? "")"
+    private func cacheBookmarks(_ bookmarks: [BookmarkEntity]) {
+        uiModels = bookmarks.compactMap { bookmark in
+            guard let event = bookmark.event else { return nil }
 
             return BookmarkEvent(
-                id: event.id,
-                date: dateString,
+                id: bookmark.id,
+                date: event.stringDate ?? "??????",
                 title: event.title,
                 subtitle: event.subtitle,
                 inBookmarks: true,

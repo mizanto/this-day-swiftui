@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct ExtendedEventRow: View {
-    let event: ExtendedEvent
+    @State var event: ExtendedEvent
+    @State private var inBookmarks: Bool = false
+    
     let onBookmarkPressed: (UUID) -> Void
     let onCopyPressed: (UUID) -> Void
     let onSharePressed: (UUID) -> Void
-
-    @State private var inBookmarks: Bool = false
 
     var body: some View {
         HStack(alignment: .top) {

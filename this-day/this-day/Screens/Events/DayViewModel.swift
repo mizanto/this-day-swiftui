@@ -23,13 +23,13 @@ protocol DayViewModelProtocol: ObservableObject {
 }
 
 final class DayViewModel: DayViewModelProtocol {
-    @Published var state: ViewState<[any EventProtocol]> = .loading
+    @Published var state: ViewState<[any EventProtocol]> = .initial
     @Published var title: String = ""
     @Published var subtitle: String = ""
     @Published var itemsForSahre: ShareableItems?
     @Published var selectedCategory: EventCategory = .events {
         didSet {
-            selectCategory(selectedCategory)
+            updateState(with: selectedCategory)
         }
     }
 
@@ -59,10 +59,14 @@ final class DayViewModel: DayViewModelProtocol {
         let idString = currentDate.toFormat("MM_dd")
 
         do {
-            if let dayEntity = try storageService.fetchDay(for: idString) {
+            if let dayEntity = try storageService.fetchDay(id: idString) {
                 AppLogger.shared.info("Data found in storage for day with id: \(idString)", category: .ui)
                 day = dayEntity
-                selectedCategory = .events
+                if state == .initial {
+                    selectedCategory = .events
+                } else {
+                    updateState(with: selectedCategory)
+                }
             } else {
                 AppLogger.shared.info("No data in storage for id: \(idString). Fetching from network.", category: .ui)
                 fetchEvents(for: currentDate)
@@ -110,7 +114,7 @@ final class DayViewModel: DayViewModelProtocol {
 
     func toggleBookmark(for eventID: UUID) {
         do {
-            guard let event = try storageService.fetchEvent(for: eventID) else {
+            guard let event = try storageService.fetchEvent(id: eventID) else {
                 AppLogger.shared.error("Failed to toggle bookmark for event \(eventID). Event not found.",
                                        category: .ui)
                 return
@@ -127,7 +131,7 @@ final class DayViewModel: DayViewModelProtocol {
             if let index = day?.eventsArray.firstIndex(where: { $0.id == eventID }) {
                 day?.replaceEvents(at: index, with: event)
                 cacheEvents(for: day)
-                selectCategory(selectedCategory)
+                updateState(with: selectedCategory)
             }
         } catch {
             AppLogger.shared.error("Failed to toggle bookmark for event \(eventID): \(error)", category: .ui)
@@ -135,7 +139,7 @@ final class DayViewModel: DayViewModelProtocol {
     }
 
     func copyToClipboardEvent(id: UUID) {
-        guard let event = try? storageService.fetchEvent(for: id) else {
+        guard let event = try? storageService.fetchEvent(id: id) else {
             AppLogger.shared.error("Failed to copy event \(id) to clipboard. Event not found.", category: .ui)
             return
         }
@@ -148,7 +152,7 @@ final class DayViewModel: DayViewModelProtocol {
     func shareEvent(id: UUID) {
         AppLogger.shared.debug("Sharing event \(id)")
 
-        guard let event = try? storageService.fetchEvent(for: id) else {
+        guard let event = try? storageService.fetchEvent(id: id) else {
             AppLogger.shared.error("Failed to fetch event for sharing with id \(id)", category: .ui)
             return
         }
@@ -161,9 +165,8 @@ final class DayViewModel: DayViewModelProtocol {
     private func save(networkModel: DayNetworkModel, for date: Date) {
         do {
             try storageService.saveDay(networkModel: networkModel, for: date)
-            if let dayEntity = try storageService.fetchDay(for: date.toFormat("MM_dd")) {
+            if let dayEntity = try storageService.fetchDay(id: date.toFormat("MM_dd")) {
                 day = dayEntity
-                cacheEvents(for: dayEntity)
                 selectedCategory = .events
             }
         } catch {
@@ -172,8 +175,8 @@ final class DayViewModel: DayViewModelProtocol {
         }
     }
 
-    private func selectCategory(_ category: EventCategory) {
-        AppLogger.shared.debug("Selecting category <\(category.rawValue)>")
+    private func updateState(with category: EventCategory) {
+        AppLogger.shared.debug("Updating state with category: \(category)")
 
         let events = uiModels[category] ?? []
         state = .data(events)

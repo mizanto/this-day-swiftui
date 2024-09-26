@@ -27,7 +27,7 @@ struct BookmarksView<ViewModel: BookmarksViewModelProtocol>: View {
     @ViewBuilder
     private func content() -> some View {
         switch viewModel.state {
-        case .loading:
+        case .initial, .loading:
             showLoading(message: "Loading...")
 
         case .data(let events):
