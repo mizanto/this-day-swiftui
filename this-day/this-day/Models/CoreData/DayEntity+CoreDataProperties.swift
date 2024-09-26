@@ -18,7 +18,7 @@ extension DayEntity {
 
     @NSManaged public var id: String
     @NSManaged public var text: String
-    @NSManaged public var added: Date
+    @NSManaged public var date: Date
     @NSManaged public var events: NSOrderedSet?
 
 }

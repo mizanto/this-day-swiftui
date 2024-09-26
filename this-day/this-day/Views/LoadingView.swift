@@ -12,11 +12,15 @@ struct LoadingView: View {
 
     var body: some View {
         VStack {
+            Image(systemName: "infinity.circle")
+                .font(.system(size: 64, weight: .thin))
+
+            Text(message)
+                .font(.title3)
+                .padding(.vertical)
+
             ProgressView()
                 .progressViewStyle(CircularProgressViewStyle())
-            Text(message)
-                .font(.headline)
-                .padding(8)
         }
     }
 }

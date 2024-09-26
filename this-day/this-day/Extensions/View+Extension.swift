@@ -15,4 +15,8 @@ extension View {
     func showLoading(message: String) -> some View {
         LoadingView(message: message)
     }
+
+    func showPlaceholder(message: String) -> some View {
+        PlaceholderView(message: message)
+    }
 }

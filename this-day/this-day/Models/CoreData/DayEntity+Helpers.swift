@@ -12,7 +12,7 @@ extension DayEntity {
         let dayEntity = DayEntity(context: context)
         dayEntity.id = date.toFormat("MM_dd")
         dayEntity.text = networkModel.text
-        dayEntity.added = Date()
+        dayEntity.date = Date()
 
         let eventTypes: [(events: [EventNetworkModel], type: EventType)] = [
             (networkModel.general, .general),

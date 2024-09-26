@@ -7,11 +7,56 @@
 
 import SwiftUI
 
-struct BookmarksView: View {
+struct BookmarksView<ViewModel: BookmarksViewModelProtocol>: View {
+    @StateObject private var viewModel: ViewModel
+
+    init(viewModel: ViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
+
     var body: some View {
         NavigationView {
-            Text("Bookmarks Screen")
+            content()
                 .navigationTitle("Bookmarks")
         }
+        .onAppear {
+            viewModel.onAppear()
+        }
+    }
+
+    @ViewBuilder
+    private func content() -> some View {
+        switch viewModel.state {
+        case .loading:
+            showLoading(message: "Loading...")
+
+        case .data(let events):
+            if events.isEmpty {
+                showPlaceholder(message: "No bookmarks yet.")
+            } else {
+                List(events) { event in
+                    BookmarkRow(
+                        event: event,
+                        onBookmarkPressed: onBookmarkPressed,
+                        onCopyPressed: { _ in },
+                        onSharePressed: { _ in }
+                    )
+                    .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
+                    .listRowInsets(EdgeInsets(top: 12, leading: 0, bottom: 12, trailing: 0))
+                    .listRowBackground(Color.clear)
+                }
+                .listStyle(PlainListStyle())
+            }
+
+        case .error(let message):
+            showError(
+                message: message,
+                action: {}
+            )
+        }
+    }
+
+    private func onBookmarkPressed(id: UUID) {
+        viewModel.removeBookmark(for: id)
     }
 }

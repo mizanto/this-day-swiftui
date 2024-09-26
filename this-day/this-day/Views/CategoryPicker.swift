@@ -14,6 +14,24 @@ enum EventCategory: String, CaseIterable, Identifiable {
     case holidays = "Holidays"
 
     var id: String { self.rawValue }
+    var string: String { self.rawValue }
+    var color: Color {
+        switch self {
+        case .events: return .blue
+        case .births: return .green
+        case .deaths: return .black
+        case .holidays: return .pink
+        }
+    }
+
+    static func from(_ type: EventType) -> EventCategory {
+        switch type {
+        case .general: return .events
+        case .birth: return .births
+        case .death: return .deaths
+        case .holiday: return .holidays
+        }
+    }
 }
 
 struct CategoryPicker: View {

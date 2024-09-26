@@ -9,6 +9,7 @@ import SwiftUI
 
 final class BookmarksViewBuilder {
     static func build(storageService: StorageServiceProtocol) -> some View {
-        return BookmarksView()
+        let viewModel = BookmarksViewModel(storageService: storageService)
+        return BookmarksView(viewModel: viewModel)
     }
 }

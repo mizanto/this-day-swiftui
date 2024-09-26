@@ -41,6 +41,10 @@
 		AD5F1F4B2CA484C000966944 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5F1F4A2CA484BE00966944 /* MainTabView.swift */; };
 		AD5F1F4E2CA4870D00966944 /* BookmarksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5F1F4D2CA4870700966944 /* BookmarksView.swift */; };
 		AD5F1F502CA4873600966944 /* BookmarksViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5F1F4F2CA4873200966944 /* BookmarksViewBuilder.swift */; };
+		AD5F1F522CA4883600966944 /* BookmarksViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5F1F512CA4883100966944 /* BookmarksViewModel.swift */; };
+		AD5F1F542CA570E500966944 /* PlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5F1F532CA570DF00966944 /* PlaceholderView.swift */; };
+		AD5F1F572CA5841D00966944 /* BookmarkRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5F1F562CA5841600966944 /* BookmarkRow.swift */; };
+		AD8BDFF82CA58C63006B9D58 /* BookmarkEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8BDFF72CA58C4D006B9D58 /* BookmarkEvent.swift */; };
 		AD9592062C9994DA0019BB13 /* NetworkServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592052C9994DA0019BB13 /* NetworkServiceMock.swift */; };
 		AD95920B2C99C8F80019BB13 /* NetworkServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95920A2C99C8F60019BB13 /* NetworkServiceError.swift */; };
 		AD95922A2C9C1D580019BB13 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592292C9C1D550019BB13 /* NetworkService.swift */; };
@@ -56,6 +60,7 @@
 		ADF08E312CA02B6400CB877A /* ResponseNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF08E302CA02B6000CB877A /* ResponseNetworkModel.swift */; };
 		ADF08E332CA02DF100CB877A /* WikipediaURLBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF08E322CA02DF000CB877A /* WikipediaURLBuilder.swift */; };
 		ADF4F2992CA171F80057F9CA /* ShortEventRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF4F2982CA171F70057F9CA /* ShortEventRow.swift */; };
+		ADFE36922CA5A9F90050337D /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADFE36912CA5A9F60050337D /* Badge.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,6 +111,10 @@
 		AD5F1F4A2CA484BE00966944 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		AD5F1F4D2CA4870700966944 /* BookmarksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksView.swift; sourceTree = "<group>"; };
 		AD5F1F4F2CA4873200966944 /* BookmarksViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksViewBuilder.swift; sourceTree = "<group>"; };
+		AD5F1F512CA4883100966944 /* BookmarksViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksViewModel.swift; sourceTree = "<group>"; };
+		AD5F1F532CA570DF00966944 /* PlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderView.swift; sourceTree = "<group>"; };
+		AD5F1F562CA5841600966944 /* BookmarkRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkRow.swift; sourceTree = "<group>"; };
+		AD8BDFF72CA58C4D006B9D58 /* BookmarkEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkEvent.swift; sourceTree = "<group>"; };
 		AD9592052C9994DA0019BB13 /* NetworkServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceMock.swift; sourceTree = "<group>"; };
 		AD95920A2C99C8F60019BB13 /* NetworkServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceError.swift; sourceTree = "<group>"; };
 		AD9592292C9C1D550019BB13 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
@@ -121,6 +130,7 @@
 		ADF08E302CA02B6000CB877A /* ResponseNetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseNetworkModel.swift; sourceTree = "<group>"; };
 		ADF08E322CA02DF000CB877A /* WikipediaURLBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikipediaURLBuilder.swift; sourceTree = "<group>"; };
 		ADF4F2982CA171F70057F9CA /* ShortEventRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortEventRow.swift; sourceTree = "<group>"; };
+		ADFE36912CA5A9F60050337D /* Badge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Badge.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -295,6 +305,7 @@
 			children = (
 				AD4D89172C987F05003DD3C4 /* ShortEvent.swift */,
 				AD53AA3F2CA185AA0024FD31 /* ExtendedEvent.swift */,
+				AD8BDFF72CA58C4D006B9D58 /* BookmarkEvent.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -345,10 +356,20 @@
 		AD5F1F4C2CA486EB00966944 /* Bookmarks */ = {
 			isa = PBXGroup;
 			children = (
+				AD5F1F552CA5840A00966944 /* Rows */,
 				AD5F1F4F2CA4873200966944 /* BookmarksViewBuilder.swift */,
 				AD5F1F4D2CA4870700966944 /* BookmarksView.swift */,
+				AD5F1F512CA4883100966944 /* BookmarksViewModel.swift */,
 			);
 			path = Bookmarks;
+			sourceTree = "<group>";
+		};
+		AD5F1F552CA5840A00966944 /* Rows */ = {
+			isa = PBXGroup;
+			children = (
+				AD5F1F562CA5841600966944 /* BookmarkRow.swift */,
+			);
+			path = Rows;
 			sourceTree = "<group>";
 		};
 		AD9592092C99C8E60019BB13 /* Network */ = {
@@ -366,11 +387,13 @@
 		AD9592332C9DC9400019BB13 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				ADFE36912CA5A9F60050337D /* Badge.swift */,
 				AD53AA832CA4358E0024FD31 /* ActivityViewController.swift */,
 				AD53AA7F2CA4068B0024FD31 /* RowActions.swift */,
 				AD9592342C9DC9530019BB13 /* CategoryPicker.swift */,
 				AD9592362C9DC9C90019BB13 /* ErrorView.swift */,
 				AD9592382C9DCBAE0019BB13 /* LoadingView.swift */,
+				AD5F1F532CA570DF00966944 /* PlaceholderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -554,6 +577,7 @@
 			files = (
 				AD95922C2C9C3A000019BB13 /* WikipediaParser.swift in Sources */,
 				AD9592322C9DC8C30019BB13 /* View+Extension.swift in Sources */,
+				AD8BDFF82CA58C63006B9D58 /* BookmarkEvent.swift in Sources */,
 				AD95923E2C9DD53E0019BB13 /* ViewState.swift in Sources */,
 				AD4D88F02C9841CF003DD3C4 /* DayView.swift in Sources */,
 				AD4D89032C985B23003DD3C4 /* DayViewModel.swift in Sources */,
@@ -567,9 +591,11 @@
 				AD4D891F2C988810003DD3C4 /* AppLogger.swift in Sources */,
 				AD53AA472CA2A6360024FD31 /* Model.xcdatamodeld in Sources */,
 				ADF08E312CA02B6400CB877A /* ResponseNetworkModel.swift in Sources */,
+				ADFE36922CA5A9F90050337D /* Badge.swift in Sources */,
 				AD53AA6E2CA2C2EA0024FD31 /* EventEntity+Helpers.swift in Sources */,
 				ADF08E332CA02DF100CB877A /* WikipediaURLBuilder.swift in Sources */,
 				AD53AA822CA435150024FD31 /* ShareableItems.swift in Sources */,
+				AD5F1F572CA5841D00966944 /* BookmarkRow.swift in Sources */,
 				AD4D89112C98703C003DD3C4 /* EventNetworkModel.swift in Sources */,
 				AD5F1F4E2CA4870D00966944 /* BookmarksView.swift in Sources */,
 				AD4D88EE2C9841CF003DD3C4 /* ThisDayApp.swift in Sources */,
@@ -578,11 +604,13 @@
 				ADF4F2992CA171F80057F9CA /* ShortEventRow.swift in Sources */,
 				AD5F1F502CA4873600966944 /* BookmarksViewBuilder.swift in Sources */,
 				AD53AA802CA4068C0024FD31 /* RowActions.swift in Sources */,
+				AD5F1F542CA570E500966944 /* PlaceholderView.swift in Sources */,
 				AD95922A2C9C1D580019BB13 /* NetworkService.swift in Sources */,
 				AD2609582C99763400687D36 /* URLSessionProtocol.swift in Sources */,
 				AD53AA7B2CA3F8BB0024FD31 /* DayEntity+CoreDataClass.swift in Sources */,
 				AD53AA7C2CA3F8BB0024FD31 /* DayEntity+CoreDataProperties.swift in Sources */,
 				AD53AA7D2CA3F8BB0024FD31 /* EventEntity+CoreDataClass.swift in Sources */,
+				AD5F1F522CA4883600966944 /* BookmarksViewModel.swift in Sources */,
 				AD53AA842CA4358F0024FD31 /* ActivityViewController.swift in Sources */,
 				AD53AA7E2CA3F8BB0024FD31 /* EventEntity+CoreDataProperties.swift in Sources */,
 				AD53AA6A2CA2BD640024FD31 /* StorageServiceError.swift in Sources */,

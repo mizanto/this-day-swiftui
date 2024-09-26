@@ -13,8 +13,10 @@ struct ErrorView: View {
 
     var body: some View {
         VStack {
+            Image(systemName: "exclamationmark.triangle")
+                .font(.system(size: 64, weight: .thin))
             Text(message)
-                .font(.title2)
+                .font(.title3)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
                 .padding(.vertical)

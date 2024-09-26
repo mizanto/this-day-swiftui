@@ -60,7 +60,7 @@ class StorageService: StorageServiceProtocol {
 
         do {
             let events = try context.fetch(request)
-            return events.first  // Возвращаем nil, если не найдено
+            return events.first
         } catch {
             AppLogger.shared.error("Error fetching EventEntity for id \(id): \(error)", category: .database)
             throw StorageServiceError.fetchError(error)
