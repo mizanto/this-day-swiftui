@@ -53,29 +53,33 @@ extension EventEntity {
         }
     }
 
-    func toSharingString(for date: Date) -> String {
-            var resultString = "This day (\(date.toFormat("MMMM dd")))"
-
-            if let year = self.year {
-                resultString += " in \(year)"
-            }
-            resultString += ":\n"
-
-            switch self.eventType {
-            case .general:
-                resultString += self.title
-            case .birth:
-                resultString += "Was born \(self.title)"
-            case .death:
-                resultString += "Died \(self.title)"
-            case .holiday:
-                resultString = "Today is a \(self.title)"
-            }
-
-            if let subtitle = self.subtitle, !subtitle.isEmpty {
-                resultString += " - \(subtitle)"
-            }
-
-            return resultString
+    func toSharingString() -> String? {
+        guard let date = day?.date else {
+            return nil
         }
+
+        var resultString = "This day (\(date.toFormat("MMMM dd")))"
+
+        if let year = self.year {
+            resultString += " in \(year)"
+        }
+        resultString += ":\n"
+
+        switch self.eventType {
+        case .general:
+            resultString += self.title
+        case .birth:
+            resultString += "Was born \(self.title)"
+        case .death:
+            resultString += "Died \(self.title)"
+        case .holiday:
+            resultString = "Today is a \(self.title)"
+        }
+
+        if let subtitle = self.subtitle, !subtitle.isEmpty {
+            resultString += " - \(subtitle)"
+        }
+
+        return resultString
+    }
 }

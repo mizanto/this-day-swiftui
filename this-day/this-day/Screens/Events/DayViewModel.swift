@@ -82,6 +82,52 @@ final class DayViewModel: DayViewModelProtocol {
         fetchEvents(for: currentDate)
     }
 
+    func toggleBookmark(for eventID: UUID) {
+        do {
+            guard let event = try storageService.fetchEvent(id: eventID) else {
+                AppLogger.shared.error("Failed to toggle bookmark for event \(eventID). Event not found.",
+                                       category: .ui)
+                return
+            }
+
+            // Check if the event is currently a favorite
+            if event.inBookmarks {
+                try storageService.removeFromBookmarks(event: event)
+            } else {
+                try storageService.addToBookmarks(event: event)
+            }
+            AppLogger.shared.info("Successfully toggled bookmark for event \(eventID)", category: .database)
+
+            if let index = day?.eventsArray.firstIndex(where: { $0.id == eventID }) {
+                day?.replaceEvents(at: index, with: event)
+                cacheEvents(for: day)
+                updateState(with: selectedCategory)
+            }
+        } catch {
+            AppLogger.shared.error("Failed to toggle bookmark for event \(eventID): \(error)", category: .ui)
+        }
+    }
+
+    func copyToClipboardEvent(id: UUID) {
+        guard let stringToCopy = day?.eventsArray.first(where: { $0.id == id })?.toSharingString() else {
+            AppLogger.shared.error("Failed to copy event \(id) to clipboard. No sharing string available.",
+                                   category: .ui)
+            return
+        }
+        UIPasteboard.general.string = stringToCopy
+        AppLogger.shared.info("Event \(id) copied to clipboard: \(stringToCopy)", category: .ui)
+    }
+
+    func shareEvent(id: UUID) {
+        guard let stringToShare = day?.eventsArray.first(where: { $0.id == id })?.toSharingString() else {
+            AppLogger.shared.error("Failed to share event \(id) to social media. No sharing string available.",
+                                   category: .ui)
+            return
+        }
+        itemsForSahre = ShareableItems(items: [stringToShare])
+        AppLogger.shared.info("Prepared sharing content: \(stringToShare)", category: .ui)
+    }
+
     private func fetchEvents(for date: Date) {
         AppLogger.shared.info("Starting to fetch events for date: \(date)", category: .ui)
 
@@ -110,56 +156,6 @@ final class DayViewModel: DayViewModelProtocol {
                 }
             )
             .store(in: &cancellables)
-    }
-
-    func toggleBookmark(for eventID: UUID) {
-        do {
-            guard let event = try storageService.fetchEvent(id: eventID) else {
-                AppLogger.shared.error("Failed to toggle bookmark for event \(eventID). Event not found.",
-                                       category: .ui)
-                return
-            }
-
-            // Check if the event is currently a favorite
-            if event.inBookmarks {
-                try storageService.removeFromBookmarks(event: event)
-            } else {
-                try storageService.addToBookmarks(event: event)
-            }
-            AppLogger.shared.info("Successfully toggled bookmark for event \(eventID)", category: .database)
-
-            if let index = day?.eventsArray.firstIndex(where: { $0.id == eventID }) {
-                day?.replaceEvents(at: index, with: event)
-                cacheEvents(for: day)
-                updateState(with: selectedCategory)
-            }
-        } catch {
-            AppLogger.shared.error("Failed to toggle bookmark for event \(eventID): \(error)", category: .ui)
-        }
-    }
-
-    func copyToClipboardEvent(id: UUID) {
-        guard let event = try? storageService.fetchEvent(id: id) else {
-            AppLogger.shared.error("Failed to copy event \(id) to clipboard. Event not found.", category: .ui)
-            return
-        }
-
-        let stringToCopy = event.toSharingString(for: currentDate)
-        UIPasteboard.general.string = stringToCopy
-        AppLogger.shared.info("Event \(id) copied to clipboard: \(stringToCopy)", category: .ui)
-    }
-
-    func shareEvent(id: UUID) {
-        AppLogger.shared.debug("Sharing event \(id)")
-
-        guard let event = try? storageService.fetchEvent(id: id) else {
-            AppLogger.shared.error("Failed to fetch event for sharing with id \(id)", category: .ui)
-            return
-        }
-
-        let shareContent = event.toSharingString(for: currentDate)
-        itemsForSahre = ShareableItems(items: [shareContent])
-        AppLogger.shared.info("Prepared sharing content: \(shareContent)", category: .ui)
     }
 
     private func save(networkModel: DayNetworkModel, for date: Date) {

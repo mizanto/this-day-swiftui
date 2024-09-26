@@ -22,6 +22,9 @@ struct BookmarksView<ViewModel: BookmarksViewModelProtocol>: View {
         .onAppear {
             viewModel.onAppear()
         }
+        .sheet(item: $viewModel.itemsForSahre) { shareableItems in
+            ActivityViewController(activityItems: shareableItems.items)
+        }
     }
 
     @ViewBuilder
@@ -38,8 +41,8 @@ struct BookmarksView<ViewModel: BookmarksViewModelProtocol>: View {
                     BookmarkRow(
                         event: event,
                         onBookmarkPressed: onBookmarkPressed,
-                        onCopyPressed: { _ in },
-                        onSharePressed: { _ in }
+                        onCopyPressed: onCopyPressed,
+                        onSharePressed: onSharePressed
                     )
                     .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
                     .listRowInsets(EdgeInsets(top: 12, leading: 0, bottom: 12, trailing: 0))
@@ -58,5 +61,13 @@ struct BookmarksView<ViewModel: BookmarksViewModelProtocol>: View {
 
     private func onBookmarkPressed(id: UUID) {
         viewModel.removeBookmark(for: id)
+    }
+
+    private func onCopyPressed(id: UUID) {
+        viewModel.copyToClipboardBookmark(id: id)
+    }
+
+    private func onSharePressed(id: UUID) {
+        viewModel.shareBookmark(id: id)
     }
 }

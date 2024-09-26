@@ -7,18 +7,21 @@
 
 import Combine
 import Foundation
+import UIKit
 
 protocol BookmarksViewModelProtocol: ObservableObject {
     var state: ViewState<[BookmarkEvent]> { get }
+    var itemsForSahre: ShareableItems? { get set }
 
     func onAppear()
     func removeBookmark(for eventID: UUID)
-    func copyToClipboardEvent(id: UUID)
-    func shareEvent(id: UUID)
+    func copyToClipboardBookmark(id: UUID)
+    func shareBookmark(id: UUID)
 }
 
 final class BookmarksViewModel: BookmarksViewModelProtocol {
     @Published var state: ViewState<[BookmarkEvent]> = .data([])
+    @Published var itemsForSahre: ShareableItems?
 
     private let storageService: StorageServiceProtocol
 
@@ -57,12 +60,24 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
         }
     }
 
-    func copyToClipboardEvent(id: UUID) {
-        // TODO: Need to implement
+    func copyToClipboardBookmark(id: UUID) {
+        guard let stringToCopy = bookmarks.first(where: { $0.id == id })?.event?.toSharingString() else {
+            AppLogger.shared.error("Failed to copy event \(id) to clipboard. No sharing string available.",
+                                   category: .ui)
+            return
+        }
+        UIPasteboard.general.string = stringToCopy
+        AppLogger.shared.info("Event \(id) copied to clipboard: \(stringToCopy)", category: .ui)
     }
 
-    func shareEvent(id: UUID) {
-        // TODO: Need to implement
+    func shareBookmark(id: UUID) {
+        guard let stringToShare = bookmarks.first(where: { $0.id == id })?.event?.toSharingString() else {
+            AppLogger.shared.error("Failed to share event \(id) to social media. No sharing string available.",
+                                   category: .ui)
+            return
+        }
+        itemsForSahre = ShareableItems(items: [stringToShare])
+        AppLogger.shared.info("Prepared sharing content: \(stringToShare)", category: .ui)
     }
 
     private func cacheBookmarks(_ bookmarks: [BookmarkEntity]) {

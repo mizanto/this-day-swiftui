@@ -10,7 +10,7 @@ import SwiftUI
 struct ExtendedEventRow: View {
     let event: ExtendedEvent
     @State private var inBookmarks: Bool = false
-    
+
     let onBookmarkPressed: (UUID) -> Void
     let onCopyPressed: (UUID) -> Void
     let onSharePressed: (UUID) -> Void
