@@ -8,7 +8,7 @@
 import Foundation
 
 enum StorageServiceError: Error {
-    case dataNotFound(String)
+    case notFound
     case fetchError(Error)
     case saveError(Error)
     case deleteError(Error)

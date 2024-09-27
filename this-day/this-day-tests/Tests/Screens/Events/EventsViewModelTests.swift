@@ -37,7 +37,7 @@ final class DayViewModelTests: XCTestCase {
     func testInitialState() {
         XCTAssertEqual(viewModel.title, "")
         XCTAssertEqual(viewModel.subtitle, "")
-        XCTAssertEqual(viewModel.state, .loading)
+        XCTAssertEqual(viewModel.state, .initial)
         XCTAssertEqual(viewModel.selectedCategory, .events)
     }
     
@@ -188,13 +188,16 @@ final class DayViewModelTests: XCTestCase {
         viewModel.onAppear()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-            guard let self else { return }
-            self.assertViewModelValidState(
+            guard let strongSelf = self else {
+                XCTFail("Test case deallocated unexpectedly")
+                return
+            }
+            strongSelf.assertViewModelValidState(
                 expectationDescription: "Selected category should change to events",
-                stateChangeAction: { [weak self] in
-                    self?.viewModel.selectedCategory = .births
+                stateChangeAction: {
+                    strongSelf.viewModel.selectedCategory = .births
                 },
-                asserts: { [weak self] events in
+                asserts: { events in
                     guard let events = events as? [ExtendedEvent] else {
                         XCTFail("Invalid events type")
                         return
@@ -324,12 +327,19 @@ final class DayViewModelTests: XCTestCase {
                                            stateChangeAction: @escaping () -> Void,
                                            asserts: @escaping ([any EventProtocol]) -> Void) {
         let expectation = XCTestExpectation(description: expectationDescription)
+
+        print("Starting assertion for: \(expectationDescription)")
         
         viewModel.$state
             .dropFirst() // Drop the initial loading state
             .sink { state in
+                print("Received state update: \(state)")
                 if case .data(let events) = state {
+                    print("State is .data with events count: \(events.count)")
                     asserts(events)
+                    expectation.fulfill()
+                } else if case .error(let errorMessage) = state {
+                    XCTFail("Test failed with error state: \(errorMessage)")
                     expectation.fulfill()
                 }
             }

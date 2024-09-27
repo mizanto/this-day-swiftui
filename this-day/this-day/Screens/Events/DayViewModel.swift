@@ -128,7 +128,7 @@ final class DayViewModel: DayViewModelProtocol {
         itemsForSahre = ShareableItems(items: [stringToShare])
         AppLogger.shared.info("Prepared sharing content: \(stringToShare)", category: .ui)
     }
-    
+
     func onCompleteShare() {
         itemsForSahre = nil
     }

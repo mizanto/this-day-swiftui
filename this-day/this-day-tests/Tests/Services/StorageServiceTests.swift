@@ -33,17 +33,17 @@ final class StorageServiceTests: XCTestCase {
         let dayEntity = DayEntity(context: context)
         dayEntity.id = id
         dayEntity.text = "Test text"
-        dayEntity.added = Date()
+        dayEntity.date = Date()
         try context.save()
 
-        let fetchedDay = try storageService.fetchDay(for: id)
+        let fetchedDay = try storageService.fetchDay(id: id)
         
         XCTAssertNotNil(fetchedDay)
         XCTAssertEqual(fetchedDay?.id, id)
     }
 
     func testFetchDayNotFound() throws {
-        let fetchedDay = try storageService.fetchDay(for: "01_01")
+        let fetchedDay = try storageService.fetchDay(id: "01_01")
         XCTAssertNil(fetchedDay)
     }
     
@@ -59,7 +59,7 @@ final class StorageServiceTests: XCTestCase {
         
         try storageService.saveDay(networkModel: networkModel, for: date)
         
-        let fetchedDay = try storageService.fetchDay(for: "01_01")
+        let fetchedDay = try storageService.fetchDay(id: "01_01")
         
         XCTAssertNotNil(fetchedDay)
         XCTAssertEqual(fetchedDay?.id, "01_01")
@@ -72,7 +72,7 @@ final class StorageServiceTests: XCTestCase {
         let title = "Test title"
         try createEvent(with: id, title: title, eventType: .general, in: context)
 
-        let fetchedEvent = try storageService.fetchEvent(for: id)
+        let fetchedEvent = try storageService.fetchEvent(id: id)
         
         XCTAssertNotNil(fetchedEvent)
         XCTAssertEqual(fetchedEvent?.id, id)
@@ -81,7 +81,7 @@ final class StorageServiceTests: XCTestCase {
     }
 
     func testFetchEventNotFound() throws {
-        let fetchedEvent = try storageService.fetchEvent(for: UUID())
+        let fetchedEvent = try storageService.fetchEvent(id: UUID())
         XCTAssertNil(fetchedEvent)
     }
     
@@ -91,7 +91,7 @@ final class StorageServiceTests: XCTestCase {
 
         try storageService.addToBookmarks(event: eventEntity)
         
-        XCTAssertTrue(eventEntity.inBookmarks)
+        XCTAssertNotNil(eventEntity.bookmark)
     }
     
     func testRemoveFromBookmarksSuccess() throws {
@@ -100,7 +100,21 @@ final class StorageServiceTests: XCTestCase {
 
         try storageService.removeFromBookmarks(event: eventEntity)
         
-        XCTAssertFalse(eventEntity.inBookmarks)
+        XCTAssertNil(eventEntity.bookmark)
+    }
+    
+    func testRemoveBookmarkSuccess() throws {
+        let eventEntity = try createEvent(
+            with: UUID(), title: "Test title", eventType: .general, inBookmarks: true, in: context)
+        
+        guard let bookmarkId = eventEntity.bookmark?.id else {
+            XCTFail("Bookmark id is nil")
+            return
+        }
+
+        try storageService.removeBookmark(id: bookmarkId)
+        
+        XCTAssertNil(eventEntity.bookmark)
     }
     
     func testFetchBookmarksSuccess() throws {
@@ -114,8 +128,8 @@ final class StorageServiceTests: XCTestCase {
         let bookmarks = try storageService.fetchBookmarks()
         
         XCTAssertEqual(bookmarks.count, 2)
-        XCTAssertTrue(bookmarks.contains(where: { $0.id == id1 }))
-        XCTAssertTrue(bookmarks.contains(where: { $0.id == id3 }))
+        XCTAssertTrue(bookmarks.contains(where: { $0.event?.id == id1 }))
+        XCTAssertTrue(bookmarks.contains(where: { $0.event?.id == id3 }))
     }
     
     @discardableResult
@@ -128,7 +142,9 @@ final class StorageServiceTests: XCTestCase {
         eventEntity.id = id
         eventEntity.title = title
         eventEntity.eventType = eventType
-        eventEntity.inBookmarks = inBookmarks
+        if inBookmarks {
+            try storageService.addToBookmarks(event: eventEntity)
+        }
         try context.save()
         return eventEntity
     }
