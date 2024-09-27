@@ -24,7 +24,9 @@ struct DayView<ViewModel: DayViewModelProtocol>: View {
             viewModel.onAppear()
         }
         .sheet(item: $viewModel.itemsForSahre) { shareableItems in
-            ActivityViewController(activityItems: shareableItems.items)
+            ActivityViewController(activityItems: shareableItems.items) {
+                viewModel.onCompleteShare()
+            }
         }
     }
 

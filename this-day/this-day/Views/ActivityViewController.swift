@@ -10,12 +10,16 @@ import SwiftUI
 struct ActivityViewController: UIViewControllerRepresentable {
     let activityItems: [Any]
     let applicationActivities: [UIActivity]? = nil
+    var completion: (() -> Void)?
 
     func makeUIViewController(
         context: UIViewControllerRepresentableContext<ActivityViewController>
     ) -> UIActivityViewController {
         let controller = UIActivityViewController(activityItems: activityItems,
                                                   applicationActivities: applicationActivities)
+        controller.completionWithItemsHandler = { _, _, _, _ in
+            completion?()
+        }
         return controller
     }
 

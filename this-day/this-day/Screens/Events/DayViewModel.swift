@@ -20,6 +20,7 @@ protocol DayViewModelProtocol: ObservableObject {
     func toggleBookmark(for eventID: UUID)
     func copyToClipboardEvent(id: UUID)
     func shareEvent(id: UUID)
+    func onCompleteShare()
 }
 
 final class DayViewModel: DayViewModelProtocol {
@@ -126,6 +127,10 @@ final class DayViewModel: DayViewModelProtocol {
         }
         itemsForSahre = ShareableItems(items: [stringToShare])
         AppLogger.shared.info("Prepared sharing content: \(stringToShare)", category: .ui)
+    }
+    
+    func onCompleteShare() {
+        itemsForSahre = nil
     }
 
     private func fetchEvents(for date: Date) {
