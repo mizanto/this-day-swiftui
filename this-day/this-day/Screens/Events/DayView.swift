@@ -48,18 +48,21 @@ struct DayView<ViewModel: DayViewModelProtocol>: View {
             CategoryPicker(selectedCategory: $viewModel.selectedCategory)
                 .padding(.horizontal)
 
-            Text(viewModel.subtitle)
-                .font(.headline)
-                .padding(.horizontal)
-                .padding(.top, 8)
-
-            List(events, id: \.id) { event in
-                row(for: viewModel.selectedCategory, event: event)
-                    .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
-                    .listRowInsets(EdgeInsets(top: 12, leading: 0, bottom: 12, trailing: 0))
-                    .listRowBackground(Color.clear)
+            ScrollViewReader { proxy in
+                List(events, id: \.id) { event in
+                    row(for: viewModel.selectedCategory, event: event)
+                        .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
+                        .listRowInsets(EdgeInsets(top: 12, leading: 0, bottom: 12, trailing: 0))
+                        .listRowBackground(Color.clear)
+                }
+                .listStyle(PlainListStyle())
+                .id(viewModel.selectedCategory)
+                .onChange(of: viewModel.selectedCategory) {
+                    withAnimation {
+                        proxy.scrollTo(events.first?.id, anchor: .top)
+                    }
+                }
             }
-            .listStyle(PlainListStyle())
         }
     }
 
