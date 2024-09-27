@@ -12,7 +12,9 @@ protocol DayViewModelProtocol: ObservableObject {
     var state: ViewState<[any EventProtocol]> { get }
     var title: String { get }
     var subtitle: String { get }
+    var snackbarMessage: String { get }
     var itemsForSahre: ShareableItems? { get set }
+    var showSnackbar: Bool { get set }
     var selectedCategory: EventCategory { get set }
 
     func onAppear()
@@ -28,11 +30,13 @@ final class DayViewModel: DayViewModelProtocol {
     @Published var title: String = ""
     @Published var subtitle: String = ""
     @Published var itemsForSahre: ShareableItems?
+    @Published var showSnackbar = false
     @Published var selectedCategory: EventCategory = .events {
         didSet {
             updateState(with: selectedCategory)
         }
     }
+    var snackbarMessage: String = "Copied to clipboard"
 
     private let currentDate: Date = Date()
     private let networkService: NetworkServiceProtocol
@@ -116,6 +120,7 @@ final class DayViewModel: DayViewModelProtocol {
             return
         }
         UIPasteboard.general.string = stringToCopy
+        showSnackbar = true
         AppLogger.shared.info("Event \(id) copied to clipboard: \(stringToCopy)", category: .ui)
     }
 

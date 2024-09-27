@@ -25,6 +25,7 @@ struct BookmarksView<ViewModel: BookmarksViewModelProtocol>: View {
         .sheet(item: $viewModel.itemsForSahre) { shareableItems in
             ActivityViewController(activityItems: shareableItems.items)
         }
+        .snackbar(isPresented: $viewModel.showSnackbar, message: viewModel.snackbarMessage)
     }
 
     @ViewBuilder

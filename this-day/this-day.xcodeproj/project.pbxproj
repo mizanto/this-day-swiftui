@@ -35,6 +35,8 @@
 		AD53AA862CA459890024FD31 /* StorageServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA852CA459850024FD31 /* StorageServiceMock.swift */; };
 		AD53AA882CA470020024FD31 /* StorageServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA872CA470000024FD31 /* StorageServiceTests.swift */; };
 		AD5E69AD2CA6C9D800F0EEFA /* BookmarksViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5E69AC2CA6C9CF00F0EEFA /* BookmarksViewModelTests.swift */; };
+		AD5E69AF2CA6E7C700F0EEFA /* Snackbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5E69AE2CA6E7C600F0EEFA /* Snackbar.swift */; };
+		AD5E69B12CA6E7E800F0EEFA /* SnackbarModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5E69B02CA6E7E600F0EEFA /* SnackbarModifier.swift */; };
 		AD5F1F4B2CA484C000966944 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5F1F4A2CA484BE00966944 /* MainTabView.swift */; };
 		AD5F1F4E2CA4870D00966944 /* BookmarksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5F1F4D2CA4870700966944 /* BookmarksView.swift */; };
 		AD5F1F502CA4873600966944 /* BookmarksViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5F1F4F2CA4873200966944 /* BookmarksViewBuilder.swift */; };
@@ -108,6 +110,8 @@
 		AD53AA852CA459850024FD31 /* StorageServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageServiceMock.swift; sourceTree = "<group>"; };
 		AD53AA872CA470000024FD31 /* StorageServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageServiceTests.swift; sourceTree = "<group>"; };
 		AD5E69AC2CA6C9CF00F0EEFA /* BookmarksViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksViewModelTests.swift; sourceTree = "<group>"; };
+		AD5E69AE2CA6E7C600F0EEFA /* Snackbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snackbar.swift; sourceTree = "<group>"; };
+		AD5E69B02CA6E7E600F0EEFA /* SnackbarModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackbarModifier.swift; sourceTree = "<group>"; };
 		AD5F1F4A2CA484BE00966944 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		AD5F1F4D2CA4870700966944 /* BookmarksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksView.swift; sourceTree = "<group>"; };
 		AD5F1F4F2CA4873200966944 /* BookmarksViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksViewBuilder.swift; sourceTree = "<group>"; };
@@ -369,6 +373,15 @@
 			path = Bookmarks;
 			sourceTree = "<group>";
 		};
+		AD5E69B22CA6E82100F0EEFA /* Snackbar */ = {
+			isa = PBXGroup;
+			children = (
+				AD5E69AE2CA6E7C600F0EEFA /* Snackbar.swift */,
+				AD5E69B02CA6E7E600F0EEFA /* SnackbarModifier.swift */,
+			);
+			path = Snackbar;
+			sourceTree = "<group>";
+		};
 		AD5F1F4C2CA486EB00966944 /* Bookmarks */ = {
 			isa = PBXGroup;
 			children = (
@@ -403,6 +416,7 @@
 		AD9592332C9DC9400019BB13 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				AD5E69B22CA6E82100F0EEFA /* Snackbar */,
 				ADFE36912CA5A9F60050337D /* Badge.swift */,
 				AD53AA832CA4358E0024FD31 /* ActivityViewController.swift */,
 				AD53AA7F2CA4068B0024FD31 /* RowActions.swift */,
@@ -604,6 +618,7 @@
 				ADFE369D2CA5ABDA0050337D /* EventEntity+CoreDataClass.swift in Sources */,
 				ADFE369E2CA5ABDA0050337D /* EventEntity+CoreDataProperties.swift in Sources */,
 				AD4D88F02C9841CF003DD3C4 /* DayView.swift in Sources */,
+				AD5E69B12CA6E7E800F0EEFA /* SnackbarModifier.swift in Sources */,
 				AD4D89032C985B23003DD3C4 /* DayViewModel.swift in Sources */,
 				AD5F1F4B2CA484C000966944 /* MainTabView.swift in Sources */,
 				AD53AA6C2CA2C2C80024FD31 /* DayEntity+Helpers.swift in Sources */,
@@ -623,6 +638,7 @@
 				AD4D89112C98703C003DD3C4 /* EventNetworkModel.swift in Sources */,
 				AD5F1F4E2CA4870D00966944 /* BookmarksView.swift in Sources */,
 				AD4D88EE2C9841CF003DD3C4 /* ThisDayApp.swift in Sources */,
+				AD5E69AF2CA6E7C700F0EEFA /* Snackbar.swift in Sources */,
 				AD95922E2C9D96E30019BB13 /* DayNetworkModel.swift in Sources */,
 				AD53AA5A2CA2B64F0024FD31 /* PersistenceController.swift in Sources */,
 				ADF4F2992CA171F80057F9CA /* ShortEventRow.swift in Sources */,

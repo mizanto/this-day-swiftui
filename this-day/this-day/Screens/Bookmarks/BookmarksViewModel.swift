@@ -12,6 +12,8 @@ import UIKit
 protocol BookmarksViewModelProtocol: ObservableObject {
     var state: ViewState<[BookmarkEvent]> { get }
     var itemsForSahre: ShareableItems? { get set }
+    var snackbarMessage: String { get }
+    var showSnackbar: Bool { get set }
 
     func onAppear()
     func removeBookmark(for eventID: UUID)
@@ -22,6 +24,8 @@ protocol BookmarksViewModelProtocol: ObservableObject {
 final class BookmarksViewModel: BookmarksViewModelProtocol {
     @Published var state: ViewState<[BookmarkEvent]> = .initial
     @Published var itemsForSahre: ShareableItems?
+    @Published var showSnackbar = false
+    var snackbarMessage: String = "Copied to clipboard"
 
     private let storageService: StorageServiceProtocol
 
@@ -67,6 +71,7 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
             return
         }
         UIPasteboard.general.string = stringToCopy
+        showSnackbar = true
         AppLogger.shared.info("Event \(id) copied to clipboard: \(stringToCopy)", category: .ui)
     }
 
