@@ -15,7 +15,7 @@ struct MainTabView: View {
         TabView {
             DayViewBuilder.build(networkService: networkService, storageService: storageService)
                 .tabItem {
-                    Image(systemName: "calendar")
+                    Image(systemName: "list.bullet")
                     Text("Today")
                 }
 
@@ -23,6 +23,12 @@ struct MainTabView: View {
                 .tabItem {
                     Image(systemName: "bookmark")
                     Text("Bookmarks")
+                }
+
+            SettingsViewBuilder.build()
+                .tabItem {
+                    Image(systemName: "gearshape")
+                    Text("Settings")
                 }
         }
     }
