@@ -20,7 +20,7 @@ protocol BookmarksViewModelProtocol: ObservableObject {
 }
 
 final class BookmarksViewModel: BookmarksViewModelProtocol {
-    @Published var state: ViewState<[BookmarkEvent]> = .data([])
+    @Published var state: ViewState<[BookmarkEvent]> = .initial
     @Published var itemsForSahre: ShareableItems?
 
     private let storageService: StorageServiceProtocol

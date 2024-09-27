@@ -34,6 +34,7 @@
 		AD53AA842CA4358F0024FD31 /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA832CA4358E0024FD31 /* ActivityViewController.swift */; };
 		AD53AA862CA459890024FD31 /* StorageServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA852CA459850024FD31 /* StorageServiceMock.swift */; };
 		AD53AA882CA470020024FD31 /* StorageServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA872CA470000024FD31 /* StorageServiceTests.swift */; };
+		AD5E69AD2CA6C9D800F0EEFA /* BookmarksViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5E69AC2CA6C9CF00F0EEFA /* BookmarksViewModelTests.swift */; };
 		AD5F1F4B2CA484C000966944 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5F1F4A2CA484BE00966944 /* MainTabView.swift */; };
 		AD5F1F4E2CA4870D00966944 /* BookmarksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5F1F4D2CA4870700966944 /* BookmarksView.swift */; };
 		AD5F1F502CA4873600966944 /* BookmarksViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5F1F4F2CA4873200966944 /* BookmarksViewBuilder.swift */; };
@@ -106,6 +107,7 @@
 		AD53AA832CA4358E0024FD31 /* ActivityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
 		AD53AA852CA459850024FD31 /* StorageServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageServiceMock.swift; sourceTree = "<group>"; };
 		AD53AA872CA470000024FD31 /* StorageServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageServiceTests.swift; sourceTree = "<group>"; };
+		AD5E69AC2CA6C9CF00F0EEFA /* BookmarksViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksViewModelTests.swift; sourceTree = "<group>"; };
 		AD5F1F4A2CA484BE00966944 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		AD5F1F4D2CA4870700966944 /* BookmarksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksView.swift; sourceTree = "<group>"; };
 		AD5F1F4F2CA4873200966944 /* BookmarksViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksViewBuilder.swift; sourceTree = "<group>"; };
@@ -359,6 +361,14 @@
 			path = CoreData;
 			sourceTree = "<group>";
 		};
+		AD5E69AB2CA6C95600F0EEFA /* Bookmarks */ = {
+			isa = PBXGroup;
+			children = (
+				AD5E69AC2CA6C9CF00F0EEFA /* BookmarksViewModelTests.swift */,
+			);
+			path = Bookmarks;
+			sourceTree = "<group>";
+		};
 		AD5F1F4C2CA486EB00966944 /* Bookmarks */ = {
 			isa = PBXGroup;
 			children = (
@@ -432,6 +442,7 @@
 			isa = PBXGroup;
 			children = (
 				ADD1CF942C99936200739278 /* Events */,
+				AD5E69AB2CA6C95600F0EEFA /* Bookmarks */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -567,6 +578,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AD5E69AD2CA6C9D800F0EEFA /* BookmarksViewModelTests.swift in Sources */,
 				AD2609542C99746C00687D36 /* URLSessionMock.swift in Sources */,
 				AD53AA432CA1F1430024FD31 /* WikipediaParserTests.swift in Sources */,
 				AD9592062C9994DA0019BB13 /* NetworkServiceMock.swift in Sources */,
