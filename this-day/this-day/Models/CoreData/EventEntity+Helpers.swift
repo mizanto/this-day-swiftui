@@ -58,10 +58,10 @@ extension EventEntity {
             return nil
         }
 
-        var resultString = "This day (\(date.toFormat("MMMM dd")))"
+        var resultString = date.toFormat("MMMM dd")
 
         if let year = self.year {
-            resultString += " in \(year)"
+            resultString += ", \(year)"
         }
         resultString += ":\n"
 
@@ -73,7 +73,7 @@ extension EventEntity {
         case .death:
             resultString += "Died \(self.title)"
         case .holiday:
-            resultString = "Today is a \(self.title)"
+            resultString = "\(date.toFormat("MMMM dd")) celebrates \(self.title)"
         }
 
         if let subtitle = self.subtitle, !subtitle.isEmpty {
