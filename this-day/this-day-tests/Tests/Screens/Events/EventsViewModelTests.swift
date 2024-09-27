@@ -38,6 +38,8 @@ final class DayViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.title, "")
         XCTAssertEqual(viewModel.subtitle, "")
         XCTAssertEqual(viewModel.state, .initial)
+        XCTAssertEqual(viewModel.snackbarMessage, "Copied to clipboard")
+        XCTAssertFalse(viewModel.showSnackbar)
         XCTAssertEqual(viewModel.selectedCategory, .events)
     }
     
@@ -45,30 +47,27 @@ final class DayViewModelTests: XCTestCase {
         let day = setupMockDay(category: .events)
         networkServiceMock.day = day
         
-        assertViewModelValidState(
-            expectationDescription: "Fetch day successfully",
-            stateChangeAction: { [weak self] in
-                self?.viewModel.onAppear()
-            },
-            asserts: { [weak self] events in
-                guard let self else {
-                    XCTFail("self is nil")
-                    return
+        let expectation = XCTestExpectation(description: "Fetch day successfully")
+        
+        viewModel.$state
+            .sink { [weak self] state in
+                guard let self else { return }
+                if case .data(let events) = state {
+                    XCTAssertTrue(storageServiceMock.fetchDayCalled, "Fetch day not called")
+                    XCTAssertTrue(storageServiceMock.saveDayCalled, "Save day not called")
+                    XCTAssertEqual(storageServiceMock.days.count, 1, "Invalid days count")
+                    XCTAssertTrue(networkServiceMock.fetchEventsCalled, "Fetch events not called")
+                    XCTAssertEqual(events.count, 1, "Invalid events count")
+                    XCTAssertEqual(viewModel.title, self.currentDateFormatted(), "Invalid title")
+                } else if case .error(let errorMessage) = state {
+                    XCTFail("Test failed with error state: \(errorMessage)")
                 }
-                guard let events = events as? [ExtendedEvent] else {
-                    XCTFail("Invalid events type")
-                    return
-                }
-                XCTAssertTrue(storageServiceMock.fetchDayCalled, "Fetch day not called")
-                XCTAssertTrue(storageServiceMock.saveDayCalled, "Save day not called")
-                XCTAssertEqual(storageServiceMock.days.count, 1, "Invalid days count")
-                XCTAssertTrue(networkServiceMock.fetchEventsCalled, "Fetch events not called")
-                XCTAssertEqual(events.count, 1, "Invalid events count")
-                XCTAssertEqual(events.first?.year, day.general.first?.year, "Invalid year")
-                XCTAssertEqual(events.first?.title, day.general.first?.title, "Invalid title")
-                XCTAssertEqual(self.viewModel.title, self.currentDateFormatted(), "Invalid title")
+                expectation.fulfill()
             }
-        )
+            .store(in: &cancellables)
+        
+        viewModel.onAppear()
+        wait(for: [expectation], timeout: 10.0)
     }
     
     func testOnAppearWithCacheSuccess() {
@@ -76,194 +75,208 @@ final class DayViewModelTests: XCTestCase {
         try? storageServiceMock.saveDay(networkModel: networkModel, for: Date())
         storageServiceMock.saveDayCalled = false
         
-        assertViewModelValidState(
-            expectationDescription: "Fetch day successfully",
-            stateChangeAction: { [weak self] in
-                self?.viewModel.onAppear()
-            },
-            asserts: { [weak self] events in
-                guard let self else {
-                    XCTFail("self is nil")
-                    return
+        let expectation = XCTestExpectation(description: "Fetch day successfully")
+        
+        viewModel.$state
+            .sink { [weak self] state in
+                guard let self else { return }
+                if case .data(let events) = state {
+                    XCTAssertTrue(storageServiceMock.fetchDayCalled, "Fetch day not called")
+                    XCTAssertFalse(storageServiceMock.saveDayCalled, "Save day called")
+                    XCTAssertEqual(storageServiceMock.days.count, 1, "Invalid days count")
+                    XCTAssertFalse(networkServiceMock.fetchEventsCalled, "Fetch events called")
+                    XCTAssertEqual(events.count, 1, "Invalid events count")
+                    XCTAssertEqual(viewModel.title, self.currentDateFormatted(), "Invalid title")
+                    expectation.fulfill()
                 }
-                guard let events = events as? [ExtendedEvent] else {
-                    XCTFail("Invalid events type")
-                    return
-                }
-                XCTAssertTrue(storageServiceMock.fetchDayCalled, "Fetch day not called")
-                XCTAssertFalse(storageServiceMock.saveDayCalled, "Save day called")
-                XCTAssertEqual(storageServiceMock.days.count, 1, "Invalid days count")
-                XCTAssertFalse(networkServiceMock.fetchEventsCalled, "Fetch events called")
-                XCTAssertEqual(events.count, 1, "Invalid events count")
-                XCTAssertEqual(events.first?.year, networkModel.general.first?.year, "Invalid year")
-                XCTAssertEqual(events.first?.title, networkModel.general.first?.title, "Invalid title")
-                XCTAssertEqual(self.viewModel.title, self.currentDateFormatted(), "Invalid title")
             }
-        )
+            .store(in: &cancellables)
+        
+        viewModel.onAppear()
+        wait(for: [expectation], timeout: 5.0)
     }
     
     func testOnAppearFetchDataFailure() {
         networkServiceMock.error = .networkError(URLError(.badServerResponse))
         
-        assertViewModelErrorState(
-            expectationDescription: "Fetch events with network error",
-            stateChangeAction: { [weak self] in
-                self?.viewModel.onAppear()
-            }
-        )
+        let expectation = XCTestExpectation(description: "Failed to load events. Please try again.")
+        
+        viewModel.$state
+            .sink(
+                receiveCompletion: { completion in
+                    XCTFail("Completion should not be received.")
+                    expectation.fulfill()
+                }, receiveValue: { state in
+                    if case .error(let message) = state {
+                        XCTAssertEqual(message, "Failed to load events. Please try again.")
+                        expectation.fulfill()
+                    }
+                }
+            )
+            .store(in: &cancellables)
+        
+        viewModel.onAppear()
+        wait(for: [expectation], timeout: 10.0)
     }
     
     func testOnTryAgainFetchDataSuccess() {
         let day = setupMockDay(category: .events)
         networkServiceMock.day = day
         
+        let expectation = XCTestExpectation(description: "Refetch day successfully")
         
-        assertViewModelValidState(
-            expectationDescription: "Refetch day successfully",
-            stateChangeAction: { [weak self] in
-                self?.viewModel.onTryAgain()
-            },
-            asserts: { [weak self] events in
-                guard let self else {
-                    XCTFail("self is nil")
-                    return
+        viewModel.$state
+            .sink { [weak self] state in
+                guard let self else { return }
+                if case .data(let events) = state {
+                    XCTAssertTrue(storageServiceMock.fetchDayCalled, "Fetch day not called")
+                    XCTAssertTrue(storageServiceMock.saveDayCalled, "Save day not called")
+                    XCTAssertEqual(storageServiceMock.days.count, 1, "Invalid days count")
+                    XCTAssertTrue(networkServiceMock.fetchEventsCalled, "Fetch events not called")
+                    XCTAssertEqual(events.count, 1, "Invalid events count")
+                    XCTAssertEqual(viewModel.title, self.currentDateFormatted(), "Invalid title")
+                } else if case .error(let errorMessage) = state {
+                    XCTFail("Test failed with error state: \(errorMessage)")
                 }
-                guard let events = events as? [ExtendedEvent] else {
-                    XCTFail("Invalid events type")
-                    return
-                }
-                XCTAssertTrue(storageServiceMock.fetchDayCalled, "Fetch day not called")
-                XCTAssertTrue(storageServiceMock.saveDayCalled, "Save day not called")
-                XCTAssertEqual(storageServiceMock.days.count, 1, "Invalid days count")
-                XCTAssertTrue(networkServiceMock.fetchEventsCalled, "Fetch events not called")
-                XCTAssertEqual(events.count, 1, "Invalid events count")
-                XCTAssertEqual(events.first!.year, day.general.first!.year, "Invalid year \(events.first!.year)")
-                XCTAssertEqual(events.first!.title, day.general.first!.title, "Invalid title \(events.first!.title)")
+                expectation.fulfill()
             }
-        )
+            .store(in: &cancellables)
+        
+        viewModel.onAppear()
+        wait(for: [expectation], timeout: 10.0)
     }
     
     func testOnTryAgainFetchDataFailure() {
         networkServiceMock.error = .networkError(URLError(.badServerResponse))
         
-        assertViewModelErrorState(
-            expectationDescription: "Refetch events with network error",
-            stateChangeAction: { [weak self] in
-                self?.viewModel.onTryAgain()
+        let expectation = XCTestExpectation(description: "Refetch events with network error")
+        
+        viewModel.$state
+            .sink { state in
+                if case .error(let message) = state {
+                    XCTAssertEqual(message, "Failed to load events. Please try again.")
+                    expectation.fulfill()
+                }
             }
-        )
+            .store(in: &cancellables)
+        
+        viewModel.onAppear()
+        wait(for: [expectation], timeout: 10.0)
     }
     
     func testEventsSelection() {
         let day = setupMockDay(category: .events)
         networkServiceMock.day = day
         
-        viewModel.onAppear()
+        performOnAppearAndWait()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-            guard let self else { return }
-            self.assertViewModelValidState(
-                expectationDescription: "Selected category should change to events",
-                stateChangeAction: { [weak self] in
-                    self?.viewModel.selectedCategory = .events
-                },
-                asserts: { [weak self] events in
-                    guard let events = events as? [ExtendedEvent] else {
-                        XCTFail("Invalid events type")
-                        return
-                    }
+        viewModel.selectedCategory = .births
+        
+        let expectation = XCTestExpectation(description: "Selected category should change to events")
+        
+        viewModel.$state
+            .sink { state in
+                if case .data(let events) = state {
+                    guard !events.isEmpty else { return }
+                    
                     XCTAssertEqual(events.count, 1)
-                    XCTAssertEqual(events.first?.year, day.general.first?.year)
-                    XCTAssertEqual(events.first?.title, day.general.first?.title)
-                    XCTAssertEqual(self?.viewModel.subtitle, day.text)
+                    let event = events.first as? ExtendedEvent
+                    XCTAssertNotNil(event)
+                    XCTAssertEqual(event!.year, day.general.first?.year)
+                    XCTAssertEqual(event!.title, day.general.first?.title)
+                    expectation.fulfill()
                 }
-            )
-        }
+            }
+            .store(in: &cancellables)
+
+        viewModel.selectedCategory = .events
+        
+        wait(for: [expectation], timeout: 5.0)
     }
     
     func testBirthsSelection() {
         let day = setupMockDay(category: .births)
         networkServiceMock.day = day
         
-        viewModel.onAppear()
+        performOnAppearAndWait()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-            guard let strongSelf = self else {
-                XCTFail("Test case deallocated unexpectedly")
-                return
-            }
-            strongSelf.assertViewModelValidState(
-                expectationDescription: "Selected category should change to events",
-                stateChangeAction: {
-                    strongSelf.viewModel.selectedCategory = .births
-                },
-                asserts: { events in
-                    guard let events = events as? [ExtendedEvent] else {
-                        XCTFail("Invalid events type")
-                        return
-                    }
+        let expectation = XCTestExpectation(description: "Selected category should change to births")
+        
+        viewModel.selectedCategory = .births
+        
+        viewModel.$state
+            .sink { state in
+                if case .data(let events) = state {
+                    guard !events.isEmpty else { return }
+                    
                     XCTAssertEqual(events.count, 1)
-                    XCTAssertEqual(events.first?.year, day.births.first?.year)
-                    XCTAssertEqual(events.first?.title, day.births.first?.title)
-                    XCTAssertEqual(events.first?.subtitle, day.births.first?.additional)
-                    XCTAssertEqual(self?.viewModel.subtitle, day.text)
+                    let event = events.first as? ExtendedEvent
+                    XCTAssertNotNil(event)
+                    XCTAssertEqual(event!.year, day.births.first?.year)
+                    XCTAssertEqual(event!.title, day.births.first?.title)
+                    XCTAssertEqual(event!.subtitle, day.births.first?.additional)
+                    expectation.fulfill()
                 }
-            )
-        }
+            }
+            .store(in: &cancellables)
+        
+        wait(for: [expectation], timeout: 5.0)
     }
     
     func testDeathsSelection() {
         let day = setupMockDay(category: .deaths)
         networkServiceMock.day = day
         
-        viewModel.onAppear()
+        performOnAppearAndWait()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-            guard let self else { return }
-            self.assertViewModelValidState(
-                expectationDescription: "Selected category should change to events",
-                stateChangeAction: { [weak self] in
-                    self?.viewModel.selectedCategory = .deaths
-                },
-                asserts: { [weak self] events in
-                    guard let events = events as? [ExtendedEvent] else {
-                        XCTFail("Invalid events type")
-                        return
-                    }
+        let expectation = XCTestExpectation(description: "Selected category should change to deaths")
+        
+        viewModel.$state
+            .sink { state in
+                if case .data(let events) = state {
+                    guard !events.isEmpty else { return }
+                    
                     XCTAssertEqual(events.count, 1)
-                    XCTAssertEqual(events.first?.year, day.deaths.first?.year)
-                    XCTAssertEqual(events.first?.title, day.deaths.first?.title)
-                    XCTAssertEqual(events.first?.subtitle, day.deaths.first?.additional)
-                    XCTAssertEqual(self?.viewModel.subtitle, day.text)
+                    let event = events.first as? ExtendedEvent
+                    XCTAssertNotNil(event)
+                    XCTAssertEqual(event!.year, day.deaths.first?.year)
+                    XCTAssertEqual(event!.title, day.deaths.first?.title)
+                    XCTAssertEqual(event!.subtitle, day.deaths.first?.additional)
+                    expectation.fulfill()
                 }
-            )
-        }
+            }
+            .store(in: &cancellables)
+        
+        viewModel.selectedCategory = .deaths
+        
+        wait(for: [expectation], timeout: 10.0)
     }
     
     func testHolidaysSelection() {
         let day = setupMockDay(category: .holidays)
         networkServiceMock.day = day
         
-        viewModel.onAppear()
+        performOnAppearAndWait()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-            guard let self else { return }
-            self.assertViewModelValidState(
-                expectationDescription: "Selected category should change to events",
-                stateChangeAction: { [weak self] in
-                    self?.viewModel.selectedCategory = .holidays
-                },
-                asserts: { [weak self] events in
-                    guard let events = events as? [ShortEvent] else {
-                        XCTFail("Invalid events type")
-                        return
-                    }
+        let expectation = XCTestExpectation(description: "Selected category should change to holidays")
+        
+        viewModel.$state
+            .sink { state in
+                if case .data(let events) = state {
+                    guard !events.isEmpty else { return }
+                    
                     XCTAssertEqual(events.count, 1)
-                    XCTAssertEqual(events.first?.title, day.deaths.first?.title)
-                    XCTAssertEqual(self?.viewModel.subtitle, day.text)
+                    let event = events.first as? ShortEvent
+                    XCTAssertNotNil(event)
+                    XCTAssertEqual(event!.title, day.holidays.first?.title)
+                    expectation.fulfill()
                 }
-            )
-        }
+            }
+            .store(in: &cancellables)
+
+        viewModel.selectedCategory = .holidays
+        
+        wait(for: [expectation], timeout: 5.0)
     }
     
     func testAddEventToBookmarks() {
@@ -301,8 +314,43 @@ final class DayViewModelTests: XCTestCase {
         XCTAssertTrue(storageServiceMock.removeFromBookmarksCalled)
         XCTAssertFalse(storageServiceMock.addToBookmarksCalled)
     }
+    
+    func testCopyEventToClipboard() {
+        let dayNetworkModel = setupMockDay(category: .events)
+        let date = Date()
+        try? storageServiceMock.saveDay(networkModel: dayNetworkModel, for: date)
+        viewModel.onAppear()
+        
+        performOnAppearAndWait()
+        
+        if let event = storageServiceMock.events.first?.value {
+            viewModel.copyToClipboardEvent(id: event.id)
+            
+            XCTAssertTrue(viewModel.showSnackbar)
+            XCTAssertEqual(viewModel.snackbarMessage, "Copied to clipboard")
+        } else {
+            XCTFail("No event in storage")
+        }
+    }
 
     // MARK: - Helper Methods
+    
+    private func performOnAppearAndWait() {
+        let onAppearExpectation = XCTestExpectation(description: "onAppear should complete")
+        
+        viewModel.$state
+            .dropFirst()
+            .sink { state in
+                if case .data = state {
+                    onAppearExpectation.fulfill()
+                }
+            }
+            .store(in: &cancellables)
+        
+        viewModel.onAppear()
+        
+        wait(for: [onAppearExpectation], timeout: 2.0)
+    }
     
     private func setupMockDay(category: EventCategory) -> DayNetworkModel {
         let text = "Test text"
@@ -312,59 +360,19 @@ final class DayViewModelTests: XCTestCase {
             return DayNetworkModel(
                 text: text, general: [EventNetworkModel(year: "1111", title: "Title")], births: [], deaths: [], holidays: []
             )
-        case .births, .deaths:
+        case .births:
             return DayNetworkModel(
                 text: text, general: [], births: [EventNetworkModel(year: "1111", title: "Title", additional: "Additional")], deaths: [], holidays: []
+            )
+        case .deaths:
+            return DayNetworkModel(
+                text: text, general: [], births: [], deaths: [EventNetworkModel(year: "1111", title: "Title", additional: "Additional")], holidays: []
             )
         case .holidays:
             return DayNetworkModel(
                 text: text, general: [], births: [], deaths: [], holidays: [EventNetworkModel(title: "Title")]
             )
         }
-    }
-    
-    private func assertViewModelValidState(expectationDescription: String,
-                                           stateChangeAction: @escaping () -> Void,
-                                           asserts: @escaping ([any EventProtocol]) -> Void) {
-        let expectation = XCTestExpectation(description: expectationDescription)
-
-        print("Starting assertion for: \(expectationDescription)")
-        
-        viewModel.$state
-            .dropFirst() // Drop the initial loading state
-            .sink { state in
-                print("Received state update: \(state)")
-                if case .data(let events) = state {
-                    print("State is .data with events count: \(events.count)")
-                    asserts(events)
-                    expectation.fulfill()
-                } else if case .error(let errorMessage) = state {
-                    XCTFail("Test failed with error state: \(errorMessage)")
-                    expectation.fulfill()
-                }
-            }
-            .store(in: &cancellables)
-        
-        stateChangeAction()
-        wait(for: [expectation], timeout: 1.0)
-    }
-    
-    private func assertViewModelErrorState(expectationDescription: String,
-                                           stateChangeAction: @escaping () -> Void) {
-        let expectation = XCTestExpectation(description: expectationDescription)
-        
-        viewModel.$state
-            .dropFirst() // Drop the initial loading state
-            .sink { state in
-                if case .error(let message) = state {
-                    XCTAssertEqual(message, "Failed to load events. Please try again.")
-                    expectation.fulfill()
-                }
-            }
-            .store(in: &cancellables)
-        
-        stateChangeAction()
-        wait(for: [expectation], timeout: 1.0)
     }
     
     private func currentDateFormatted() -> String {

@@ -126,6 +126,24 @@ final class BookmarksViewModelTests: XCTestCase {
         XCTAssertNoThrow(wait(for: [expectation], timeout: 1))
     }
     
+    func testCopyBookmarkToClipboard() {
+        let event = createAndSaveEvent(title: "Test Event", type: .general)
+        try? storageServiceMock.addToBookmarks(event: event)
+        viewModel.onAppear()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+            guard let self else { return }
+            if let bookmark = storageServiceMock.bookmarks.first?.value {
+                viewModel.copyToClipboardBookmark(id: bookmark.id)
+                
+                XCTAssertTrue(viewModel.showSnackbar)
+                XCTAssertEqual(viewModel.snackbarMessage, "Copied to clipboard")
+            } else {
+                XCTFail("No bookmark in storage")
+            }
+        }
+    }
+    
     private func createAndSaveEvent(title: String, type: EventType) -> EventEntity {
         let event = EventEntity(context: context)
         event.id = UUID()
