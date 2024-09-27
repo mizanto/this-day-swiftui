@@ -59,6 +59,9 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
             try storageService.removeBookmark(id: id)
             bookmarks = try storageService.fetchBookmarks()
             state = .data(uiModels)
+
+            let feedbackGenerator = UINotificationFeedbackGenerator()
+            feedbackGenerator.notificationOccurred(.success)
         } catch {
             AppLogger.shared.error("Failed to remove bookmark: \(error)", category: .ui)
         }
@@ -72,6 +75,10 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
         }
         UIPasteboard.general.string = stringToCopy
         showSnackbar = true
+
+        let feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
+        feedbackGenerator.impactOccurred()
+
         AppLogger.shared.info("Event \(id) copied to clipboard: \(stringToCopy)", category: .ui)
     }
 

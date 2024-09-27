@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import UIKit
 
 protocol DayViewModelProtocol: ObservableObject {
     var state: ViewState<[any EventProtocol]> { get }
@@ -103,6 +104,9 @@ final class DayViewModel: DayViewModelProtocol {
             }
             AppLogger.shared.info("Successfully toggled bookmark for event \(eventID)", category: .database)
 
+            let feedbackGenerator = UINotificationFeedbackGenerator()
+            feedbackGenerator.notificationOccurred(.success)
+
             if let index = day?.eventsArray.firstIndex(where: { $0.id == eventID }) {
                 day?.replaceEvents(at: index, with: event)
                 cacheEvents(for: day)
@@ -119,8 +123,13 @@ final class DayViewModel: DayViewModelProtocol {
                                    category: .ui)
             return
         }
+
         UIPasteboard.general.string = stringToCopy
         showSnackbar = true
+
+        let feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
+        feedbackGenerator.impactOccurred()
+
         AppLogger.shared.info("Event \(id) copied to clipboard: \(stringToCopy)", category: .ui)
     }
 
