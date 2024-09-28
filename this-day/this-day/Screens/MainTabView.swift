@@ -16,19 +16,19 @@ struct MainTabView: View {
             DayViewBuilder.build(networkService: networkService, storageService: storageService)
                 .tabItem {
                     Image(systemName: "list.bullet")
-                    Text("Today")
+                    Text(NSLocalizedString("tab_title.events", comment: ""))
                 }
 
             BookmarksViewBuilder.build(storageService: storageService)
                 .tabItem {
                     Image(systemName: "bookmark")
-                    Text("Bookmarks")
+                    Text(NSLocalizedString("tab_title.bookmarks", comment: ""))
                 }
 
             SettingsViewBuilder.build()
                 .tabItem {
                     Image(systemName: "gearshape")
-                    Text("Settings")
+                    Text(NSLocalizedString("tab_title.settings", comment: ""))
                 }
         }
     }

@@ -35,7 +35,7 @@ struct DayView<ViewModel: DayViewModelProtocol>: View {
     private func content() -> some View {
         switch viewModel.state {
         case .initial, .loading:
-            showLoading(message: "Loading...")
+            showLoading()
         case .data(let events):
             dayView(for: events)
         case .error(let message):
@@ -87,7 +87,7 @@ struct DayView<ViewModel: DayViewModelProtocol>: View {
                 onSharePressed: share
             )
         } else {
-            Text("Unknown event type")
+            Text(LocalizedString("unknown"))
                 .foregroundColor(.red)
                 .italic()
         }

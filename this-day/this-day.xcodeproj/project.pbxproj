@@ -59,6 +59,8 @@
 		AD95923B2C9DCDD60019BB13 /* ExtendedEventRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95923A2C9DCDD60019BB13 /* ExtendedEventRow.swift */; };
 		AD95923E2C9DD53E0019BB13 /* ViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95923D2C9DD53C0019BB13 /* ViewState.swift */; };
 		ADD1CF962C99936F00739278 /* EventsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */; };
+		ADE5C4FB2CA808A300FF2BF5 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = ADE5C4FA2CA808A300FF2BF5 /* Localizable.xcstrings */; };
+		ADE5C4FD2CA810D800FF2BF5 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE5C4FC2CA810CF00FF2BF5 /* Utils.swift */; };
 		ADF08E312CA02B6400CB877A /* ResponseNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF08E302CA02B6000CB877A /* ResponseNetworkModel.swift */; };
 		ADF08E332CA02DF100CB877A /* WikipediaURLBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF08E322CA02DF000CB877A /* WikipediaURLBuilder.swift */; };
 		ADF4F2992CA171F80057F9CA /* ShortEventRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF4F2982CA171F70057F9CA /* ShortEventRow.swift */; };
@@ -137,6 +139,8 @@
 		AD95923A2C9DCDD60019BB13 /* ExtendedEventRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtendedEventRow.swift; sourceTree = "<group>"; };
 		AD95923D2C9DD53C0019BB13 /* ViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewState.swift; sourceTree = "<group>"; };
 		ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewModelTests.swift; sourceTree = "<group>"; };
+		ADE5C4FA2CA808A300FF2BF5 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		ADE5C4FC2CA810CF00FF2BF5 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		ADF08E302CA02B6000CB877A /* ResponseNetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseNetworkModel.swift; sourceTree = "<group>"; };
 		ADF08E322CA02DF000CB877A /* WikipediaURLBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikipediaURLBuilder.swift; sourceTree = "<group>"; };
 		ADF4F2982CA171F70057F9CA /* ShortEventRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortEventRow.swift; sourceTree = "<group>"; };
@@ -252,6 +256,7 @@
 				AD4D89092C986C96003DD3C4 /* Services */,
 				AD4D891B2C987F50003DD3C4 /* Extensions */,
 				AD95923C2C9DD52D0019BB13 /* Utils */,
+				ADE5C4F92CA8085700FF2BF5 /* Resources */,
 				AD4D88F12C9841D0003DD3C4 /* Assets.xcassets */,
 				AD4D88F32C9841D0003DD3C4 /* this_day.entitlements */,
 				AD4D88F42C9841D0003DD3C4 /* Preview Content */,
@@ -448,6 +453,7 @@
 		AD95923C2C9DD52D0019BB13 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				ADE5C4FC2CA810CF00FF2BF5 /* Utils.swift */,
 				AD53AA812CA435140024FD31 /* ShareableItems.swift */,
 				AD95923D2C9DD53C0019BB13 /* ViewState.swift */,
 			);
@@ -484,6 +490,14 @@
 				ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */,
 			);
 			path = Events;
+			sourceTree = "<group>";
+		};
+		ADE5C4F92CA8085700FF2BF5 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				ADE5C4FA2CA808A300FF2BF5 /* Localizable.xcstrings */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -577,6 +591,7 @@
 			files = (
 				AD4D88F62C9841D0003DD3C4 /* Preview Assets.xcassets in Resources */,
 				AD4D88F22C9841D0003DD3C4 /* Assets.xcassets in Resources */,
+				ADE5C4FB2CA808A300FF2BF5 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -666,6 +681,7 @@
 				AD5F1F542CA570E500966944 /* PlaceholderView.swift in Sources */,
 				AD95922A2C9C1D580019BB13 /* NetworkService.swift in Sources */,
 				AD2609582C99763400687D36 /* URLSessionProtocol.swift in Sources */,
+				ADE5C4FD2CA810D800FF2BF5 /* Utils.swift in Sources */,
 				AD5F1F522CA4883600966944 /* BookmarksViewModel.swift in Sources */,
 				AD53AA842CA4358F0024FD31 /* ActivityViewController.swift in Sources */,
 				AD53AA6A2CA2BD640024FD31 /* StorageServiceError.swift in Sources */,
@@ -793,6 +809,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -847,6 +864,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 			};
 			name = Release;
 		};

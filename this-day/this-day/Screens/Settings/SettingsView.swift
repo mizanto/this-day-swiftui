@@ -17,30 +17,30 @@ struct SettingsView<ViewModel: SettingsViewModelProtocol>: View {
     var body: some View {
         NavigationView {
             content()
-                .navigationTitle("Settings")
+                .navigationTitle(LocalizedString("tab_title.settings"))
         }
     }
 
     @ViewBuilder
     private func content() -> some View {
         Form {
-            Section(header: Text("General")) {
+            Section(header: Text(LocalizedString("settings.section.general"))) {
                 HStack {
-                    Text("Language")
+                    Text(LocalizedString("settings.language"))
                     Spacer()
                     Text(viewModel.language)
                         .foregroundColor(.secondary)
                 }
             }
-            Section(header: Text("App Information")) {
+            Section(header: Text(LocalizedString("settings.section.app_info"))) {
                 HStack {
-                    Text("Version")
+                    Text(LocalizedString("settings.version"))
                     Spacer()
                     Text(viewModel.appVersion)
                         .foregroundColor(.secondary)
                 }
                 HStack {
-                    Text("Build")
+                    Text(LocalizedString("settings.build"))
                     Spacer()
                     Text(viewModel.buildNumber)
                         .foregroundColor(.secondary)

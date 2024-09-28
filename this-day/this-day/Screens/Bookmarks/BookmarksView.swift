@@ -17,7 +17,7 @@ struct BookmarksView<ViewModel: BookmarksViewModelProtocol>: View {
     var body: some View {
         NavigationView {
             content()
-                .navigationTitle("Bookmarks")
+                .navigationTitle(LocalizedString("tab_title.bookmarks"))
         }
         .onAppear {
             viewModel.onAppear()
@@ -32,11 +32,11 @@ struct BookmarksView<ViewModel: BookmarksViewModelProtocol>: View {
     private func content() -> some View {
         switch viewModel.state {
         case .initial, .loading:
-            showLoading(message: "Loading...")
+            showLoading()
 
         case .data(let events):
             if events.isEmpty {
-                showPlaceholder(message: "No bookmarks yet.")
+                showPlaceholder(message: LocalizedString("message.placeholder.empty_bookmarks"))
             } else {
                 List(events) { event in
                     BookmarkRow(
@@ -52,11 +52,8 @@ struct BookmarksView<ViewModel: BookmarksViewModelProtocol>: View {
                 .listStyle(PlainListStyle())
             }
 
-        case .error(let message):
-            showError(
-                message: message,
-                action: {}
-            )
+        case .error(_):
+            showPlaceholder(message: LocalizedString("message.placeholder.empty_bookmarks"))
         }
     }
 

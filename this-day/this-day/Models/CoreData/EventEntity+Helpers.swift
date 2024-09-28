@@ -69,11 +69,14 @@ extension EventEntity {
         case .general:
             resultString += self.title
         case .birth:
-            resultString += "Was born \(self.title)"
+            let prefix = LocalizedString("sharing_text.was_born")
+            resultString += "\(prefix) \(self.title)"
         case .death:
-            resultString += "Died \(self.title)"
+            let prefix = LocalizedString("sharing_text.died")
+            resultString += "\(prefix) \(self.title)"
         case .holiday:
-            resultString = "\(date.toFormat("MMMM dd")) celebrates \(self.title)"
+            let celebrates = LocalizedString("sharing_text.celebrates")
+            resultString = "\(date.toFormat("MMMM dd")), \(celebrates) \(self.title)"
         }
 
         if let subtitle = self.subtitle, !subtitle.isEmpty {

@@ -12,7 +12,7 @@ extension View {
         ErrorView(message: message, retryAction: action)
     }
 
-    func showLoading(message: String) -> some View {
+    func showLoading(message: String = LocalizedString("message.loading.default")) -> some View {
         LoadingView(message: message)
     }
 

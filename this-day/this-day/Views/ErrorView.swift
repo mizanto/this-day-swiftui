@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ErrorView: View {
     let message: String
-    let retryAction: () -> Void
+    let retryAction: (() -> Void)?
 
     var body: some View {
         VStack {
@@ -20,17 +20,19 @@ struct ErrorView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
                 .padding(.vertical)
-            Button(
-                action: retryAction,
-                label: {
-                    Text("Try Again")
-                        .font(.headline)
-                        .padding(12)
-                        .background(.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                }
-            )
+            if let retryAction {
+                Button(
+                    action: retryAction,
+                    label: {
+                        Text(LocalizedString("error.retry"))
+                            .font(.headline)
+                            .padding(12)
+                            .background(.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+                )
+            }
         }
     }
 }
