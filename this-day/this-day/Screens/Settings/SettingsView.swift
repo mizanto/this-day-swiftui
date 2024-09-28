@@ -19,17 +19,24 @@ struct SettingsView<ViewModel: SettingsViewModelProtocol>: View {
             content()
                 .navigationTitle(LocalizedString("tab_title.settings"))
         }
+        .onAppear {
+//            localizationManager.currentLanguage = localizationManager.currentLanguage
+        }
+
     }
 
     @ViewBuilder
     private func content() -> some View {
         Form {
             Section(header: Text(LocalizedString("settings.section.general"))) {
-                HStack {
-                    Text(LocalizedString("settings.language"))
-                    Spacer()
-                    Text(viewModel.language)
-                        .foregroundColor(.secondary)
+                Picker(LocalizedString("settings.language"), selection: $viewModel.selectedLanguage) {
+                    ForEach(viewModel.availableLanguages) { language in
+                        Text(language.name).tag(language.id)
+                    }
+                }
+                .pickerStyle(MenuPickerStyle())
+                .onChange(of: viewModel.selectedLanguage) { _, newLanguage in
+                    viewModel.updateLanguage(newLanguage)
                 }
             }
             Section(header: Text(LocalizedString("settings.section.app_info"))) {

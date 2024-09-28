@@ -12,6 +12,8 @@ struct ThisDayApp: App {
     let persistenceController = PersistenceController.shared
     let storageService: StorageService
     let networkService = NetworkService()
+    
+    @StateObject private var localizationManager = LocalizationManager.shared
 
     init() {
         storageService = StorageService(context: persistenceController.container.viewContext)
@@ -20,6 +22,10 @@ struct ThisDayApp: App {
     var body: some Scene {
         WindowGroup {
             MainTabView(networkService: networkService, storageService: storageService)
+                .environmentObject(localizationManager)
+                .onReceive(NotificationCenter.default.publisher(for: .languageDidChange)) { _ in
+                    localizationManager.objectWillChange.send()
+                }
         }
     }
 }

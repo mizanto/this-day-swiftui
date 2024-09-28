@@ -25,14 +25,12 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
     @Published var state: ViewState<[BookmarkEvent]> = .initial
     @Published var itemsForSahre: ShareableItems?
     @Published var showSnackbar = false
-    var snackbarMessage: String = LocalizedString("message.snackbar.copied")
+    var snackbarMessage: String { LocalizedString("message.snackbar.copied") }
 
     private let storageService: StorageServiceProtocol
 
     private var bookmarks: [BookmarkEntity] = [] {
-        didSet {
-            cacheBookmarks(bookmarks)
-        }
+        didSet { cacheBookmarks(bookmarks) }
     }
     private var uiModels: [BookmarkEvent] = []
 

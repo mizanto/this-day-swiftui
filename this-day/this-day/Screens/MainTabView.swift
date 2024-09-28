@@ -10,6 +10,9 @@ import SwiftUI
 struct MainTabView: View {
     let networkService: NetworkServiceProtocol
     let storageService: StorageServiceProtocol
+    
+    @EnvironmentObject private var localizationManager: LocalizationManager
+    @State private var selectedTab: Int = 0
 
     var body: some View {
         TabView {
@@ -18,18 +21,30 @@ struct MainTabView: View {
                     Image(systemName: "list.bullet")
                     Text(NSLocalizedString("tab_title.events", comment: ""))
                 }
+                .tag(0)
 
             BookmarksViewBuilder.build(storageService: storageService)
                 .tabItem {
                     Image(systemName: "bookmark")
                     Text(NSLocalizedString("tab_title.bookmarks", comment: ""))
                 }
+                .tag(1)
 
             SettingsViewBuilder.build()
                 .tabItem {
                     Image(systemName: "gearshape")
                     Text(NSLocalizedString("tab_title.settings", comment: ""))
                 }
+                .tag(2)
+        }
+        .onAppear {
+            NotificationCenter.default.addObserver(forName: .languageDidChange, object: nil, queue: .main) { _ in
+                // Принудительно обновляем TabView без сброса выбранной вкладки
+                selectedTab = selectedTab
+            }
+        }
+        .onDisappear {
+            NotificationCenter.default.removeObserver(self, name: .languageDidChange, object: nil)
         }
     }
 }

@@ -37,7 +37,7 @@ final class DayViewModel: DayViewModelProtocol {
             updateState(with: selectedCategory)
         }
     }
-    var snackbarMessage: String = LocalizedString("message.snackbar.copied")
+    var snackbarMessage: String { LocalizedString("message.snackbar.copied") }
 
     private let currentDate: Date = Date()
     private let networkService: NetworkServiceProtocol

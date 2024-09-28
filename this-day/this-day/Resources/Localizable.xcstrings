@@ -9,6 +9,12 @@
             "state" : "translated",
             "value" : "Select Category"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбрать категорию"
+          }
         }
       }
     },
@@ -19,6 +25,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Births"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Родились"
           }
         }
       }
@@ -31,6 +43,12 @@
             "state" : "translated",
             "value" : "Deaths"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Умерли"
+          }
         }
       }
     },
@@ -41,6 +59,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Events"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "События"
           }
         }
       }
@@ -53,6 +77,12 @@
             "state" : "translated",
             "value" : "Holidays"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Праздники"
+          }
         }
       }
     },
@@ -63,6 +93,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Try Again"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Обновить"
           }
         }
       }
@@ -75,6 +111,12 @@
             "state" : "translated",
             "value" : "Loading..."
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Загрузка…"
+          }
         }
       }
     },
@@ -85,6 +127,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No bookmarks yet."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет закладок"
           }
         }
       }
@@ -97,6 +145,12 @@
             "state" : "translated",
             "value" : "Copied to clipboard"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скопировано"
+          }
         }
       }
     },
@@ -107,6 +161,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Build"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сборка"
           }
         }
       }
@@ -119,6 +179,12 @@
             "state" : "translated",
             "value" : "Language"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Язык"
+          }
         }
       }
     },
@@ -129,6 +195,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "App Information"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Информация о приложении"
           }
         }
       }
@@ -141,6 +213,12 @@
             "state" : "translated",
             "value" : "General"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Основные"
+          }
         }
       }
     },
@@ -151,6 +229,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Version"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Версия"
           }
         }
       }
@@ -163,6 +247,12 @@
             "state" : "translated",
             "value" : "celebrates"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "отмечают"
+          }
         }
       }
     },
@@ -173,6 +263,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Died"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Погиб(-ла)"
           }
         }
       }
@@ -185,6 +281,12 @@
             "state" : "translated",
             "value" : "Was born"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Родился(-лась)"
+          }
         }
       }
     },
@@ -195,6 +297,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bookmarks"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Закладки"
           }
         }
       }
@@ -207,6 +315,12 @@
             "state" : "translated",
             "value" : "Events"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "События"
+          }
         }
       }
     },
@@ -218,6 +332,12 @@
             "state" : "translated",
             "value" : "Settings"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Настройки"
+          }
         }
       }
     },
@@ -228,6 +348,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unknown"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Неизвестно"
           }
         }
       }

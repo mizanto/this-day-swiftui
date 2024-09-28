@@ -10,17 +10,26 @@ import Foundation
 protocol SettingsViewModelProtocol: ObservableObject {
     var appVersion: String { get }
     var buildNumber: String { get }
-    var language: String { get }
+    var availableLanguages: [Language] { get }
+    var selectedLanguage: String { get set }
+    func updateLanguage(_ languageId: String)
 }
 
 final class SettingsViewModel: SettingsViewModelProtocol {
-    var appVersion: String {
-        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "N/A"
+    @Published var selectedLanguage: String
+    private var localizationManager: LocalizationManager
+
+    var appVersion: String { Bundle.main.versionNumber }
+    var buildNumber: String { Bundle.main.buildNumber }
+    var availableLanguages: [Language] { localizationManager.availableLanguages }
+
+    init(localizationManager: LocalizationManager = .shared) {
+        self.localizationManager = localizationManager
+        self.selectedLanguage = localizationManager.currentLanguage
     }
 
-    var buildNumber: String {
-        Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "N/A"
+    func updateLanguage(_ languageId: String) {
+        localizationManager.currentLanguage = languageId
+        selectedLanguage = languageId
     }
-
-    var language: String = "English"
 }

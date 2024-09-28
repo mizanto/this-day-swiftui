@@ -61,6 +61,9 @@
 		ADD1CF962C99936F00739278 /* EventsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */; };
 		ADE5C4FB2CA808A300FF2BF5 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = ADE5C4FA2CA808A300FF2BF5 /* Localizable.xcstrings */; };
 		ADE5C4FD2CA810D800FF2BF5 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE5C4FC2CA810CF00FF2BF5 /* Utils.swift */; };
+		ADE5C5002CA81D8900FF2BF5 /* LocalizationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE5C4FF2CA81D8900FF2BF5 /* LocalizationManager.swift */; };
+		ADE5C5022CA81F0100FF2BF5 /* Bundle+Extrnsion.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE5C5012CA81F0000FF2BF5 /* Bundle+Extrnsion.swift */; };
+		ADE5C5042CA846E500FF2BF5 /* BundleEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE5C5032CA846E400FF2BF5 /* BundleEx.swift */; };
 		ADF08E312CA02B6400CB877A /* ResponseNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF08E302CA02B6000CB877A /* ResponseNetworkModel.swift */; };
 		ADF08E332CA02DF100CB877A /* WikipediaURLBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF08E322CA02DF000CB877A /* WikipediaURLBuilder.swift */; };
 		ADF4F2992CA171F80057F9CA /* ShortEventRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF4F2982CA171F70057F9CA /* ShortEventRow.swift */; };
@@ -141,6 +144,9 @@
 		ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewModelTests.swift; sourceTree = "<group>"; };
 		ADE5C4FA2CA808A300FF2BF5 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		ADE5C4FC2CA810CF00FF2BF5 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		ADE5C4FF2CA81D8900FF2BF5 /* LocalizationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationManager.swift; sourceTree = "<group>"; };
+		ADE5C5012CA81F0000FF2BF5 /* Bundle+Extrnsion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extrnsion.swift"; sourceTree = "<group>"; };
+		ADE5C5032CA846E400FF2BF5 /* BundleEx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleEx.swift; sourceTree = "<group>"; };
 		ADF08E302CA02B6000CB877A /* ResponseNetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseNetworkModel.swift; sourceTree = "<group>"; };
 		ADF08E322CA02DF000CB877A /* WikipediaURLBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikipediaURLBuilder.swift; sourceTree = "<group>"; };
 		ADF4F2982CA171F70057F9CA /* ShortEventRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortEventRow.swift; sourceTree = "<group>"; };
@@ -307,6 +313,7 @@
 			children = (
 				AD9592092C99C8E60019BB13 /* Network */,
 				AD53AA442CA2A5A70024FD31 /* Storage */,
+				ADE5C4FE2CA81D6B00FF2BF5 /* Localization */,
 				AD4D891E2C988810003DD3C4 /* AppLogger.swift */,
 			);
 			path = Services;
@@ -345,6 +352,7 @@
 		AD4D891B2C987F50003DD3C4 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				ADE5C5012CA81F0000FF2BF5 /* Bundle+Extrnsion.swift */,
 				AD9592312C9DC8B70019BB13 /* View+Extension.swift */,
 				AD4D891C2C987F60003DD3C4 /* Date+Extension.swift */,
 			);
@@ -500,6 +508,15 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		ADE5C4FE2CA81D6B00FF2BF5 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				ADE5C5032CA846E400FF2BF5 /* BundleEx.swift */,
+				ADE5C4FF2CA81D8900FF2BF5 /* LocalizationManager.swift */,
+			);
+			path = Localization;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -565,6 +582,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = AD4D88E12C9841CF003DD3C4;
 			productRefGroup = AD4D88EB2C9841CF003DD3C4 /* Products */;
@@ -647,8 +665,10 @@
 				ADFE369A2CA5ABDA0050337D /* BookmarkEntity+CoreDataProperties.swift in Sources */,
 				ADFE369B2CA5ABDA0050337D /* DayEntity+CoreDataClass.swift in Sources */,
 				ADFE369C2CA5ABDA0050337D /* DayEntity+CoreDataProperties.swift in Sources */,
+				ADE5C5022CA81F0100FF2BF5 /* Bundle+Extrnsion.swift in Sources */,
 				ADFE369D2CA5ABDA0050337D /* EventEntity+CoreDataClass.swift in Sources */,
 				ADFE369E2CA5ABDA0050337D /* EventEntity+CoreDataProperties.swift in Sources */,
+				ADE5C5002CA81D8900FF2BF5 /* LocalizationManager.swift in Sources */,
 				AD4D88F02C9841CF003DD3C4 /* DayView.swift in Sources */,
 				AD5E69B12CA6E7E800F0EEFA /* SnackbarModifier.swift in Sources */,
 				AD4D89032C985B23003DD3C4 /* DayViewModel.swift in Sources */,
@@ -685,6 +705,7 @@
 				AD5F1F522CA4883600966944 /* BookmarksViewModel.swift in Sources */,
 				AD53AA842CA4358F0024FD31 /* ActivityViewController.swift in Sources */,
 				AD53AA6A2CA2BD640024FD31 /* StorageServiceError.swift in Sources */,
+				ADE5C5042CA846E500FF2BF5 /* BundleEx.swift in Sources */,
 				AD9592352C9DC9530019BB13 /* CategoryPicker.swift in Sources */,
 				AD4D891D2C987F60003DD3C4 /* Date+Extension.swift in Sources */,
 				AD3606822CA72706008D31A9 /* SettingsViewModel.swift in Sources */,
