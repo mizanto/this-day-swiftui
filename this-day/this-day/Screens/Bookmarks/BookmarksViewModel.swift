@@ -103,6 +103,7 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
             return BookmarkEvent(
                 id: bookmark.id,
                 date: event.stringDate(language: day.language) ?? "??????",
+                language: day.language,
                 title: event.title,
                 subtitle: event.subtitle,
                 inBookmarks: true,

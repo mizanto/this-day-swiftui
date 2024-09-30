@@ -22,6 +22,8 @@ struct BookmarkRow: View {
                     .font(.headline)
                     .multilineTextAlignment(.trailing)
 
+                Badge(title: event.language.uppercased(), color: .secondary.opacity(0.7))
+
                 Spacer()
 
                 Badge(category: event.category)
@@ -57,6 +59,7 @@ struct BookmarkRow: View {
     BookmarkRow(
         event: BookmarkEvent(
             date: "25 September",
+            language: "en",
             title: "Heritage Day (South Africa)",
             subtitle: "",
             inBookmarks: true,
