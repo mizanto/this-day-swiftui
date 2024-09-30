@@ -8,8 +8,8 @@
 import SwiftUI
 
 final class SettingsViewBuilder {
-    static func build() -> some View {
-        let viewModel = SettingsViewModel()
+    static func build(localizationManager: any LocalizationManagerProtocol) -> some View {
+        let viewModel = SettingsViewModel(localizationManager: localizationManager)
         return SettingsView(viewModel: viewModel)
     }
 }

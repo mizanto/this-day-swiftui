@@ -2,7 +2,7 @@
 //  DayEntity+CoreDataProperties.swift
 //  this-day
 //
-//  Created by Sergey Bendak on 26.09.2024.
+//  Created by Sergey Bendak on 30.09.2024.
 //
 //
 
@@ -19,6 +19,7 @@ extension DayEntity {
     @NSManaged public var date: Date
     @NSManaged public var id: String
     @NSManaged public var text: String
+    @NSManaged public var language: String
     @NSManaged public var events: NSOrderedSet?
 
 }
@@ -58,4 +59,4 @@ extension DayEntity {
 
 }
 
-extension DayEntity: Identifiable {}
+extension DayEntity : Identifiable {}

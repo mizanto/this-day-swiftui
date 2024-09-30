@@ -17,13 +17,13 @@ protocol SettingsViewModelProtocol: ObservableObject {
 
 final class SettingsViewModel: SettingsViewModelProtocol {
     @Published var selectedLanguage: String
-    private var localizationManager: LocalizationManager
+    private var localizationManager: any LocalizationManagerProtocol
 
     var appVersion: String { Bundle.main.versionNumber }
     var buildNumber: String { Bundle.main.buildNumber }
     var availableLanguages: [Language] { localizationManager.availableLanguages }
 
-    init(localizationManager: LocalizationManager = .shared) {
+    init(localizationManager: any LocalizationManagerProtocol) {
         self.localizationManager = localizationManager
         self.selectedLanguage = localizationManager.currentLanguage
     }

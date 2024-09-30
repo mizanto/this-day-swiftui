@@ -28,16 +28,19 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
     var snackbarMessage: String { LocalizedString("message.snackbar.copied") }
 
     private let storageService: StorageServiceProtocol
+    private let localizationManager: any LocalizationManagerProtocol
 
     private var bookmarks: [BookmarkEntity] = [] {
         didSet { cacheBookmarks(bookmarks) }
     }
     private var uiModels: [BookmarkEvent] = []
     
-    private var language: String { LocalizationManager.shared.currentLanguage }
+    private var language: String { localizationManager.currentLanguage }
 
-    init(storageService: StorageServiceProtocol) {
+    init(storageService: StorageServiceProtocol,
+         localizationManager: any LocalizationManagerProtocol) {
         self.storageService = storageService
+        self.localizationManager = localizationManager
     }
 
     func onAppear() {
@@ -94,11 +97,11 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
 
     private func cacheBookmarks(_ bookmarks: [BookmarkEntity]) {
         uiModels = bookmarks.compactMap { bookmark in
-            guard let event = bookmark.event else { return nil }
+            guard let event = bookmark.event, let day = event.day else { return nil }
 
             return BookmarkEvent(
                 id: bookmark.id,
-                date: event.stringDate(language: language) ?? "??????",
+                date: event.stringDate(language: day.language) ?? "??????",
                 title: event.title,
                 subtitle: event.subtitle,
                 inBookmarks: true,

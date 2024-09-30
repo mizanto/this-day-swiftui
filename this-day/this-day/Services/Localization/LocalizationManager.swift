@@ -12,8 +12,12 @@ struct Language: Identifiable {
     let name: String
 }
 
-class LocalizationManager: ObservableObject {
-    static let shared = LocalizationManager()
+protocol LocalizationManagerProtocol: ObservableObject {
+    var availableLanguages: [Language] { get }
+    var currentLanguage: String { get set }
+}
+
+class LocalizationManager: LocalizationManagerProtocol {
     
     let availableLanguages = [
         Language(id: "en", name: "English"),
@@ -29,7 +33,7 @@ class LocalizationManager: ObservableObject {
         }
     }
     
-    private init() {
+    init() {
         if let savedLanguage = UserDefaults.standard.string(forKey: "selectedLanguage") {
             currentLanguage = savedLanguage
             Bundle.setLanguage(savedLanguage)

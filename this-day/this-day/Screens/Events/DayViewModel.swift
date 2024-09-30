@@ -42,6 +42,7 @@ final class DayViewModel: DayViewModelProtocol {
     private let currentDate: Date = Date()
     private let networkService: NetworkServiceProtocol
     private let storageService: StorageServiceProtocol
+    private let localizationManager: any LocalizationManagerProtocol
     private var cancellables = Set<AnyCancellable>()
     private var day: DayEntity? {
         didSet {
@@ -52,27 +53,25 @@ final class DayViewModel: DayViewModelProtocol {
     }
     private var uiModels: [EventCategory: [any EventProtocol]] = [:]
     
-    private var language: String { LocalizationManager.shared.currentLanguage }
+    private var language: String { localizationManager.currentLanguage }
 
-    init(networkService: NetworkServiceProtocol = NetworkService(),
-         storageService: StorageServiceProtocol) {
+    init(networkService: NetworkServiceProtocol,
+         storageService: StorageServiceProtocol,
+         localizationManager: any LocalizationManagerProtocol) {
         self.networkService = networkService
         self.storageService = storageService
+        self.localizationManager = localizationManager
     }
 
     func onAppear() {
         AppLogger.shared.info("Events view appeared", category: .ui)
 
         title = currentDate.toLocalizedDayMonth(language: language)
-        let idString = currentDate.toFormat("MM_dd") // TODO: Fix
-        
-        fetchEvents(for: currentDate, language: language)
-        
-        return
+        let dayID = DayEntity.createID(date: currentDate, language: language)
 
         do {
-            if let dayEntity = try storageService.fetchDay(id: idString) {
-                AppLogger.shared.info("Data found in storage for day with id: \(idString)", category: .ui)
+            if let dayEntity = try storageService.fetchDay(id: dayID) {
+                AppLogger.shared.info("Data found in storage for day with id: \(dayID)", category: .ui)
                 day = dayEntity
                 if state == .initial {
                     selectedCategory = .events
@@ -80,18 +79,17 @@ final class DayViewModel: DayViewModelProtocol {
                     updateState(with: selectedCategory)
                 }
             } else {
-                AppLogger.shared.info("No data in storage for id: \(idString). Fetching from network.", category: .ui)
+                AppLogger.shared.info("No data in storage for id: \(dayID). Fetching from network.", category: .ui)
                 fetchEvents(for: currentDate, language: language)
             }
         } catch {
-            AppLogger.shared.error("Error fetching data for day with id: \(idString): \(error)", category: .ui)
+            AppLogger.shared.error("Error fetching data for day with id: \(dayID): \(error)", category: .ui)
             fetchEvents(for: currentDate, language: language)
         }
     }
 
     func onTryAgain() {
         AppLogger.shared.info("Trying to fetch events after error", category: .ui)
-        let language = LocalizationManager.shared.currentLanguage
         fetchEvents(for: currentDate, language: language)
     }
 
@@ -186,8 +184,11 @@ final class DayViewModel: DayViewModelProtocol {
 
     private func save(networkModel: DayNetworkModel, for date: Date) {
         do {
-            try storageService.saveDay(networkModel: networkModel, for: date)
-            if let dayEntity = try storageService.fetchDay(id: date.toFormat("MM_dd")) {
+            try storageService.saveDay(networkModel: networkModel,
+                                       for: date,
+                                       language: language)
+            let id = DayEntity.createID(date: currentDate, language: language)
+            if let dayEntity = try storageService.fetchDay(id: id) {
                 day = dayEntity
                 selectedCategory = .events
             }

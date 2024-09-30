@@ -41,14 +41,18 @@ enum EventCategory: String, CaseIterable, Identifiable {
 
 struct CategoryPicker: View {
     @Binding var selectedCategory: EventCategory
+    @EnvironmentObject var localizationManager: LocalizationManager
 
     var body: some View {
-        Picker(LocalizedString("category_picker.title"),
-               selection: $selectedCategory) {
+        Picker(LocalizedString("category_picker.title"), selection: $selectedCategory) {
             ForEach(EventCategory.allCases) { category in
                 Text(category.string).tag(category)
             }
         }
+        .id(UUID()) // need for update localization
         .pickerStyle(SegmentedPickerStyle())
+        .onChange(of: localizationManager.currentLanguage) {
+            selectedCategory = selectedCategory
+        }
     }
 }

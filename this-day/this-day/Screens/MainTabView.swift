@@ -16,21 +16,24 @@ struct MainTabView: View {
 
     var body: some View {
         TabView {
-            DayViewBuilder.build(networkService: networkService, storageService: storageService)
+            DayViewBuilder.build(networkService: networkService,
+                                 storageService: storageService,
+                                 localizationManager: localizationManager)
                 .tabItem {
                     Image(systemName: "list.bullet")
                     Text(NSLocalizedString("tab_title.events", comment: ""))
                 }
                 .tag(0)
 
-            BookmarksViewBuilder.build(storageService: storageService)
+            BookmarksViewBuilder.build(storageService: storageService,
+                                       localizationManager: localizationManager)
                 .tabItem {
                     Image(systemName: "bookmark")
                     Text(NSLocalizedString("tab_title.bookmarks", comment: ""))
                 }
                 .tag(1)
 
-            SettingsViewBuilder.build()
+            SettingsViewBuilder.build(localizationManager: localizationManager)
                 .tabItem {
                     Image(systemName: "gearshape")
                     Text(NSLocalizedString("tab_title.settings", comment: ""))
@@ -39,7 +42,6 @@ struct MainTabView: View {
         }
         .onAppear {
             NotificationCenter.default.addObserver(forName: .languageDidChange, object: nil, queue: .main) { _ in
-                // Принудительно обновляем TabView без сброса выбранной вкладки
                 selectedTab = selectedTab
             }
         }

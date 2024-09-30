@@ -10,7 +10,7 @@ import CoreData
 
 protocol StorageServiceProtocol {
     func fetchDay(id: String) throws -> DayEntity?
-    func saveDay(networkModel: DayNetworkModel, for date: Date) throws
+    func saveDay(networkModel: DayNetworkModel, for date: Date, language: String) throws
     func fetchEvent(id: UUID) throws -> EventEntity?
     func addToBookmarks(event: EventEntity) throws
     func removeFromBookmarks(event: EventEntity) throws
@@ -39,14 +39,17 @@ class StorageService: StorageServiceProtocol {
         }
     }
 
-    func saveDay(networkModel: DayNetworkModel, for date: Date) throws {
-        let id = date.toFormat("MM_dd")
+    func saveDay(networkModel: DayNetworkModel, for date: Date, language: String) throws {
+        let id = DayEntity.createID(date: date, language: language)
 
         if let existingDay = try fetchDay(id: id) {
             context.delete(existingDay)
         }
 
-        _ = DayEntity.from(networkModel: networkModel, date: date, context: context)
+        _ = DayEntity.from(networkModel: networkModel,
+                           date: date,
+                           language: language,
+                           context: context)
         do {
             try context.save()
             AppLogger.shared.info("Successfully saved DayEntity for id: \(id)", category: .database)

@@ -8,9 +8,17 @@
 import CoreData
 
 extension DayEntity {
-    static func from(networkModel: DayNetworkModel, date: Date, context: NSManagedObjectContext) -> DayEntity {
+    static func createID(date: Date, language: String) -> String {
+        return date.toFormat("ddMM") + language.uppercased()
+    }
+
+    static func from(networkModel: DayNetworkModel,
+                     date: Date,
+                     language: String,
+                     context: NSManagedObjectContext) -> DayEntity {
         let dayEntity = DayEntity(context: context)
-        dayEntity.id = date.toFormat("MM_dd") // TODO: Fix
+        dayEntity.id = createID(date: date, language: language)
+        dayEntity.language = language
         dayEntity.text = networkModel.text
         dayEntity.date = Date()
 

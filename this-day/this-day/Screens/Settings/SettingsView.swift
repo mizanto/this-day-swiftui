@@ -19,10 +19,6 @@ struct SettingsView<ViewModel: SettingsViewModelProtocol>: View {
             content()
                 .navigationTitle(LocalizedString("tab_title.settings"))
         }
-        .onAppear {
-//            localizationManager.currentLanguage = localizationManager.currentLanguage
-        }
-
     }
 
     @ViewBuilder
@@ -58,5 +54,5 @@ struct SettingsView<ViewModel: SettingsViewModelProtocol>: View {
 }
 
 #Preview {
-    SettingsView(viewModel: SettingsViewModel())
+    SettingsView(viewModel: SettingsViewModel(localizationManager: LocalizationManager()))
 }
