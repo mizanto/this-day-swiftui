@@ -11,6 +11,7 @@ import CoreData
 @testable import this_day
 
 final class StorageServiceMock: StorageServiceProtocol {
+    
     var context: NSManagedObjectContext
     var days: [String: DayEntity] = [:]
     var events: [UUID: EventEntity] = [:]
@@ -36,17 +37,16 @@ final class StorageServiceMock: StorageServiceProtocol {
         return days[id]
     }
 
-    func saveDay(networkModel: DayNetworkModel, for date: Date) throws {
+    func saveDay(networkModel: DayNetworkModel, for date: Date, language: String = "en") throws {
         try throwErrorIfNeeded()
         
         saveDayCalled = true
-        let idString = date.toFormat("MM_dd")
 
-        let dayEntity = DayEntity.from(networkModel: networkModel, date: date, context: context)
+        let day = DayEntity.from(networkModel: networkModel, date: date, language: language, context: context)
         try context.save()
-        days[idString] = dayEntity
+        days[day.id] = day
         
-        if let eventSet = dayEntity.events {
+        if let eventSet = day.events {
             for case let event as EventEntity in eventSet {
                 events[event.id] = event
             }

@@ -15,6 +15,7 @@ final class BookmarksViewModelTests: XCTestCase {
     private var viewModel: BookmarksViewModel!
     private var context: NSManagedObjectContext!
     private var storageServiceMock: StorageServiceMock!
+    private var localizationManagerMock: LocalizationManagerMock!
     private var cancellables: Set<AnyCancellable>!
     
     override func setUp() {
@@ -22,7 +23,8 @@ final class BookmarksViewModelTests: XCTestCase {
         _ = PersistenceController(inMemory: true)
         context = PersistenceController.shared.container.viewContext
         storageServiceMock = StorageServiceMock(context: context)
-        viewModel = BookmarksViewModel(storageService: storageServiceMock)
+        localizationManagerMock = LocalizationManagerMock()
+        viewModel = BookmarksViewModel(storageService: storageServiceMock, localizationManager: localizationManagerMock)
         cancellables = []
     }
     
@@ -59,7 +61,12 @@ final class BookmarksViewModelTests: XCTestCase {
     
     func testOnAppearWithBookmarks() {
         let event = createAndSaveEvent(title: "Test Event", type: .general)
-        try? storageServiceMock.addToBookmarks(event: event)
+        
+        do {
+            try storageServiceMock.addToBookmarks(event: event)
+        } catch {
+            XCTFail("Error adding event to bookmarks: \(error)")
+        }
         
         let expectation = XCTestExpectation(description: "Bookmarks should not be empty")
         
@@ -71,6 +78,7 @@ final class BookmarksViewModelTests: XCTestCase {
                     XCTAssertEqual(bookmarks.count, 1)
                     XCTAssertEqual(bookmarks.first?.title, event.title)
                     XCTAssertEqual(bookmarks.first?.category, EventCategory.from(event.eventType))
+                    XCTAssertEqual(bookmarks.first?.language, event.day?.language)
                     expectation.fulfill()
                 }
             }
@@ -145,10 +153,21 @@ final class BookmarksViewModelTests: XCTestCase {
     }
     
     private func createAndSaveEvent(title: String, type: EventType) -> EventEntity {
+        let date = Date()
+        let day = DayEntity(context: context)
+        day.id = DayEntity.createID(date: date, language: "en")
+        day.language = "en"
+        day.date = date
+        day.text = "Test day"
+        
         let event = EventEntity(context: context)
         event.id = UUID()
         event.title = title
         event.eventType = type
+        event.day = day
+        
+        day.addToEvents(event)
+        
         try? context.save()
         return event
     }

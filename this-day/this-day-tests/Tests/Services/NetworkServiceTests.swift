@@ -49,7 +49,6 @@ final class NetworkServiceTests: XCTestCase {
                 XCTAssertEqual(day.general.count, 0)
                 XCTAssertEqual(day.births.count, 0)
                 XCTAssertEqual(day.deaths.count, 0)
-                XCTAssertEqual(day.holidays.count, 0)
                 expectation.fulfill()
             })
             .store(in: &cancellables)

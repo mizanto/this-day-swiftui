@@ -15,7 +15,7 @@ final class WikipediaParserTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        parser = WikipediaParser()
+        parser = WikipediaParser(language: "en")
     }
     
     override func tearDown() {
@@ -23,7 +23,6 @@ final class WikipediaParserTests: XCTestCase {
         super.tearDown()
     }
     
-    // Test the cleanExtract method
     func testCleanExtractRemovesSubcategoriesAndUnwantedSymbols() {
         let input = """
         === Subcategory ===
@@ -73,10 +72,7 @@ final class WikipediaParserTests: XCTestCase {
         XCTAssertEqual(result.deaths.count, 1)
         XCTAssertEqual(result.deaths.first?.year, "1966")
         XCTAssertEqual(result.deaths.first?.title, "A famous person")
-        XCTAssertEqual(result.deaths.first?.additional, "an important figure (b. 1890)")
-        
-        XCTAssertEqual(result.holidays.count, 1)
-        XCTAssertEqual(result.holidays.first?.title, "National Cake Day")
+        XCTAssertEqual(result.deaths.first?.additional, "An important figure (b. 1890)")
     }
     
     func testParseWikipediaDayNoSectionHeadings() {
@@ -113,41 +109,36 @@ final class WikipediaParserTests: XCTestCase {
         XCTAssertEqual(result.first?.title, "End of World War II.")
     }
     
-    // Test convertToModel method
-    func testConvertToModelEventWithoutYear() {
-        let line = "Event without year"
-        let result = parser.convertToModel(from: line, category: .events)
+    func testParseCategoryMultipleEventsForDate() {
+        let input = """
+        == Events ==
+        1945
+        Event 1
+        event 2
+        """
         
-        XCTAssertNotNil(result)
-        XCTAssertEqual(result?.title, "Event without year")
-        XCTAssertNil(result?.year)
-        XCTAssertNil(result?.additional)
+        let result = parser.parseCategory(from: input, category: .events)
+        
+        XCTAssertEqual(result.count, 2)
+        XCTAssertEqual(result[0].year, "1945")
+        XCTAssertEqual(result[0].title, "Event 1")
+        XCTAssertEqual(result[1].year, "1945")
+        XCTAssertEqual(result[1].title, "Event 2")
     }
     
     func testConvertToModelEventWithYearAndTitle() {
-        let line = "1947 – Independence of India"
-        let result = parser.convertToModel(from: line, category: .events)
+        let result = parser.shortModel(year: "1947", text: "Independence of India")
         
-        XCTAssertNotNil(result)
-        XCTAssertEqual(result?.year, "1947")
-        XCTAssertEqual(result?.title, "Independence of India")
-        XCTAssertNil(result?.additional)
+        XCTAssertEqual(result.year, "1947")
+        XCTAssertEqual(result.title, "Independence of India")
+        XCTAssertNil(result.additional)
     }
     
     func testConvertToModelBirthOrDeathEvent() {
-        let line = "1890 – Famous Person, known for something special (d. 1966)"
-        let result = parser.convertToModel(from: line, category: .births)
+        let result = parser.extendedModel(year: "1890", text: "Famous Person, known for something special (d. 1966)")
         
-        XCTAssertNotNil(result)
-        XCTAssertEqual(result?.year, "1890")
-        XCTAssertEqual(result?.title, "Famous Person")
-        XCTAssertEqual(result?.additional, "known for something special (d. 1966)")
-    }
-    
-    func testConvertToModelIgnoresInvalidLineForBirths() {
-        let line = "Just some random text without separator"
-        let result = parser.convertToModel(from: line, category: .births)
-        
-        XCTAssertNil(result)
+        XCTAssertEqual(result.year, "1890")
+        XCTAssertEqual(result.title, "Famous Person")
+        XCTAssertEqual(result.additional, "Known for something special (d. 1966)")
     }
 }

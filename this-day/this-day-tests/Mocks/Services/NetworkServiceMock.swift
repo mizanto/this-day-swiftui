@@ -17,7 +17,7 @@ final class NetworkServiceMock: NetworkServiceProtocol {
     
     var fetchEventsCalled: Bool = false
 
-    func fetchEvents(for date: Date) -> AnyPublisher<DayNetworkModel, NetworkServiceError> {
+    func fetchEvents(for date: Date, language: String) -> AnyPublisher<DayNetworkModel, NetworkServiceError> {
         fetchEventsCalled = true
         
         if let error = error {

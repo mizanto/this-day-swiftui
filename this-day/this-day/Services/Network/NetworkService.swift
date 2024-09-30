@@ -38,7 +38,7 @@ class NetworkService: NetworkServiceProtocol {
             .eraseToAnyPublisher()
     }
 
-    func fetchEvents(for date: Date, language: String) -> AnyPublisher<DayNetworkModel, NetworkServiceError> {
+    func fetchEvents(for date: Date, language: String = "en") -> AnyPublisher<DayNetworkModel, NetworkServiceError> {
         guard let url = url(date: date, language: language) else {
             AppLogger.shared.error("Invalid URL for Wikipedia query with date: \(date)", category: .network)
             return Fail(error: NetworkServiceError.invalidURL).eraseToAnyPublisher()

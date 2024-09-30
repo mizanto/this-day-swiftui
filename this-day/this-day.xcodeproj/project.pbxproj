@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AD1726F92CAB0629004040F6 /* LocalizationManagerMok.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1726F82CAB061B004040F6 /* LocalizationManagerMok.swift */; };
 		AD2609542C99746C00687D36 /* URLSessionMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD2609532C99746C00687D36 /* URLSessionMock.swift */; };
 		AD2609582C99763400687D36 /* URLSessionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD2609572C99763400687D36 /* URLSessionProtocol.swift */; };
 		AD33EDBD2C997DE200E38CA9 /* NetworkServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD33EDBC2C997DE200E38CA9 /* NetworkServiceTests.swift */; };
@@ -78,7 +79,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		AD26094C2C9971BD00687D36 /* PBXContainerItemProxy */ = {
+		ADEDFD242CAB053D003AACA5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = AD4D88E22C9841CF003DD3C4 /* Project object */;
 			proxyType = 1;
@@ -88,6 +89,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AD1726F72CAB0594004040F6 /* TestPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestPlan.xctestplan; sourceTree = "<group>"; };
+		AD1726F82CAB061B004040F6 /* LocalizationManagerMok.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationManagerMok.swift; sourceTree = "<group>"; };
 		AD2609482C9971BD00687D36 /* this-day-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "this-day-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD2609532C99746C00687D36 /* URLSessionMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionMock.swift; sourceTree = "<group>"; };
 		AD2609572C99763400687D36 /* URLSessionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionProtocol.swift; sourceTree = "<group>"; };
@@ -203,6 +206,7 @@
 				AD2609532C99746C00687D36 /* URLSessionMock.swift */,
 				AD9592052C9994DA0019BB13 /* NetworkServiceMock.swift */,
 				AD53AA852CA459850024FD31 /* StorageServiceMock.swift */,
+				AD1726F82CAB061B004040F6 /* LocalizationManagerMok.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -239,6 +243,7 @@
 		AD4D88E12C9841CF003DD3C4 = {
 			isa = PBXGroup;
 			children = (
+				AD1726F72CAB0594004040F6 /* TestPlan.xctestplan */,
 				AD4D88EC2C9841CF003DD3C4 /* this-day */,
 				AD2609492C9971BD00687D36 /* this-day-tests */,
 				AD4D88EB2C9841CF003DD3C4 /* Products */,
@@ -534,7 +539,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				AD26094D2C9971BD00687D36 /* PBXTargetDependency */,
+				ADEDFD252CAB053D003AACA5 /* PBXTargetDependency */,
 			);
 			name = "this-day-tests";
 			productName = "this-day-tests";
@@ -650,6 +655,7 @@
 				AD53AA432CA1F1430024FD31 /* WikipediaParserTests.swift in Sources */,
 				AD9592062C9994DA0019BB13 /* NetworkServiceMock.swift in Sources */,
 				AD33EDBD2C997DE200E38CA9 /* NetworkServiceTests.swift in Sources */,
+				AD1726F92CAB0629004040F6 /* LocalizationManagerMok.swift in Sources */,
 				ADD1CF962C99936F00739278 /* EventsViewModelTests.swift in Sources */,
 				AD53AA862CA459890024FD31 /* StorageServiceMock.swift in Sources */,
 				AD53AA882CA470020024FD31 /* StorageServiceTests.swift in Sources */,
@@ -723,10 +729,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		AD26094D2C9971BD00687D36 /* PBXTargetDependency */ = {
+		ADEDFD252CAB053D003AACA5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = AD4D88E92C9841CF003DD3C4 /* this-day */;
-			targetProxy = AD26094C2C9971BD00687D36 /* PBXContainerItemProxy */;
+			targetProxy = ADEDFD242CAB053D003AACA5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

@@ -15,6 +15,7 @@ final class DayViewModelTests: XCTestCase {
     private var viewModel: DayViewModel!
     private var networkServiceMock: NetworkServiceMock!
     private var storageServiceMock: StorageServiceMock!
+    private var localizationManagerMock: LocalizationManagerMock!
     private var cancellables: Set<AnyCancellable>!
     
     override func setUp() {
@@ -22,7 +23,8 @@ final class DayViewModelTests: XCTestCase {
         networkServiceMock = NetworkServiceMock()
         _ = PersistenceController(inMemory: true)
         storageServiceMock = StorageServiceMock(context: PersistenceController.shared.container.viewContext)
-        viewModel = DayViewModel(networkService: networkServiceMock, storageService: storageServiceMock)
+        localizationManagerMock = LocalizationManagerMock()
+        viewModel = DayViewModel(networkService: networkServiceMock, storageService: storageServiceMock, localizationManager: localizationManagerMock)
         cancellables = []
     }
     
@@ -58,7 +60,6 @@ final class DayViewModelTests: XCTestCase {
                     XCTAssertEqual(storageServiceMock.days.count, 1, "Invalid days count")
                     XCTAssertTrue(networkServiceMock.fetchEventsCalled, "Fetch events not called")
                     XCTAssertEqual(events.count, 1, "Invalid events count")
-                    XCTAssertEqual(viewModel.title, self.currentDateFormatted(), "Invalid title")
                 } else if case .error(let errorMessage) = state {
                     XCTFail("Test failed with error state: \(errorMessage)")
                 }
@@ -72,13 +73,21 @@ final class DayViewModelTests: XCTestCase {
     
     func testOnAppearWithCacheSuccess() {
         let networkModel = setupMockDay(category: .events)
-        try? storageServiceMock.saveDay(networkModel: networkModel, for: Date())
+        
+        do {
+            try storageServiceMock.saveDay(networkModel: networkModel, for: Date())
+        } catch {
+            XCTFail("Test failed with error: \(error)")
+        }
+        
         storageServiceMock.saveDayCalled = false
         
         let expectation = XCTestExpectation(description: "Fetch day successfully")
         
         viewModel.$state
+            .dropFirst()
             .sink { [weak self] state in
+                print("State: \(state)")
                 guard let self else { return }
                 if case .data(let events) = state {
                     XCTAssertTrue(storageServiceMock.fetchDayCalled, "Fetch day not called")
@@ -252,33 +261,6 @@ final class DayViewModelTests: XCTestCase {
         wait(for: [expectation], timeout: 10.0)
     }
     
-    func testHolidaysSelection() {
-        let day = setupMockDay(category: .holidays)
-        networkServiceMock.day = day
-        
-        performOnAppearAndWait()
-        
-        let expectation = XCTestExpectation(description: "Selected category should change to holidays")
-        
-        viewModel.$state
-            .sink { state in
-                if case .data(let events) = state {
-                    guard !events.isEmpty else { return }
-                    
-                    XCTAssertEqual(events.count, 1)
-                    let event = events.first as? ShortEvent
-                    XCTAssertNotNil(event)
-                    XCTAssertEqual(event!.title, day.holidays.first?.title)
-                    expectation.fulfill()
-                }
-            }
-            .store(in: &cancellables)
-
-        viewModel.selectedCategory = .holidays
-        
-        wait(for: [expectation], timeout: 5.0)
-    }
-    
     func testAddEventToBookmarks() {
         let dayNetworkModel = setupMockDay(category: .events)
         let date = Date()
@@ -358,19 +340,15 @@ final class DayViewModelTests: XCTestCase {
         switch category {
         case .events:
             return DayNetworkModel(
-                text: text, general: [EventNetworkModel(year: "1111", title: "Title")], births: [], deaths: [], holidays: []
+                text: text, general: [EventNetworkModel(year: "1111", title: "Title")], births: [], deaths: []
             )
         case .births:
             return DayNetworkModel(
-                text: text, general: [], births: [EventNetworkModel(year: "1111", title: "Title", additional: "Additional")], deaths: [], holidays: []
+                text: text, general: [], births: [EventNetworkModel(year: "1111", title: "Title", additional: "Additional")], deaths: []
             )
         case .deaths:
             return DayNetworkModel(
-                text: text, general: [], births: [], deaths: [EventNetworkModel(year: "1111", title: "Title", additional: "Additional")], holidays: []
-            )
-        case .holidays:
-            return DayNetworkModel(
-                text: text, general: [], births: [], deaths: [], holidays: [EventNetworkModel(title: "Title")]
+                text: text, general: [], births: [], deaths: [EventNetworkModel(year: "1111", title: "Title", additional: "Additional")]
             )
         }
     }

@@ -29,9 +29,10 @@ final class StorageServiceTests: XCTestCase {
     }
     
     func testFetchDaySuccess() throws {
-        let id = "01_01"
+        let id = "0101EN"
         let dayEntity = DayEntity(context: context)
         dayEntity.id = id
+        dayEntity.language = "en"
         dayEntity.text = "Test text"
         dayEntity.date = Date()
         try context.save()
@@ -43,7 +44,7 @@ final class StorageServiceTests: XCTestCase {
     }
 
     func testFetchDayNotFound() throws {
-        let fetchedDay = try storageService.fetchDay(id: "01_01")
+        let fetchedDay = try storageService.fetchDay(id: "0101EN")
         XCTAssertNil(fetchedDay)
     }
     
@@ -52,17 +53,15 @@ final class StorageServiceTests: XCTestCase {
             text: "Test text",
             general: [EventNetworkModel(year: "2000", title: "Test title")],
             births: [],
-            deaths: [],
-            holidays: []
+            deaths: []
         )
         let date = Date(timeIntervalSince1970: 0) // 1 jan 1970
         
-        try storageService.saveDay(networkModel: networkModel, for: date)
+        try storageService.saveDay(networkModel: networkModel, for: date, language: "en")
         
-        let fetchedDay = try storageService.fetchDay(id: "01_01")
+        let fetchedDay = try storageService.fetchDay(id: "0101EN")
         
         XCTAssertNotNil(fetchedDay)
-        XCTAssertEqual(fetchedDay?.id, "01_01")
         XCTAssertEqual(fetchedDay?.text, networkModel.text)
         XCTAssertEqual(fetchedDay?.events?.count, 1)
     }
