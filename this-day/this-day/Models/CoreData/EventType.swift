@@ -11,7 +11,6 @@ enum EventType: String {
     case general
     case birth
     case death
-    case holiday
 }
 
 extension EventEntity {

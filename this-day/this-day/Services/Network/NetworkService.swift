@@ -9,17 +9,15 @@ import Combine
 import Foundation
 
 protocol NetworkServiceProtocol {
-    func fetchEvents(for date: Date) -> AnyPublisher<DayNetworkModel, NetworkServiceError>
+    func fetchEvents(for date: Date, language: String) -> AnyPublisher<DayNetworkModel, NetworkServiceError>
 }
 
 class NetworkService: NetworkServiceProtocol {
 
-    let parser: WikipediaParser
     let session: URLSessionProtocol
 
     init(session: URLSessionProtocol = URLSession.shared) {
         self.session = session
-        self.parser = WikipediaParser()
     }
 
     private func fetchData<T: Decodable>(from url: URL) -> AnyPublisher<T, NetworkServiceError> {
@@ -40,25 +38,22 @@ class NetworkService: NetworkServiceProtocol {
             .eraseToAnyPublisher()
     }
 
-    func fetchEvents(for date: Date) -> AnyPublisher<DayNetworkModel, NetworkServiceError> {
-        guard let url = url(for: date) else {
+    func fetchEvents(for date: Date, language: String) -> AnyPublisher<DayNetworkModel, NetworkServiceError> {
+        guard let url = url(date: date, language: language) else {
             AppLogger.shared.error("Invalid URL for Wikipedia query with date: \(date)", category: .network)
             return Fail(error: NetworkServiceError.invalidURL).eraseToAnyPublisher()
         }
         AppLogger.shared.info("Fetching Wikipedia events for date: \(date) with URL: \(url)", category: .network)
 
         return fetchData(from: url) // Use the generic fetch method
-            .tryMap { [weak self] (response: ResponseNetworkModel) in
-                guard let self else {
-                    throw NetworkServiceError.unknownError("Self is nil in parsing step")
-                }
+            .tryMap { (response: ResponseNetworkModel) in
                 guard let extract = response.query.pages.values.first?.extract else {
                     AppLogger.shared.error("Extract not found in the Wikipedia response", category: .network)
                     throw NetworkServiceError.parsingError("Extract not found in the Wikipedia response")
                 }
 
                 AppLogger.shared.info("Successfully extracted 'extract' for date: \(date)", category: .network)
-                return try self.parser.parseWikipediaDay(from: extract)
+                return try WikipediaParser(language: language).parseWikipediaDay(from: extract)
             }
             .mapError { error -> NetworkServiceError in
                 if let networkError = error as? NetworkServiceError {
@@ -70,12 +65,12 @@ class NetworkService: NetworkServiceProtocol {
             .eraseToAnyPublisher()
     }
 
-    private func url(for date: Date) -> URL? {
-        WikipediaURLBuilder()
+    private func url(date: Date, language: String) -> URL? {
+        WikipediaURLBuilder(language: language)
             .action("query")
             .prop("extracts")
             .format("json")
-            .titles(date.toFormat("MMMM_dd"))
+            .titles(date.toLocalizedDayMonth(language: language))
             .explaintext(true)
             .build()
     }

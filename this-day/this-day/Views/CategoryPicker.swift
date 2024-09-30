@@ -11,7 +11,6 @@ enum EventCategory: String, CaseIterable, Identifiable {
     case events
     case births
     case deaths
-    case holidays
 
     var id: String { self.rawValue }
 
@@ -20,7 +19,6 @@ enum EventCategory: String, CaseIterable, Identifiable {
         case .events: return LocalizedString("category.events")
         case .births: return LocalizedString("category.births")
         case .deaths: return LocalizedString("category.deaths")
-        case .holidays: return LocalizedString("category.holidays")
         }
     }
 
@@ -29,7 +27,6 @@ enum EventCategory: String, CaseIterable, Identifiable {
         case .events: return .blue
         case .births: return .green
         case .deaths: return .black
-        case .holidays: return .pink
         }
     }
 
@@ -38,7 +35,6 @@ enum EventCategory: String, CaseIterable, Identifiable {
         case .general: return .events
         case .birth: return .births
         case .death: return .deaths
-        case .holiday: return .holidays
         }
     }
 }

@@ -9,14 +9,14 @@ import Foundation
 
 final class WikipediaURLBuilder {
     private let scheme = "https"
-    private let host = "en.wikipedia.org"
+    private var host: String
     private let path = "/w/api.php"
-
     private var urlComponents: URLComponents
 
-    init() {
+    init(language: String = "en") {
         urlComponents = URLComponents()
         urlComponents.scheme = scheme
+        self.host = "\(language).wikipedia.org"
         urlComponents.host = host
         urlComponents.path = path
         urlComponents.queryItems = []

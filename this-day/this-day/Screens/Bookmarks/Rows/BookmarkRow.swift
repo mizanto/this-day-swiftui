@@ -60,7 +60,7 @@ struct BookmarkRow: View {
             title: "Heritage Day (South Africa)",
             subtitle: "",
             inBookmarks: true,
-            category: .holidays
+            category: .events
         ),
         onBookmarkPressed: { _ in },
         onCopyPressed: { _ in },

@@ -10,7 +10,7 @@ import CoreData
 extension DayEntity {
     static func from(networkModel: DayNetworkModel, date: Date, context: NSManagedObjectContext) -> DayEntity {
         let dayEntity = DayEntity(context: context)
-        dayEntity.id = date.toFormat("MM_dd")
+        dayEntity.id = date.toFormat("MM_dd") // TODO: Fix
         dayEntity.text = networkModel.text
         dayEntity.date = Date()
 
@@ -18,7 +18,6 @@ extension DayEntity {
             (networkModel.general, .general),
             (networkModel.births, .birth),
             (networkModel.deaths, .death),
-            (networkModel.holidays, .holiday)
         ]
 
         for (events, type) in eventTypes {

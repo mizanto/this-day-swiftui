@@ -51,6 +51,8 @@ final class DayViewModel: DayViewModelProtocol {
         }
     }
     private var uiModels: [EventCategory: [any EventProtocol]] = [:]
+    
+    private var language: String { LocalizationManager.shared.currentLanguage }
 
     init(networkService: NetworkServiceProtocol = NetworkService(),
          storageService: StorageServiceProtocol) {
@@ -61,8 +63,12 @@ final class DayViewModel: DayViewModelProtocol {
     func onAppear() {
         AppLogger.shared.info("Events view appeared", category: .ui)
 
-        title = currentDate.toFormat("MMMM dd")
-        let idString = currentDate.toFormat("MM_dd")
+        title = currentDate.toLocalizedDayMonth(language: language)
+        let idString = currentDate.toFormat("MM_dd") // TODO: Fix
+        
+        fetchEvents(for: currentDate, language: language)
+        
+        return
 
         do {
             if let dayEntity = try storageService.fetchDay(id: idString) {
@@ -75,17 +81,18 @@ final class DayViewModel: DayViewModelProtocol {
                 }
             } else {
                 AppLogger.shared.info("No data in storage for id: \(idString). Fetching from network.", category: .ui)
-                fetchEvents(for: currentDate)
+                fetchEvents(for: currentDate, language: language)
             }
         } catch {
             AppLogger.shared.error("Error fetching data for day with id: \(idString): \(error)", category: .ui)
-            fetchEvents(for: currentDate)
+            fetchEvents(for: currentDate, language: language)
         }
     }
 
     func onTryAgain() {
         AppLogger.shared.info("Trying to fetch events after error", category: .ui)
-        fetchEvents(for: currentDate)
+        let language = LocalizationManager.shared.currentLanguage
+        fetchEvents(for: currentDate, language: language)
     }
 
     func toggleBookmark(for eventID: UUID) {
@@ -118,7 +125,7 @@ final class DayViewModel: DayViewModelProtocol {
     }
 
     func copyToClipboardEvent(id: UUID) {
-        guard let stringToCopy = day?.eventsArray.first(where: { $0.id == id })?.toSharingString() else {
+        guard let stringToCopy = day?.eventsArray.first(where: { $0.id == id })?.toSharingString(language: language) else {
             AppLogger.shared.error("Failed to copy event \(id) to clipboard. No sharing string available.",
                                    category: .ui)
             return
@@ -134,7 +141,7 @@ final class DayViewModel: DayViewModelProtocol {
     }
 
     func shareEvent(id: UUID) {
-        guard let stringToShare = day?.eventsArray.first(where: { $0.id == id })?.toSharingString() else {
+        guard let stringToShare = day?.eventsArray.first(where: { $0.id == id })?.toSharingString(language: language) else {
             AppLogger.shared.error("Failed to share event \(id) to social media. No sharing string available.",
                                    category: .ui)
             return
@@ -147,12 +154,12 @@ final class DayViewModel: DayViewModelProtocol {
         itemsForSahre = nil
     }
 
-    private func fetchEvents(for date: Date) {
+    private func fetchEvents(for date: Date, language: String) {
         AppLogger.shared.info("Starting to fetch events for date: \(date)", category: .ui)
 
         state = .loading
 
-        networkService.fetchEvents(for: date)
+        networkService.fetchEvents(for: date, language: language)
             .receive(on: DispatchQueue.main)
             .sink(
                 receiveCompletion: { [weak self] completion in
@@ -169,7 +176,7 @@ final class DayViewModel: DayViewModelProtocol {
                 receiveValue: { [weak self] model in
                     guard let self else { return }
                     // swiftlint:disable:next line_length
-                    AppLogger.shared.info("Loaded \(model.general.count) events, \(model.births.count) births, \(model.deaths.count) deaths and \(model.holidays.count) holidays for date: \(date)", category: .ui)
+                    AppLogger.shared.info("Loaded \(model.general.count) events, \(model.births.count) births and \(model.deaths.count) deaths for date: \(date)", category: .ui)
 
                     self.save(networkModel: model, for: date)
                 }
@@ -208,8 +215,7 @@ final class DayViewModel: DayViewModelProtocol {
         uiModels = [
             .events: mapEvents(from: day.eventsArray, for: .general),
             .births: mapEvents(from: day.eventsArray, for: .birth),
-            .deaths: mapEvents(from: day.eventsArray, for: .death),
-            .holidays: mapEvents(from: day.eventsArray, for: .holiday)
+            .deaths: mapEvents(from: day.eventsArray, for: .death)
         ]
     }
 }

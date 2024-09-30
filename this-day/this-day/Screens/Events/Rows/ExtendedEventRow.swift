@@ -19,7 +19,8 @@ struct ExtendedEventRow: View {
         HStack(alignment: .top) {
             Text(event.year)
                 .font(.headline)
-                .frame(width: 54, alignment: .trailing)
+                .multilineTextAlignment(.trailing)
+                .frame(width: 60, alignment: .trailing)
 
             VStack(alignment: .leading, spacing: 0) {
                 Text(event.title)

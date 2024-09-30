@@ -9,15 +9,6 @@ import CoreData
 
 extension EventEntity {
 
-    var stringDate: String? {
-        if eventType == .holiday {
-            return day?.date.toFormat("MMMM dd")
-        } else {
-            guard let year, let stringDate = day?.date.toFormat("MMMM dd") else { return nil }
-            return stringDate + ", \(year)"
-        }
-    }
-
     var inBookmarks: Bool {
         return bookmark != nil
     }
@@ -33,35 +24,31 @@ extension EventEntity {
         eventEntity.eventType = type
         return eventEntity
     }
-
-    func toDisplayModel() -> any EventProtocol {
-        switch self.eventType {
-        case .holiday:
-            return ShortEvent(
-                id: self.id,
-                title: self.title,
-                inBookmarks: self.inBookmarks
-            )
-        case .general, .birth, .death:
-            return ExtendedEvent(
-                id: self.id,
-                year: self.year ?? "",
-                title: self.title,
-                subtitle: self.subtitle,
-                inBookmarks: self.inBookmarks
-            )
-        }
+    
+    func stringDate(language: String) -> String? {
+        guard let year, let stringDate = day?.date.toLocalizedDayMonth(language: language) else { return nil }
+        return stringDate + ", \(year)"
     }
 
-    func toSharingString() -> String? {
+    func toDisplayModel() -> any EventProtocol {
+        ExtendedEvent(
+            id: self.id,
+            year: self.year ?? "",
+            title: self.title,
+            subtitle: self.subtitle,
+            inBookmarks: self.inBookmarks
+        )
+    }
+
+    func toSharingString(language: String) -> String? {
         guard let date = day?.date else {
             return nil
         }
 
-        var resultString = date.toFormat("MMMM dd")
+        var resultString = date.toLocalizedDayMonth(language: language)
 
         if let year = self.year {
-            resultString += ", \(year)"
+            resultString += language == "ru" ? " \(year) г." : ", \(year)"
         }
         resultString += ":\n"
 
@@ -74,9 +61,6 @@ extension EventEntity {
         case .death:
             let prefix = LocalizedString("sharing_text.died")
             resultString += "\(prefix) \(self.title)"
-        case .holiday:
-            let celebrates = LocalizedString("sharing_text.celebrates")
-            resultString = "\(date.toFormat("MMMM dd")), \(celebrates) \(self.title)"
         }
 
         if let subtitle = self.subtitle, !subtitle.isEmpty {

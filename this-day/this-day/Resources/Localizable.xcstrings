@@ -47,7 +47,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Умерли"
+            "value" : "Скончались"
           }
         }
       }
@@ -65,23 +65,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "События"
-          }
-        }
-      }
-    },
-    "category.holidays" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Holidays"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Праздники"
           }
         }
       }
@@ -268,7 +251,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Погиб(-ла)"
+            "value" : "Скончался(-лась)"
           }
         }
       }

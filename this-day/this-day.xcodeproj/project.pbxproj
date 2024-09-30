@@ -64,6 +64,7 @@
 		ADE5C5002CA81D8900FF2BF5 /* LocalizationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE5C4FF2CA81D8900FF2BF5 /* LocalizationManager.swift */; };
 		ADE5C5022CA81F0100FF2BF5 /* Bundle+Extrnsion.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE5C5012CA81F0000FF2BF5 /* Bundle+Extrnsion.swift */; };
 		ADE5C5042CA846E500FF2BF5 /* BundleEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE5C5032CA846E400FF2BF5 /* BundleEx.swift */; };
+		ADEDFD1F2CAA9FB0003AACA5 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADEDFD1E2CAA9FAF003AACA5 /* String.swift */; };
 		ADF08E312CA02B6400CB877A /* ResponseNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF08E302CA02B6000CB877A /* ResponseNetworkModel.swift */; };
 		ADF08E332CA02DF100CB877A /* WikipediaURLBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF08E322CA02DF000CB877A /* WikipediaURLBuilder.swift */; };
 		ADF4F2992CA171F80057F9CA /* ShortEventRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF4F2982CA171F70057F9CA /* ShortEventRow.swift */; };
@@ -147,6 +148,7 @@
 		ADE5C4FF2CA81D8900FF2BF5 /* LocalizationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationManager.swift; sourceTree = "<group>"; };
 		ADE5C5012CA81F0000FF2BF5 /* Bundle+Extrnsion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extrnsion.swift"; sourceTree = "<group>"; };
 		ADE5C5032CA846E400FF2BF5 /* BundleEx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleEx.swift; sourceTree = "<group>"; };
+		ADEDFD1E2CAA9FAF003AACA5 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		ADF08E302CA02B6000CB877A /* ResponseNetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseNetworkModel.swift; sourceTree = "<group>"; };
 		ADF08E322CA02DF000CB877A /* WikipediaURLBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikipediaURLBuilder.swift; sourceTree = "<group>"; };
 		ADF4F2982CA171F70057F9CA /* ShortEventRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortEventRow.swift; sourceTree = "<group>"; };
@@ -352,6 +354,7 @@
 		AD4D891B2C987F50003DD3C4 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				ADEDFD1E2CAA9FAF003AACA5 /* String.swift */,
 				ADE5C5012CA81F0000FF2BF5 /* Bundle+Extrnsion.swift */,
 				AD9592312C9DC8B70019BB13 /* View+Extension.swift */,
 				AD4D891C2C987F60003DD3C4 /* Date+Extension.swift */,
@@ -657,6 +660,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ADEDFD1F2CAA9FB0003AACA5 /* String.swift in Sources */,
 				AD95922C2C9C3A000019BB13 /* WikipediaParser.swift in Sources */,
 				AD9592322C9DC8C30019BB13 /* View+Extension.swift in Sources */,
 				AD8BDFF82CA58C63006B9D58 /* BookmarkEvent.swift in Sources */,

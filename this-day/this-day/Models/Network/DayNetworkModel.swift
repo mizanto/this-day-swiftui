@@ -12,5 +12,4 @@ struct DayNetworkModel: Codable {
     let general: [EventNetworkModel]
     let births: [EventNetworkModel]
     let deaths: [EventNetworkModel]
-    let holidays: [EventNetworkModel]
 }

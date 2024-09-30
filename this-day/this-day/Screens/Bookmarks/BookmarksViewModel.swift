@@ -33,6 +33,8 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
         didSet { cacheBookmarks(bookmarks) }
     }
     private var uiModels: [BookmarkEvent] = []
+    
+    private var language: String { LocalizationManager.shared.currentLanguage }
 
     init(storageService: StorageServiceProtocol) {
         self.storageService = storageService
@@ -66,7 +68,7 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
     }
 
     func copyToClipboardBookmark(id: UUID) {
-        guard let stringToCopy = bookmarks.first(where: { $0.id == id })?.event?.toSharingString() else {
+        guard let stringToCopy = bookmarks.first(where: { $0.id == id })?.event?.toSharingString(language: language) else {
             AppLogger.shared.error("Failed to copy event \(id) to clipboard. No sharing string available.",
                                    category: .ui)
             return
@@ -81,7 +83,7 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
     }
 
     func shareBookmark(id: UUID) {
-        guard let stringToShare = bookmarks.first(where: { $0.id == id })?.event?.toSharingString() else {
+        guard let stringToShare = bookmarks.first(where: { $0.id == id })?.event?.toSharingString(language: language) else {
             AppLogger.shared.error("Failed to share event \(id) to social media. No sharing string available.",
                                    category: .ui)
             return
@@ -96,7 +98,7 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
 
             return BookmarkEvent(
                 id: bookmark.id,
-                date: event.stringDate ?? "??????",
+                date: event.stringDate(language: language) ?? "??????",
                 title: event.title,
                 subtitle: event.subtitle,
                 inBookmarks: true,
