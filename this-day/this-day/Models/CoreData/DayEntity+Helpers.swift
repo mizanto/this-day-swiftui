@@ -25,7 +25,7 @@ extension DayEntity {
         let eventTypes: [(events: [EventNetworkModel], type: EventType)] = [
             (networkModel.general, .general),
             (networkModel.births, .birth),
-            (networkModel.deaths, .death),
+            (networkModel.deaths, .death)
         ]
 
         for (events, type) in eventTypes {

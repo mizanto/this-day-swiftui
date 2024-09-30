@@ -52,7 +52,6 @@ final class DayViewModel: DayViewModelProtocol {
         }
     }
     private var uiModels: [EventCategory: [any EventProtocol]] = [:]
-    
     private var language: String { localizationManager.currentLanguage }
 
     init(networkService: NetworkServiceProtocol,
@@ -123,7 +122,8 @@ final class DayViewModel: DayViewModelProtocol {
     }
 
     func copyToClipboardEvent(id: UUID) {
-        guard let stringToCopy = day?.eventsArray.first(where: { $0.id == id })?.toSharingString(language: language) else {
+        let event = day?.eventsArray.first(where: { $0.id == id })
+        guard let stringToCopy = event?.toSharingString(language: language) else {
             AppLogger.shared.error("Failed to copy event \(id) to clipboard. No sharing string available.",
                                    category: .ui)
             return
@@ -139,7 +139,8 @@ final class DayViewModel: DayViewModelProtocol {
     }
 
     func shareEvent(id: UUID) {
-        guard let stringToShare = day?.eventsArray.first(where: { $0.id == id })?.toSharingString(language: language) else {
+        let event = day?.eventsArray.first(where: { $0.id == id })
+        guard let stringToShare = event?.toSharingString(language: language) else {
             AppLogger.shared.error("Failed to share event \(id) to social media. No sharing string available.",
                                    category: .ui)
             return

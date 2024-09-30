@@ -10,7 +10,7 @@ import SwiftUI
 struct MainTabView: View {
     let networkService: NetworkServiceProtocol
     let storageService: StorageServiceProtocol
-    
+
     @EnvironmentObject private var localizationManager: LocalizationManager
     @State private var selectedTab: Int = 0
 

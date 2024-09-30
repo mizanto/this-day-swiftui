@@ -22,14 +22,14 @@ extension Bundle {
     static let once: Void = {
         object_setClass(Bundle.main, type(of: BundleEx()))
     }()
-    
+
     static func setLanguage(_ language: String) {
         Bundle.once
         let isLanguageRTL = Locale.Language(identifier: language).characterDirection == .rightToLeft
         UserDefaults.standard.set(isLanguageRTL, forKey: "AppleTextDirection")
         UserDefaults.standard.set(isLanguageRTL, forKey: "NSForceRightToLeftWritingDirection")
         UserDefaults.standard.synchronize()
-        
+
         if let path = Bundle.main.path(forResource: language, ofType: "lproj"),
            let bundle = Bundle(path: path) {
             objc_setAssociatedObject(Bundle.main, &bundleKey, bundle, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)

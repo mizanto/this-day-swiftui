@@ -59,4 +59,4 @@ extension DayEntity {
 
 }
 
-extension DayEntity : Identifiable {}
+extension DayEntity: Identifiable {}

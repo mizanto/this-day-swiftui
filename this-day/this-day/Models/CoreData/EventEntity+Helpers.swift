@@ -24,7 +24,7 @@ extension EventEntity {
         eventEntity.eventType = type
         return eventEntity
     }
-    
+
     func stringDate(language: String) -> String? {
         guard let year, let stringDate = day?.date.toLocalizedDayMonth(language: language) else { return nil }
         return stringDate + ", \(year)"

@@ -18,12 +18,12 @@ protocol LocalizationManagerProtocol: ObservableObject {
 }
 
 class LocalizationManager: LocalizationManagerProtocol {
-    
+
     let availableLanguages = [
         Language(id: "en", name: "English"),
         Language(id: "ru", name: "Русский")
     ]
-    
+
     @Published var currentLanguage: String = Locale.current.language.languageCode?.identifier ?? "en" {
         didSet {
             UserDefaults.standard.set(currentLanguage, forKey: "selectedLanguage")
@@ -32,7 +32,7 @@ class LocalizationManager: LocalizationManagerProtocol {
             NotificationCenter.default.post(name: .languageDidChange, object: nil)
         }
     }
-    
+
     init() {
         if let savedLanguage = UserDefaults.standard.string(forKey: "selectedLanguage") {
             currentLanguage = savedLanguage

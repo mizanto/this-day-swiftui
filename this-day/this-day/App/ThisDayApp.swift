@@ -12,7 +12,7 @@ struct ThisDayApp: App {
     let persistenceController = PersistenceController.shared
     let storageService: StorageService
     let networkService = NetworkService()
-    
+
     @StateObject var localizationManager = LocalizationManager()
 
     init() {

@@ -14,13 +14,14 @@ final class WikipediaParser {
         case events = "== Events =="
         case births = "== Births =="
         case deaths = "== Deaths =="
-        
+
         func toLanguage(_ language: String) -> String {
             if language == "en" { return en }
             if language == "ru" { return ru }
             return en
         }
-        
+
+        // swiftlint:disable:next identifier_name
         private var en: String {
             switch self {
             case .events: return "== Events =="
@@ -28,7 +29,8 @@ final class WikipediaParser {
             case .deaths: return "== Deaths =="
             }
         }
-        
+
+        // swiftlint:disable:next identifier_name
         private var ru: String {
             switch self {
             case .events: return "== События =="
@@ -37,9 +39,9 @@ final class WikipediaParser {
             }
         }
     }
-    
+
     private let language: String
-    
+
     init(language: String) {
         self.language = language
     }
@@ -80,40 +82,42 @@ final class WikipediaParser {
 
         return DayNetworkModel(
             text: introText,
-            general: parsedCategories[.events]?.filter( {$0.year != nil} ) ?? [],
+            general: parsedCategories[.events]?.filter({ $0.year != nil }) ?? [],
             births: parsedCategories[.births] ?? [],
             deaths: parsedCategories[.deaths] ?? []
         )
     }
-    
+
     func parseCategory(from extract: String, category: Category) -> [EventNetworkModel] {
         let categoryString = category.toLanguage(language)
         AppLogger.shared.debug("Parsing category: \(categoryString)", category: .parser)
-        
+
         guard let categoryText = rawCategory(from: extract, for: category) else {
             AppLogger.shared.info("No \(categoryString) section found in Wikipedia extract", category: .parser)
             return []
         }
-        
+
         let lines = categoryText.components(separatedBy: "\n")
-        
+
         let separator: Character = language == "en" ? "–" : "—"
         let yearPattern = language == "en" ? "^[0-9]{1,4}( BC)?$"
                                            : "^[0-9]{1,4}( до н\\. э\\.)?$"
         var events: [EventNetworkModel] = []
-        var currentYear: String? = nil
-        
+        var currentYear: String?
+
         for line in lines {
             let cleanedLine = line.trimmingCharacters(in: .whitespacesAndNewlines)
-            
+
             // skip if the line is empty
             guard !cleanedLine.isEmpty else { continue }
-            
+
             // check if possible to parse "year - text"
             if let separator = cleanedLine.firstIndex(of: separator) {
                 let potentialYear = cleanedLine.prefix(upTo: separator).trimmingCharacters(in: .whitespacesAndNewlines)
-                let eventText = cleanedLine.suffix(from: cleanedLine.index(after: separator)).trimmingCharacters(in: .whitespacesAndNewlines)
-                
+                let eventText = cleanedLine
+                    .suffix(from: cleanedLine.index(after: separator))
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+
                 // check if the beginning of the string matches the year
                 if potentialYear.range(of: yearPattern, options: .regularExpression) != nil {
                     currentYear = potentialYear
@@ -121,7 +125,7 @@ final class WikipediaParser {
                     continue
                 }
             }
-            
+
             // check if the line is only the year
             if cleanedLine.range(of: yearPattern, options: .regularExpression) != nil {
                 currentYear = cleanedLine
@@ -129,13 +133,13 @@ final class WikipediaParser {
                 events.append(model(year: year, text: cleanedLine, category: category))
             }
         }
-        
+
         return events
     }
-    
+
     func rawCategory(from extract: String, for category: Category) -> String? {
         let categoryString = category.toLanguage(language)
-        
+
         // find the beegining of the current category
         guard let categoryRange = extract.range(of: categoryString) else {
             AppLogger.shared.info("No \(categoryString) section found in Wikipedia extract", category: .parser)
@@ -149,7 +153,7 @@ final class WikipediaParser {
 
         return String(remainingText[..<nextCategoryRange.lowerBound])
     }
-    
+
     func model(year: String, text: String, category: Category) -> EventNetworkModel {
         if category == .events {
             shortModel(year: year, text: text)
@@ -157,11 +161,11 @@ final class WikipediaParser {
             extendedModel(year: year, text: text)
         }
     }
-    
+
     func shortModel(year: String, text: String) -> EventNetworkModel {
         EventNetworkModel(year: year, title: text.capitalizedFirstLetter())
     }
-    
+
     func extendedModel(year: String, text: String) -> EventNetworkModel {
         if let commaIndex = text.firstIndex(of: ",") {
             let titlePart = text[..<commaIndex].trimmingCharacters(in: .whitespacesAndNewlines)
