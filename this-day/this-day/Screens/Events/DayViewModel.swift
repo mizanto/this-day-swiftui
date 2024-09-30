@@ -206,8 +206,11 @@ final class DayViewModel: DayViewModelProtocol {
     }
 
     private func mapEvents(from events: [EventEntity], for type: EventType) -> [any EventProtocol] {
-        let filteredEvents = events.filter { $0.eventType == type }
-        return filteredEvents.map { $0.toDisplayModel() }
+        return events.compactMap { event in
+            guard event.eventType == type else { return nil }
+            return event.toDisplayModel()
+        }
+        .reversed()
     }
 
     private func cacheEvents(for day: DayEntity?) {
