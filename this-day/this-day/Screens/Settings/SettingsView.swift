@@ -31,69 +31,81 @@ struct SettingsView<ViewModel: SettingsViewModelProtocol>: View {
     @ViewBuilder
     private func content() -> some View {
         Form {
-            Section(header: Text("Profile")) {
-                if let user = viewModel.currentUser {
-                    HStack {
-                        Text("Name")
-                        Spacer()
-                        Text(user.name)
-                            .foregroundColor(.secondary)
-                    }
-                    HStack {
-                        Text("E-mail")
-                        Spacer()
-                        Text(user.email)
-                            .foregroundColor(.secondary)
-                    }
-                    Button(
-                        action: {
-                            viewModel.signOut()
-                        },
-                        label: {
-                            Text("Sign out")
-                                .frame(maxWidth: .infinity)
-                                .multilineTextAlignment(.center)
-                                .foregroundColor(.red)
-                        }
-                    )
-                } else {
-                    Button(
-                        action: {
-                            showingAuthView = true
-                        },
-                        label: {
-                            Text("Sign in")
-                                .frame(maxWidth: .infinity)
-                                .multilineTextAlignment(.center)
-                                .foregroundColor(.blue)
-                        }
-                    )
-                }
-            }
-            Section(header: Text(LocalizedString("settings.section.general"))) {
-                Picker(LocalizedString("settings.language"), selection: $viewModel.selectedLanguage) {
-                    ForEach(viewModel.availableLanguages) { language in
-                        Text(language.name).tag(language.id)
-                    }
-                }
-                .pickerStyle(MenuPickerStyle())
-                .onChange(of: viewModel.selectedLanguage) { _, newLanguage in
-                    viewModel.updateLanguage(newLanguage)
-                }
-            }
-            Section(header: Text(LocalizedString("settings.section.app_info"))) {
+            profileSection()
+            generalSection()
+            appInfoSection()
+        }
+    }
+
+    private func profileSection() -> some View {
+        Section(header: Text(LocalizedString("settings.section.profile"))) {
+            if let user = viewModel.currentUser {
                 HStack {
-                    Text(LocalizedString("settings.version"))
+                    Text(LocalizedString("settings.name"))
                     Spacer()
-                    Text(viewModel.appVersion)
+                    Text(user.name)
                         .foregroundColor(.secondary)
                 }
                 HStack {
-                    Text(LocalizedString("settings.build"))
+                    Text(LocalizedString("settings.email"))
                     Spacer()
-                    Text(viewModel.buildNumber)
+                    Text(user.email)
                         .foregroundColor(.secondary)
                 }
+                Button(
+                    action: {
+                        viewModel.signOut()
+                    },
+                    label: {
+                        Text(LocalizedString("auth.button.sign_out"))
+                            .frame(maxWidth: .infinity)
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(.red)
+                    }
+                )
+            } else {
+                Button(
+                    action: {
+                        showingAuthView = true
+                    },
+                    label: {
+                        Text(LocalizedString("auth.button.sign_in"))
+                            .frame(maxWidth: .infinity)
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(.blue)
+                    }
+                )
+            }
+        }
+    }
+
+    private func generalSection() -> some View {
+        Section(header: Text(LocalizedString("settings.section.general"))) {
+            Picker(LocalizedString("settings.language"), selection: $viewModel.selectedLanguage) {
+                ForEach(viewModel.availableLanguages) { language in
+                    Text(language.name).tag(language.id)
+                }
+            }
+            .pickerStyle(MenuPickerStyle())
+            .onChange(of: viewModel.selectedLanguage) { _, newLanguage in
+                viewModel.updateLanguage(newLanguage)
+            }
+        }
+    }
+
+    private func appInfoSection() -> some View {
+        Section(header: Text(LocalizedString("settings.section.app_info"))) {
+            HStack {
+                Text(LocalizedString("settings.version"))
+                Spacer()
+                Text(viewModel.appVersion)
+                    .foregroundColor(.secondary)
+            }
+            HStack {
+                Text(LocalizedString("settings.build"))
+                Spacer()
+                Text(viewModel.buildNumber)
+                    .foregroundColor(.secondary)
             }
         }
     }

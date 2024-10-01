@@ -19,68 +19,60 @@ struct AuthView<ViewModel: AuthViewModelProtocol>: View {
         NavigationView {
             VStack(spacing: 20) {
                 if viewModel.isSignUpMode {
-                    TextField("Enter your name", text: $viewModel.name)
+                    TextField(LocalizedString("auth.enter_name"), text: $viewModel.name)
                         .padding(12)
                         .background(Color(.systemGray6))
                         .cornerRadius(8)
                         .focused($isTextFieldFocused)
                 }
-
-                TextField("Enter your e-mail", text: $viewModel.email)
+                TextField(LocalizedString("auth.enter_email"), text: $viewModel.email)
                     .autocapitalization(.none)
                     .keyboardType(.emailAddress)
                     .padding(12)
                     .background(Color(.systemGray6))
                     .cornerRadius(8)
                     .focused($isTextFieldFocused)
-
-                SecureField("Enter your password", text: $viewModel.password)
+                SecureField(LocalizedString("auth.enter_password"), text: $viewModel.password)
                     .padding(12)
                     .background(Color(.systemGray6))
                     .cornerRadius(8)
                     .focused($isTextFieldFocused)
-
                 if let errorMessage = viewModel.errorMessage {
                     Text(errorMessage)
                         .foregroundColor(.red)
                         .font(.caption)
                 }
-
-                Button(action: {
-                    if viewModel.isSignUpMode {
-                        viewModel.signUp()
-                    } else {
-                        viewModel.signIn()
+                Button(
+                    action: {
+                        viewModel.onActionButtonTapped()
+                    },
+                    label: {
+                        Text(viewModel.actionButtonTitle)
+                            .frame(maxWidth: .infinity)
+                            .padding(12)
+                            .background(.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
                     }
-                }) {
-                    Text(viewModel.isSignUpMode ? "Sign Up" : "Sign In")
-                        .frame(maxWidth: .infinity)
-                        .padding(12)
-                        .background(.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                }
-
-                Button(action: {
-                    viewModel.isSignUpMode.toggle()
-                }) {
-                    Text(viewModel.isSignUpMode ? "Already have an account? Sign In" : "Don't have an account? Sign Up")
-                        .font(.footnote)
-                        .foregroundColor(.blue)
-                }
-
+                )
+                Button(
+                    action: {
+                        viewModel.changeAuthMode()
+                    },
+                    label: {
+                        Text(viewModel.changeModeButtonTitle)
+                            .font(.footnote)
+                            .foregroundColor(.blue)
+                    }
+                )
                 Spacer()
             }
             .padding()
-            .navigationTitle(viewModel.isSignUpMode ? "Sign Up" : "Sign In")
-            .onChange(of: viewModel.isSignUpMode) { _, newValue in
+            .navigationTitle(viewModel.title)
+            .onChange(of: viewModel.isSignUpMode) {
                 isTextFieldFocused = false
             }
         }
-    }
-
-    private func isValidName(_ name: String) -> Bool {
-        !name.isEmpty && name.count >= 3
     }
 }
 

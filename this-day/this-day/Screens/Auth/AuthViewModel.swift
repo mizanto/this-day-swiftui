@@ -15,9 +15,12 @@ protocol AuthViewModelProtocol: ObservableObject {
     var isSignUpMode: Bool { get set }
     var errorMessage: String? { get }
     var isAuthenticated: Bool { get set }
+    var title: String { get }
+    var actionButtonTitle: String { get }
+    var changeModeButtonTitle: String { get }
 
-    func signIn()
-    func signUp()
+    func onActionButtonTapped()
+    func changeAuthMode()
 }
 
 final class AuthViewModel: AuthViewModelProtocol {
@@ -29,6 +32,20 @@ final class AuthViewModel: AuthViewModelProtocol {
     @Published var isAuthenticated: Bool = false
 
     var onAuthenticated: () -> Void
+    
+    var title: String {
+        isSignUpMode ? LocalizedString("auth.title.sing_up")
+                     : LocalizedString("auth.title.sign_in")
+    }
+    var actionButtonTitle: String {
+        isSignUpMode ? LocalizedString("auth.button.sign_up")
+                     : LocalizedString("auth.button.sign_in")
+    }
+    
+    var changeModeButtonTitle: String {
+        isSignUpMode ? LocalizedString("auth.button.already_have_account")
+                     : LocalizedString("auth.button.dont_have_account")
+    }
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -46,14 +63,19 @@ final class AuthViewModel: AuthViewModelProtocol {
             .store(in: &cancellables)
     }
     
-    private func clearInputs() {
-        name = ""
-        email = ""
-        password = ""
-        errorMessage = nil
+    func onActionButtonTapped() {
+        if isSignUpMode {
+            signUp()
+        } else {
+            signIn()
+        }
+    }
+    
+    func changeAuthMode() {
+        isSignUpMode.toggle()
     }
 
-    func signIn() {
+    private func signIn() {
         if let validationError = validationMessage(isEmailValid: isEmailValid(email),
                                                    isPasswordValid: isPasswordValid(password)) {
             errorMessage = validationError
@@ -70,7 +92,7 @@ final class AuthViewModel: AuthViewModelProtocol {
         }
     }
 
-    func signUp() {
+    private func signUp() {
         if let validationError = validationMessage(isNameValid: isNameValid(name),
                                                    isEmailValid: isEmailValid(email),
                                                    isPasswordValid: isPasswordValid(password)) {
@@ -133,16 +155,23 @@ final class AuthViewModel: AuthViewModelProtocol {
     private func validationMessage(isNameValid: Bool = true, isEmailValid: Bool, isPasswordValid: Bool) -> String? {
         var message: String = ""
         if !isNameValid {
-            message += "Name must be between 3 and 20 characters long.\n"
+            message += LocalizedString("auth.validation_error.name_length") + "\n"
         }
         if !isEmailValid {
-            message += "Invalid email.\n"
+            message += LocalizedString("auth.validation_error.email") + "\n"
         }
         if !isPasswordValid {
-            message += "Password must be at least 8 characters long.\n"
-            message += "Password must contain at least one uppercase letter.\n"
-            message += "Password must contain at least one digit.\n"
+            message += LocalizedString("auth.validation_error.password_length") + "\n"
+            message += LocalizedString("auth.validation_error.password_upper_case") + "\n"
+            message += LocalizedString("auth.validation_error.password_digit") + "\n"
         }
         return message.isEmpty ? nil : message
+    }
+
+    private func clearInputs() {
+        name = ""
+        email = ""
+        password = ""
+        errorMessage = nil
     }
 }
