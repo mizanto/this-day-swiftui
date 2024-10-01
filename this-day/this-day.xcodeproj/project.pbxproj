@@ -25,6 +25,8 @@
 		AD4AC4462CAC04EE00C6BFBE /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC4452CAC04EA00C6BFBE /* AuthView.swift */; };
 		AD4AC4492CAC32DB00C6BFBE /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC4482CAC32D900C6BFBE /* AuthViewModel.swift */; };
 		AD4AC44B2CAC330D00C6BFBE /* AuthViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC44A2CAC330B00C6BFBE /* AuthViewBuilder.swift */; };
+		AD4AC44E2CAC750A00C6BFBE /* AuthenticationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC44D2CAC750800C6BFBE /* AuthenticationError.swift */; };
+		AD4AC4502CAC753C00C6BFBE /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC44F2CAC753A00C6BFBE /* AuthenticationService.swift */; };
 		AD4D88EE2C9841CF003DD3C4 /* ThisDayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D88ED2C9841CF003DD3C4 /* ThisDayApp.swift */; };
 		AD4D88F02C9841CF003DD3C4 /* DayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D88EF2C9841CF003DD3C4 /* DayView.swift */; };
 		AD4D88F22C9841D0003DD3C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD4D88F12C9841D0003DD3C4 /* Assets.xcassets */; };
@@ -113,6 +115,8 @@
 		AD4AC4452CAC04EA00C6BFBE /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 		AD4AC4482CAC32D900C6BFBE /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		AD4AC44A2CAC330B00C6BFBE /* AuthViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewBuilder.swift; sourceTree = "<group>"; };
+		AD4AC44D2CAC750800C6BFBE /* AuthenticationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationError.swift; sourceTree = "<group>"; };
+		AD4AC44F2CAC753A00C6BFBE /* AuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
 		AD4D88EA2C9841CF003DD3C4 /* this-day.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "this-day.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD4D88ED2C9841CF003DD3C4 /* ThisDayApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThisDayApp.swift; sourceTree = "<group>"; };
 		AD4D88EF2C9841CF003DD3C4 /* DayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayView.swift; sourceTree = "<group>"; };
@@ -272,6 +276,15 @@
 			path = Auth;
 			sourceTree = "<group>";
 		};
+		AD4AC44C2CAC74FB00C6BFBE /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				AD4AC44F2CAC753A00C6BFBE /* AuthenticationService.swift */,
+				AD4AC44D2CAC750800C6BFBE /* AuthenticationError.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
 		AD4D88E12C9841CF003DD3C4 = {
 			isa = PBXGroup;
 			children = (
@@ -351,9 +364,10 @@
 		AD4D89092C986C96003DD3C4 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				AD4AC44C2CAC74FB00C6BFBE /* Authentication */,
+				ADE5C4FE2CA81D6B00FF2BF5 /* Localization */,
 				AD9592092C99C8E60019BB13 /* Network */,
 				AD53AA442CA2A5A70024FD31 /* Storage */,
-				ADE5C4FE2CA81D6B00FF2BF5 /* Localization */,
 				AD4D891E2C988810003DD3C4 /* AppLogger.swift */,
 			);
 			path = Services;
@@ -722,12 +736,14 @@
 				AD53AA6C2CA2C2C80024FD31 /* DayEntity+Helpers.swift in Sources */,
 				AD36067E2CA724A6008D31A9 /* SettingsView.swift in Sources */,
 				AD4D89182C987F05003DD3C4 /* ShortEvent.swift in Sources */,
+				AD4AC44E2CAC750A00C6BFBE /* AuthenticationError.swift in Sources */,
 				AD4D89072C98664F003DD3C4 /* DayViewBuilder.swift in Sources */,
 				AD95923B2C9DCDD60019BB13 /* ExtendedEventRow.swift in Sources */,
 				AD9592372C9DC9C90019BB13 /* ErrorView.swift in Sources */,
 				AD53AA642CA2B97C0024FD31 /* EventType.swift in Sources */,
 				AD4D891F2C988810003DD3C4 /* AppLogger.swift in Sources */,
 				AD53AA472CA2A6360024FD31 /* Model.xcdatamodeld in Sources */,
+				AD4AC4502CAC753C00C6BFBE /* AuthenticationService.swift in Sources */,
 				ADF08E312CA02B6400CB877A /* ResponseNetworkModel.swift in Sources */,
 				ADFE36922CA5A9F90050337D /* Badge.swift in Sources */,
 				AD53AA6E2CA2C2EA0024FD31 /* EventEntity+Helpers.swift in Sources */,
