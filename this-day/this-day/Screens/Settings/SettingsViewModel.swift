@@ -21,7 +21,6 @@ protocol SettingsViewModelProtocol: ObservableObject {
     var currentUser: UserInfo? { get }
 
     func signOut()
-    func updateProfileName(_ name: String)
     func updateLanguage(_ languageId: String)
     func refreshUserData()
 }
@@ -57,25 +56,7 @@ final class SettingsViewModel: SettingsViewModelProtocol {
             try Auth.auth().signOut()
             self.currentUser = nil
         } catch let error {
-            print("Sign-out error: \(error.localizedDescription)")
-        }
-    }
-    
-    func updateProfileName(_ name: String) {
-        guard let user = Auth.auth().currentUser else { return }
-
-        self.currentUser = UserInfo(name: name,
-                                    email: user.email ?? "")
-        
-        let changeRequest = user.createProfileChangeRequest()
-        changeRequest.displayName = name
-        changeRequest.commitChanges { [weak self] error in
-            if let error = error {
-                AppLogger.shared.error("Failed to update profile name: \(error.localizedDescription)", category: .auth)
-            } else {
-                AppLogger.shared.info("Profile name updated successfully", category: .auth)
-                self?.refreshUserData()
-            }
+            AppLogger.shared.error("Failed to sign out: \(error.localizedDescription)", category: .auth)
         }
     }
 

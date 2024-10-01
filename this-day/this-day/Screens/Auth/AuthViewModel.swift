@@ -32,16 +32,17 @@ final class AuthViewModel: AuthViewModelProtocol {
     @Published var isAuthenticated: Bool = false
 
     var onAuthenticated: () -> Void
-    
+
     var title: String {
         isSignUpMode ? LocalizedString("auth.title.sing_up")
                      : LocalizedString("auth.title.sign_in")
     }
+
     var actionButtonTitle: String {
         isSignUpMode ? LocalizedString("auth.button.sign_up")
                      : LocalizedString("auth.button.sign_in")
     }
-    
+
     var changeModeButtonTitle: String {
         isSignUpMode ? LocalizedString("auth.button.already_have_account")
                      : LocalizedString("auth.button.dont_have_account")
@@ -57,12 +58,12 @@ final class AuthViewModel: AuthViewModelProtocol {
             .filter { $0 }
             .sink { [weak self] _ in self?.onAuthenticated() }
             .store(in: &cancellables)
-        
+
         $isSignUpMode
             .sink { [ weak self] _ in self?.clearInputs() }
             .store(in: &cancellables)
     }
-    
+
     func onActionButtonTapped() {
         if isSignUpMode {
             signUp()
@@ -70,7 +71,7 @@ final class AuthViewModel: AuthViewModelProtocol {
             signIn()
         }
     }
-    
+
     func changeAuthMode() {
         isSignUpMode.toggle()
     }
