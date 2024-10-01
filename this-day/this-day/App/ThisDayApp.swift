@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseCore
 
 @main
 struct ThisDayApp: App {
@@ -16,6 +17,7 @@ struct ThisDayApp: App {
     @StateObject var localizationManager = LocalizationManager()
 
     init() {
+        FirebaseApp.configure()
         storageService = StorageService(context: persistenceController.container.viewContext)
     }
 

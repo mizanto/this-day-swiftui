@@ -14,6 +14,7 @@ final class AppLogger {
     static let shared = AppLogger()
 
     enum LogCategory: String {
+        case auth = "Authorization"
         case network = "Network"
         // swiftlint:disable:next identifier_name
         case ui = "UI"

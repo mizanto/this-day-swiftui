@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Already have an account? Sign In" : {
+
+    },
     "category_picker.title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -69,6 +72,21 @@
         }
       }
     },
+    "Don't have an account? Sign Up" : {
+
+    },
+    "E-mail" : {
+
+    },
+    "Enter your e-mail" : {
+
+    },
+    "Enter your name" : {
+
+    },
+    "Enter your password" : {
+
+    },
     "error.retry" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -136,6 +154,12 @@
           }
         }
       }
+    },
+    "Name" : {
+
+    },
+    "Profile" : {
+
     },
     "settings.build" : {
       "extractionState" : "manual",
@@ -272,6 +296,18 @@
           }
         }
       }
+    },
+    "Sign in" : {
+
+    },
+    "Sign In" : {
+
+    },
+    "Sign out" : {
+
+    },
+    "Sign Up" : {
+
     },
     "tab_title.bookmarks" : {
       "extractionState" : "manual",

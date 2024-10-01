@@ -25,7 +25,7 @@ extension Date {
     func toLocalizedDayMonth(language: String) -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: language)
-        formatter.dateFormat = language == "ru" ? "dd MMMM" : "MMMM dd"
+        formatter.dateFormat = language == "ru" ? "d MMMM" : "MMMM d"
         return formatter.string(from: self)
     }
 }
