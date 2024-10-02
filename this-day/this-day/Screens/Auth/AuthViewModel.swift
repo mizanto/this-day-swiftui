@@ -74,7 +74,7 @@ final class AuthViewModel: AuthViewModelProtocol {
     func changeAuthMode() {
         isSignUpMode.toggle()
     }
-    
+
     private func bind() {
         $isAuthenticated
             .dropFirst()

@@ -10,12 +10,12 @@ import Foundation
 struct UserInfo {
     let name: String
     let email: String
-    
+
     init (name: String, email: String) {
         self.name = name
         self.email = email
     }
-    
+
     init?(model: UserInfoModel?) {
         guard let model else { return nil }
         name = model.name

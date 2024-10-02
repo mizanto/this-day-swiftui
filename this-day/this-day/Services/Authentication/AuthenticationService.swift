@@ -21,7 +21,7 @@ protocol AuthenticationServiceProtocol {
 
 final class AuthenticationService: AuthenticationServiceProtocol {
     @Published var currentUser: UserInfoModel?
-    
+
     var isAuthenticated: Bool { Auth.auth().currentUser != nil }
     var currentUserPublisher: AnyPublisher<UserInfoModel?, Never> {
         $currentUser.eraseToAnyPublisher()

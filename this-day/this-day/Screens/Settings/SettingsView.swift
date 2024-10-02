@@ -109,7 +109,7 @@ struct SettingsView<ViewModel: SettingsViewModelProtocol>: View {
             }
         }
     }
-    
+
     private func profileFooterView() -> some View {
         Text(LocalizedString("settings.section.profile.footer"))
     }
