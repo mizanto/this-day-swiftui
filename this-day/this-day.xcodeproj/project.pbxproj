@@ -29,6 +29,7 @@
 		AD4AC4502CAC753C00C6BFBE /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC44F2CAC753A00C6BFBE /* AuthenticationService.swift */; };
 		AD4AC4522CAD663300C6BFBE /* UserInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC4512CAD662900C6BFBE /* UserInfoModel.swift */; };
 		AD4AC4542CAD66C200C6BFBE /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC4532CAD66BE00C6BFBE /* UserInfo.swift */; };
+		AD4AC4562CAD6D1000C6BFBE /* AuthenticationServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC4552CAD6D0F00C6BFBE /* AuthenticationServiceMock.swift */; };
 		AD4D88EE2C9841CF003DD3C4 /* ThisDayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D88ED2C9841CF003DD3C4 /* ThisDayApp.swift */; };
 		AD4D88F02C9841CF003DD3C4 /* DayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D88EF2C9841CF003DD3C4 /* DayView.swift */; };
 		AD4D88F22C9841D0003DD3C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD4D88F12C9841D0003DD3C4 /* Assets.xcassets */; };
@@ -121,6 +122,7 @@
 		AD4AC44F2CAC753A00C6BFBE /* AuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
 		AD4AC4512CAD662900C6BFBE /* UserInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoModel.swift; sourceTree = "<group>"; };
 		AD4AC4532CAD66BE00C6BFBE /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
+		AD4AC4552CAD6D0F00C6BFBE /* AuthenticationServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationServiceMock.swift; sourceTree = "<group>"; };
 		AD4D88EA2C9841CF003DD3C4 /* this-day.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "this-day.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD4D88ED2C9841CF003DD3C4 /* ThisDayApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThisDayApp.swift; sourceTree = "<group>"; };
 		AD4D88EF2C9841CF003DD3C4 /* DayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayView.swift; sourceTree = "<group>"; };
@@ -233,6 +235,7 @@
 		AD2609522C99745600687D36 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				AD4AC4552CAD6D0F00C6BFBE /* AuthenticationServiceMock.swift */,
 				AD2609532C99746C00687D36 /* URLSessionMock.swift */,
 				AD9592052C9994DA0019BB13 /* NetworkServiceMock.swift */,
 				AD53AA852CA459850024FD31 /* StorageServiceMock.swift */,
@@ -287,6 +290,13 @@
 				AD4AC44D2CAC750800C6BFBE /* AuthenticationError.swift */,
 			);
 			path = Authentication;
+			sourceTree = "<group>";
+		};
+		AD4AC4572CAD72F400C6BFBE /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		AD4D88E12C9841CF003DD3C4 = {
@@ -549,6 +559,7 @@
 			children = (
 				ADD1CF942C99936200739278 /* Events */,
 				AD5E69AB2CA6C95600F0EEFA /* Bookmarks */,
+				AD4AC4572CAD72F400C6BFBE /* Settings */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -717,6 +728,7 @@
 				ADD1CF962C99936F00739278 /* EventsViewModelTests.swift in Sources */,
 				AD53AA862CA459890024FD31 /* StorageServiceMock.swift in Sources */,
 				AD53AA882CA470020024FD31 /* StorageServiceTests.swift in Sources */,
+				AD4AC4562CAD6D1000C6BFBE /* AuthenticationServiceMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
