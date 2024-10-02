@@ -14,8 +14,8 @@ protocol AuthenticationServiceProtocol {
     var isAuthenticated: Bool { get }
     var currentUserPublisher: AnyPublisher<UserInfoModel?, Never> { get }
 
-    func signIn(email: String, password: String) -> AnyPublisher<AuthDataResult, AuthenticationError>
-    func signUp(name: String, email: String, password: String) -> AnyPublisher<AuthDataResult, AuthenticationError>
+    func signIn(email: String, password: String) -> AnyPublisher<Void, AuthenticationError>
+    func signUp(name: String, email: String, password: String) -> AnyPublisher<Void, AuthenticationError>
     func signOut() -> AnyPublisher<Void, AuthenticationError>
 }
 
@@ -42,7 +42,7 @@ final class AuthenticationService: AuthenticationServiceProtocol {
             .store(in: &cancellables)
     }
 
-    func signIn(email: String, password: String) -> AnyPublisher<AuthDataResult, AuthenticationError> {
+    func signIn(email: String, password: String) -> AnyPublisher<Void, AuthenticationError> {
         guard isEmailValid(email) else {
             return Fail(error: AuthenticationError.invalidEmail).eraseToAnyPublisher()
         }
@@ -53,6 +53,7 @@ final class AuthenticationService: AuthenticationServiceProtocol {
 
         return Auth.auth()
             .signIn(withEmail: email, password: password)
+            .map { _ in () }
             .mapError { error in
                 AppLogger.shared.error("Error signing in user: \(error.localizedDescription)", category: .auth)
                 return AuthenticationError.loginFailed
@@ -60,7 +61,7 @@ final class AuthenticationService: AuthenticationServiceProtocol {
             .eraseToAnyPublisher()
     }
 
-    func signUp(name: String, email: String, password: String) -> AnyPublisher<AuthDataResult, AuthenticationError> {
+    func signUp(name: String, email: String, password: String) -> AnyPublisher<Void, AuthenticationError> {
         guard isNameValid(name) else {
             return Fail(error: AuthenticationError.invalidName).eraseToAnyPublisher()
         }
@@ -79,18 +80,18 @@ final class AuthenticationService: AuthenticationServiceProtocol {
                 AppLogger.shared.error("Error signing up user: \(error.localizedDescription)", category: .auth)
                 return AuthenticationError.creationFailed
             }
-            .flatMap { authResult -> AnyPublisher<AuthDataResult, AuthenticationError> in
+            .flatMap { authResult -> AnyPublisher<Void, AuthenticationError> in
                 let changeRequest = authResult.user.createProfileChangeRequest()
                 changeRequest.displayName = name
 
-                return Future<AuthDataResult, AuthenticationError> { promise in
+                return Future<Void, AuthenticationError> { promise in
                     changeRequest.commitChanges { error in
                         if let error = error {
                             AppLogger.shared.error("Failed to update profile: \(error.localizedDescription)",
                                                    category: .auth)
                             promise(.failure(AuthenticationError.updateFailed))
                         } else {
-                            promise(.success(authResult))
+                            promise(.success(()))
                         }
                     }
                 }
