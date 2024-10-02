@@ -8,8 +8,8 @@
 import SwiftUI
 
 final class AuthViewBuilder {
-    static func build(onAuthenticated: @escaping () -> Void) -> some View {
-        let viewModel = AuthViewModel(onAuthenticated: onAuthenticated)
+    static func build(authService: AuthenticationServiceProtocol, onAuthenticated: @escaping () -> Void) -> some View {
+        let viewModel = AuthViewModel(authService: authService, onAuthenticated: onAuthenticated)
         return AuthView(viewModel: viewModel)
     }
 }

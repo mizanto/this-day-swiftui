@@ -10,15 +10,36 @@ import FirebaseAuth
 import FirebaseAuthCombineSwift
 
 protocol AuthenticationServiceProtocol {
+    var currentUser: UserInfoModel? { get }
+    var isAuthenticated: Bool { get }
+    var currentUserPublisher: AnyPublisher<UserInfoModel?, Never> { get }
+
     func signIn(email: String, password: String) -> AnyPublisher<AuthDataResult, AuthenticationError>
     func signUp(name: String, email: String, password: String) -> AnyPublisher<AuthDataResult, AuthenticationError>
     func signOut() -> AnyPublisher<Void, AuthenticationError>
 }
 
 final class AuthenticationService: AuthenticationServiceProtocol {
+    @Published var currentUser: UserInfoModel?
     
-    var user: User? {
-        Auth.auth().currentUser
+    var isAuthenticated: Bool { Auth.auth().currentUser != nil }
+    var currentUserPublisher: AnyPublisher<UserInfoModel?, Never> {
+        $currentUser.eraseToAnyPublisher()
+    }
+
+    private var cancellables = Set<AnyCancellable>()
+
+    init() {
+        Auth.auth().authStateDidChangePublisher()
+            .sink { [weak self] user in
+                if let user = user {
+                    self?.currentUser = UserInfoModel(name: user.displayName ?? "",
+                                                 email: user.email ?? "")
+                } else {
+                    self?.currentUser = nil
+                }
+            }
+            .store(in: &cancellables)
     }
 
     func signIn(email: String, password: String) -> AnyPublisher<AuthDataResult, AuthenticationError> {

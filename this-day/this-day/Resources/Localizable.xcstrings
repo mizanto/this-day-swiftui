@@ -511,6 +511,23 @@
         }
       }
     },
+    "settings.section.profile.footer" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in to save events in your bookmarks and sync them across devices"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Войдите в профиль, чтобы сохранять события в закладках и синхронизировать их между устройствами"
+          }
+        }
+      }
+    },
     "settings.version" : {
       "extractionState" : "manual",
       "localizations" : {

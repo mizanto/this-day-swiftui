@@ -77,5 +77,10 @@ struct AuthView<ViewModel: AuthViewModelProtocol>: View {
 }
 
 #Preview {
-    AuthView(viewModel: AuthViewModel(onAuthenticated: {}))
+    AuthView(
+        viewModel: AuthViewModel(
+            authService: AuthenticationService(),
+            onAuthenticated: {}
+        )
+    )
 }

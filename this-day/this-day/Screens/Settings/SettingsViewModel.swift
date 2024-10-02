@@ -7,22 +7,21 @@
 
 import Foundation
 import FirebaseAuth
-
-struct UserInfo {
-    let name: String
-    let email: String
-}
+import Combine
+import SwiftUI
 
 protocol SettingsViewModelProtocol: ObservableObject {
+    associatedtype AuthViewType: View
     var appVersion: String { get }
     var buildNumber: String { get }
     var availableLanguages: [Language] { get }
     var selectedLanguage: String { get set }
     var currentUser: UserInfo? { get }
+    var isAuthenticated: Bool { get }
 
     func signOut()
     func updateLanguage(_ languageId: String)
-    func refreshUserData()
+    func makeAuthView(onAuthenticated: @escaping () -> Void) -> AuthViewType
 }
 
 final class SettingsViewModel: SettingsViewModelProtocol {
@@ -32,43 +31,52 @@ final class SettingsViewModel: SettingsViewModelProtocol {
     var appVersion: String { Bundle.main.versionNumber }
     var buildNumber: String { Bundle.main.buildNumber }
     var availableLanguages: [Language] { localizationManager.availableLanguages }
+    var isAuthenticated: Bool { authService.isAuthenticated }
 
+    private var authService: AuthenticationServiceProtocol
     private var localizationManager: any LocalizationManagerProtocol
 
-    init(localizationManager: any LocalizationManagerProtocol) {
+    private var cancellables = Set<AnyCancellable>()
+
+    init(authService: AuthenticationServiceProtocol,
+         localizationManager: any LocalizationManagerProtocol) {
+        self.authService = authService
         self.localizationManager = localizationManager
         self.selectedLanguage = localizationManager.currentLanguage
 
-        refreshUserData()
-
-        _ = Auth.auth().addStateDidChangeListener { [weak self] _, user in
-            if let user = user {
-                self?.currentUser = UserInfo(name: user.displayName ?? "",
-                                             email: user.email ?? "")
-            } else {
-                self?.currentUser = nil
-            }
-        }
+        bind()
     }
 
     func signOut() {
-        do {
-            try Auth.auth().signOut()
-            self.currentUser = nil
-        } catch let error {
-            AppLogger.shared.error("Failed to sign out: \(error.localizedDescription)", category: .auth)
-        }
-    }
-
-    func refreshUserData() {
-        if let user = Auth.auth().currentUser {
-            self.currentUser = UserInfo(name: user.displayName ?? "",
-                                        email: user.email ?? "")
-        }
+        authService
+            .signOut()
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveCompletion: { completion in
+                    if case .failure(let error) = completion {
+                        AppLogger.shared.error("Failed to sign out: \(error)", category: .auth)
+                    }
+                },
+                receiveValue: {
+                    AppLogger.shared.info("Signed out successfully", category: .auth)
+                }
+            )
+            .store(in: &cancellables)
     }
 
     func updateLanguage(_ languageId: String) {
         localizationManager.currentLanguage = languageId
         selectedLanguage = languageId
+    }
+
+    func makeAuthView(onAuthenticated: @escaping () -> Void) -> some View {
+        AuthViewBuilder.build(authService: authService, onAuthenticated: onAuthenticated)
+    }
+
+    private func bind() {
+        authService.currentUserPublisher
+            .compactMap { .init(model: $0) }
+            .assign(to: \.currentUser, on: self)
+            .store(in: &cancellables)
     }
 }

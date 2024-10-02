@@ -20,9 +20,8 @@ struct SettingsView<ViewModel: SettingsViewModelProtocol>: View {
             content()
                 .navigationTitle(LocalizedString("tab_title.settings"))
                 .sheet(isPresented: $showingAuthView) {
-                    AuthViewBuilder.build {
+                    viewModel.makeAuthView {
                         showingAuthView = false
-                        viewModel.refreshUserData()
                     }
                 }
         }
@@ -38,7 +37,8 @@ struct SettingsView<ViewModel: SettingsViewModelProtocol>: View {
     }
 
     private func profileSection() -> some View {
-        Section(header: Text(LocalizedString("settings.section.profile"))) {
+        Section(header: Text(LocalizedString("settings.section.profile")),
+                footer: !viewModel.isAuthenticated ? profileFooterView() : nil) {
             if let user = viewModel.currentUser {
                 HStack {
                     Text(LocalizedString("settings.name"))
@@ -109,8 +109,17 @@ struct SettingsView<ViewModel: SettingsViewModelProtocol>: View {
             }
         }
     }
+    
+    private func profileFooterView() -> some View {
+        Text(LocalizedString("settings.section.profile.footer"))
+    }
 }
 
 #Preview {
-    SettingsView(viewModel: SettingsViewModel(localizationManager: LocalizationManager()))
+    SettingsView(
+        viewModel: SettingsViewModel(
+            authService: AuthenticationService(),
+            localizationManager: LocalizationManager()
+        )
+    )
 }

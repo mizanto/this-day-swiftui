@@ -10,6 +10,7 @@ import SwiftUI
 struct MainTabView: View {
     let networkService: NetworkServiceProtocol
     let storageService: StorageServiceProtocol
+    let authService: AuthenticationServiceProtocol
 
     @EnvironmentObject private var localizationManager: LocalizationManager
     @State private var selectedTab: Int = 0
@@ -33,7 +34,8 @@ struct MainTabView: View {
                 }
                 .tag(1)
 
-            SettingsViewBuilder.build(localizationManager: localizationManager)
+            SettingsViewBuilder.build(authService: authService,
+                                      localizationManager: localizationManager)
                 .tabItem {
                     Image(systemName: "gearshape")
                     Text(NSLocalizedString("tab_title.settings", comment: ""))

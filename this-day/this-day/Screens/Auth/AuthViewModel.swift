@@ -30,6 +30,8 @@ final class AuthViewModel: AuthViewModelProtocol {
     @Published var isSignUpMode: Bool = false
     @Published var errorMessage: String?
     @Published var isAuthenticated: Bool = false
+    
+    private let authService: AuthenticationServiceProtocol
 
     var onAuthenticated: () -> Void
 
@@ -50,18 +52,11 @@ final class AuthViewModel: AuthViewModelProtocol {
 
     private var cancellables = Set<AnyCancellable>()
 
-    init(onAuthenticated: @escaping () -> Void) {
+    init(authService: AuthenticationServiceProtocol, onAuthenticated: @escaping () -> Void) {
+        self.authService = authService
         self.onAuthenticated = onAuthenticated
 
-        $isAuthenticated
-            .dropFirst()
-            .filter { $0 }
-            .sink { [weak self] _ in self?.onAuthenticated() }
-            .store(in: &cancellables)
-
-        $isSignUpMode
-            .sink { [ weak self] _ in self?.clearInputs() }
-            .store(in: &cancellables)
+        bind()
     }
 
     func onActionButtonTapped() {
@@ -75,22 +70,35 @@ final class AuthViewModel: AuthViewModelProtocol {
     func changeAuthMode() {
         isSignUpMode.toggle()
     }
+    
+    private func bind() {
+        $isAuthenticated
+            .dropFirst()
+            .filter { $0 }
+            .sink { [weak self] _ in self?.onAuthenticated() }
+            .store(in: &cancellables)
+
+        $isSignUpMode
+            .sink { [ weak self] _ in self?.clearInputs() }
+            .store(in: &cancellables)
+    }
 
     private func signIn() {
-        if let validationError = validationMessage(isEmailValid: isEmailValid(email),
-                                                   isPasswordValid: isPasswordValid(password)) {
-            errorMessage = validationError
-            return
-        }
-        Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
-            if let error = error {
-                AppLogger.shared.error("Sign in failed: \(error)", category: .auth)
-                self?.errorMessage = error.localizedDescription
-            } else if authResult?.user != nil {
-                AppLogger.shared.info("Sign in successful", category: .auth)
-                self?.isAuthenticated = true
-            }
-        }
+        authService.signIn(email: email, password: password)
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveCompletion: { [weak self] completion in
+                    if case .failure(let error) = completion {
+                        AppLogger.shared.error("Sign in failed: \(error)", category: .auth)
+                        self?.processError(error: error)
+                    }
+                },
+                receiveValue: { [weak self] result in
+                    AppLogger.shared.info("Sign in successful", category: .auth)
+                    self?.isAuthenticated = true
+                }
+            )
+            .store(in: &cancellables)
     }
 
     private func signUp() {
@@ -174,5 +182,24 @@ final class AuthViewModel: AuthViewModelProtocol {
         email = ""
         password = ""
         errorMessage = nil
+    }
+    
+    private func processError(error: AuthenticationError) {
+        switch error {
+        case .invalidName:
+            errorMessage = LocalizedString("auth.validation_error.name_length")
+        case .invalidEmail:
+            errorMessage = LocalizedString("auth.validation_error.email")
+        case .weakPassword:
+            errorMessage = LocalizedString("auth.validation_error.password_length") + "\n"
+            + LocalizedString("auth.validation_error.password_upper_case") + "\n"
+            + LocalizedString("auth.validation_error.password_digit")
+        case .loginFailed:
+            errorMessage = "Sign in failed. Please check your email and password and try again."
+        case .creationFailed:
+            errorMessage = "Sign up failed. Please try again."
+        default:
+            errorMessage = "Unknown error."
+        }
     }
 }

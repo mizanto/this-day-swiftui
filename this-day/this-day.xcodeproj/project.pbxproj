@@ -27,6 +27,8 @@
 		AD4AC44B2CAC330D00C6BFBE /* AuthViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC44A2CAC330B00C6BFBE /* AuthViewBuilder.swift */; };
 		AD4AC44E2CAC750A00C6BFBE /* AuthenticationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC44D2CAC750800C6BFBE /* AuthenticationError.swift */; };
 		AD4AC4502CAC753C00C6BFBE /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC44F2CAC753A00C6BFBE /* AuthenticationService.swift */; };
+		AD4AC4522CAD663300C6BFBE /* UserInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC4512CAD662900C6BFBE /* UserInfoModel.swift */; };
+		AD4AC4542CAD66C200C6BFBE /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC4532CAD66BE00C6BFBE /* UserInfo.swift */; };
 		AD4D88EE2C9841CF003DD3C4 /* ThisDayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D88ED2C9841CF003DD3C4 /* ThisDayApp.swift */; };
 		AD4D88F02C9841CF003DD3C4 /* DayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D88EF2C9841CF003DD3C4 /* DayView.swift */; };
 		AD4D88F22C9841D0003DD3C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD4D88F12C9841D0003DD3C4 /* Assets.xcassets */; };
@@ -117,6 +119,8 @@
 		AD4AC44A2CAC330B00C6BFBE /* AuthViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewBuilder.swift; sourceTree = "<group>"; };
 		AD4AC44D2CAC750800C6BFBE /* AuthenticationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationError.swift; sourceTree = "<group>"; };
 		AD4AC44F2CAC753A00C6BFBE /* AuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
+		AD4AC4512CAD662900C6BFBE /* UserInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoModel.swift; sourceTree = "<group>"; };
+		AD4AC4532CAD66BE00C6BFBE /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		AD4D88EA2C9841CF003DD3C4 /* this-day.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "this-day.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD4D88ED2C9841CF003DD3C4 /* ThisDayApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThisDayApp.swift; sourceTree = "<group>"; };
 		AD4D88EF2C9841CF003DD3C4 /* DayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayView.swift; sourceTree = "<group>"; };
@@ -386,6 +390,7 @@
 		AD4D890D2C98700F003DD3C4 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				AD4AC4512CAD662900C6BFBE /* UserInfoModel.swift */,
 				ADF08E302CA02B6000CB877A /* ResponseNetworkModel.swift */,
 				AD95922D2C9D96DA0019BB13 /* DayNetworkModel.swift */,
 				AD4D89102C98703C003DD3C4 /* EventNetworkModel.swift */,
@@ -396,6 +401,7 @@
 		AD4D89142C9878D9003DD3C4 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				AD4AC4532CAD66BE00C6BFBE /* UserInfo.swift */,
 				AD4D89172C987F05003DD3C4 /* ShortEvent.swift */,
 				AD53AA3F2CA185AA0024FD31 /* ExtendedEvent.swift */,
 				AD8BDFF72CA58C4D006B9D58 /* BookmarkEvent.swift */,
@@ -736,7 +742,9 @@
 				AD53AA6C2CA2C2C80024FD31 /* DayEntity+Helpers.swift in Sources */,
 				AD36067E2CA724A6008D31A9 /* SettingsView.swift in Sources */,
 				AD4D89182C987F05003DD3C4 /* ShortEvent.swift in Sources */,
+				AD4AC4522CAD663300C6BFBE /* UserInfoModel.swift in Sources */,
 				AD4AC44E2CAC750A00C6BFBE /* AuthenticationError.swift in Sources */,
+				AD4AC4542CAD66C200C6BFBE /* UserInfo.swift in Sources */,
 				AD4D89072C98664F003DD3C4 /* DayViewBuilder.swift in Sources */,
 				AD95923B2C9DCDD60019BB13 /* ExtendedEventRow.swift in Sources */,
 				AD9592372C9DC9C90019BB13 /* ErrorView.swift in Sources */,
