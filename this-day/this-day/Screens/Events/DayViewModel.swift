@@ -39,7 +39,7 @@ final class DayViewModel: DayViewModelProtocol {
     }
     var snackbarMessage: String { LocalizedString("message.snackbar.copied") }
 
-    private let currentDate: Date = Date()
+    private var currentDate: Date = Date()
     private let networkService: NetworkServiceProtocol
     private let storageService: StorageServiceProtocol
     private let localizationManager: any LocalizationManagerProtocol
@@ -65,6 +65,7 @@ final class DayViewModel: DayViewModelProtocol {
     func onAppear() {
         AppLogger.shared.info("Events view appeared", category: .ui)
 
+        currentDate = Date()
         title = currentDate.toLocalizedDayMonth(language: language)
         let dayID = DayEntity.createID(date: currentDate, language: language)
 
