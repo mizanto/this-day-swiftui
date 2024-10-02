@@ -73,6 +73,7 @@ struct AuthView<ViewModel: AuthViewModelProtocol>: View {
                 isTextFieldFocused = false
             }
         }
+        .snackbar(isPresented: $viewModel.showErrorSnackbar, message: viewModel.snackbarErrorMessage, type: .error)
     }
 }
 

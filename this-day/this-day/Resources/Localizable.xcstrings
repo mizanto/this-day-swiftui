@@ -137,6 +137,40 @@
         }
       }
     },
+    "auth.login_error" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in failed. Please check your email and password and try again."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось войти. Проверьте e-mail и пароль и попробуйте еще раз."
+          }
+        }
+      }
+    },
+    "auth.registration_error" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign up failed. Please try again."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Регистрация не удалась. Попробуйте еще раз."
+          }
+        }
+      }
+    },
     "auth.title.sign_in" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -660,6 +694,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Неизвестно"
+          }
+        }
+      }
+    },
+    "unknown_error" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unknown error"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Неизвестная ошибка"
           }
         }
       }

@@ -18,6 +18,8 @@ protocol AuthViewModelProtocol: ObservableObject {
     var title: String { get }
     var actionButtonTitle: String { get }
     var changeModeButtonTitle: String { get }
+    var showErrorSnackbar: Bool { get set }
+    var snackbarErrorMessage: String { get }
 
     func onActionButtonTapped()
     func changeAuthMode()
@@ -30,8 +32,9 @@ final class AuthViewModel: AuthViewModelProtocol {
     @Published var isSignUpMode: Bool = false
     @Published var errorMessage: String?
     @Published var isAuthenticated: Bool = false
-    
-    private let authService: AuthenticationServiceProtocol
+    @Published var showErrorSnackbar = false
+
+    var snackbarErrorMessage: String = ""
 
     var onAuthenticated: () -> Void
 
@@ -50,6 +53,7 @@ final class AuthViewModel: AuthViewModelProtocol {
                      : LocalizedString("auth.button.dont_have_account")
     }
 
+    private let authService: AuthenticationServiceProtocol
     private var cancellables = Set<AnyCancellable>()
 
     init(authService: AuthenticationServiceProtocol, onAuthenticated: @escaping () -> Void) {
@@ -125,7 +129,7 @@ final class AuthViewModel: AuthViewModelProtocol {
         password = ""
         errorMessage = nil
     }
-    
+
     private func processError(error: AuthenticationError) {
         switch error {
         case .invalidName:
@@ -137,14 +141,14 @@ final class AuthViewModel: AuthViewModelProtocol {
             + LocalizedString("auth.validation_error.password_upper_case") + "\n"
             + LocalizedString("auth.validation_error.password_digit")
         case .loginFailed:
-            // TODO: show in UI
-            AppLogger.shared.error("Sign in failed. Please check your email and password and try again.")
+            snackbarErrorMessage = LocalizedString("auth.login_error")
+            showErrorSnackbar = true
         case .creationFailed:
-            // TODO: show in UI
-            AppLogger.shared.error("Sign up failed. Please try again.")
+            snackbarErrorMessage = LocalizedString("auth.registration_error")
+            showErrorSnackbar = true
         default:
-            // TODO: show in UI
-            AppLogger.shared.error("Unknown error.")
+            snackbarErrorMessage = LocalizedString("unknown_error")
+            showErrorSnackbar = true
         }
     }
 }

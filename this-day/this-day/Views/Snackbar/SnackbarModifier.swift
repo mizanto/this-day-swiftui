@@ -10,6 +10,7 @@ import SwiftUI
 struct SnackbarModifier: ViewModifier {
     @Binding var isPresented: Bool
     var message: String
+    var type: Snackbar.SnackbarType
     var duration: TimeInterval
 
     func body(content: Content) -> some View {
@@ -19,7 +20,7 @@ struct SnackbarModifier: ViewModifier {
             if isPresented {
                 VStack {
                     Spacer()
-                    Snackbar(message: message)
+                    Snackbar(message: message, type: type)
                         .transition(.move(edge: .bottom))
                         .padding(.bottom, 16)
                 }
@@ -38,7 +39,17 @@ struct SnackbarModifier: ViewModifier {
 }
 
 extension View {
-    func snackbar(isPresented: Binding<Bool>, message: String, duration: TimeInterval = 2) -> some View {
-        self.modifier(SnackbarModifier(isPresented: isPresented, message: message, duration: duration))
+    func snackbar(isPresented: Binding<Bool>,
+                  message: String,
+                  type: Snackbar.SnackbarType = .message,
+                  duration: TimeInterval = 2) -> some View {
+        self.modifier(
+            SnackbarModifier(
+                isPresented: isPresented,
+                message: message,
+                type: type,
+                duration: duration
+            )
+        )
     }
 }

@@ -8,15 +8,38 @@
 import SwiftUI
 
 struct Snackbar: View {
+    enum SnackbarType {
+        case success
+        case error
+        case message
+    }
+
     var message: String
+    var type: SnackbarType
 
     var body: some View {
         Text(message)
-            .foregroundColor(.white)
+            .foregroundColor(foregroundColor)
             .padding(.vertical, 8)
             .padding(.horizontal, 16)
-            .background(.black.opacity(0.7))
+            .background(backgroundColor)
             .cornerRadius(16)
             .shadow(radius: 4)
+    }
+
+    private var backgroundColor: Color {
+        switch type {
+        case .success: return .green.opacity(0.9)
+        case .error: return .red.opacity(0.9)
+        case .message: return .black.opacity(0.7)
+        }
+    }
+
+    private var foregroundColor: Color {
+        switch type {
+        case .success: return .white
+        case .error: return .white
+        case .message: return .white
+        }
     }
 }
