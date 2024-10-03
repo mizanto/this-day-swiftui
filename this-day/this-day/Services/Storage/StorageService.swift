@@ -11,10 +11,10 @@ import CoreData
 protocol StorageServiceProtocol {
     func fetchDay(id: String) throws -> DayEntity?
     func saveDay(networkModel: DayNetworkModel, for date: Date, language: String) throws
-    func fetchEvent(id: UUID) throws -> EventEntity?
+    func fetchEvent(id: String) throws -> EventEntity?
     func addToBookmarks(event: EventEntity) throws
     func removeFromBookmarks(event: EventEntity) throws
-    func removeBookmark(id: UUID) throws
+    func removeBookmark(id: String) throws
     func fetchBookmarks() throws -> [BookmarkEntity]
 }
 
@@ -59,7 +59,7 @@ class StorageService: StorageServiceProtocol {
         }
     }
 
-    func fetchEvent(id: UUID) throws -> EventEntity? {
+    func fetchEvent(id: String) throws -> EventEntity? {
         let request: NSFetchRequest<EventEntity> = EventEntity.fetchRequest()
         request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
 
@@ -74,7 +74,7 @@ class StorageService: StorageServiceProtocol {
 
     func addToBookmarks(event: EventEntity) throws {
         let bookmark = BookmarkEntity(context: context)
-        bookmark.id = UUID()
+        bookmark.id = UUID().uuidString
         bookmark.dateAdded = Date()
         bookmark.event = event
 
@@ -108,7 +108,7 @@ class StorageService: StorageServiceProtocol {
         }
     }
 
-    func removeBookmark(id: UUID) throws {
+    func removeBookmark(id: String) throws {
         let request: NSFetchRequest<BookmarkEntity> = BookmarkEntity.fetchRequest()
         request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
 

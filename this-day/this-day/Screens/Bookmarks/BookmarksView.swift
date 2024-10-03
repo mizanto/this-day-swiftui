@@ -57,15 +57,15 @@ struct BookmarksView<ViewModel: BookmarksViewModelProtocol>: View {
         }
     }
 
-    private func onBookmarkPressed(id: UUID) {
+    private func onBookmarkPressed(id: String) {
         viewModel.removeBookmark(for: id)
     }
 
-    private func onCopyPressed(id: UUID) {
+    private func onCopyPressed(id: String) {
         viewModel.copyToClipboardBookmark(id: id)
     }
 
-    private func onSharePressed(id: UUID) {
+    private func onSharePressed(id: String) {
         viewModel.shareBookmark(id: id)
     }
 }

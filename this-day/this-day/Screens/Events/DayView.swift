@@ -93,15 +93,15 @@ struct DayView<ViewModel: DayViewModelProtocol>: View {
         }
     }
 
-    private func toggleBookmark(for id: UUID) {
+    private func toggleBookmark(for id: String) {
         viewModel.toggleBookmark(for: id)
     }
 
-    private func copyToClipboard(for id: UUID) {
+    private func copyToClipboard(for id: String) {
         viewModel.copyToClipboardEvent(id: id)
     }
 
-    private func share(for id: UUID) {
+    private func share(for id: String) {
         viewModel.shareEvent(id: id)
     }
 }

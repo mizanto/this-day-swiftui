@@ -8,13 +8,13 @@
 import Foundation
 
 struct ExtendedEvent: EventProtocol, Equatable {
-    let id: UUID
+    let id: String
     let year: String
     let title: String
     let subtitle: String?
     let inBookmarks: Bool
 
-    init(id: UUID = UUID(), year: String, title: String, subtitle: String? = nil, inBookmarks: Bool) {
+    init(id: String, year: String, title: String, subtitle: String? = nil, inBookmarks: Bool) {
         self.id = id
         self.year = year
         self.title = title

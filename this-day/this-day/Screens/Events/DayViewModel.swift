@@ -20,9 +20,9 @@ protocol DayViewModelProtocol: ObservableObject {
 
     func onAppear()
     func onTryAgain()
-    func toggleBookmark(for eventID: UUID)
-    func copyToClipboardEvent(id: UUID)
-    func shareEvent(id: UUID)
+    func toggleBookmark(for eventID: String)
+    func copyToClipboardEvent(id: String)
+    func shareEvent(id: String)
     func onCompleteShare()
 }
 
@@ -93,7 +93,7 @@ final class DayViewModel: DayViewModelProtocol {
         fetchEvents(for: currentDate, language: language)
     }
 
-    func toggleBookmark(for eventID: UUID) {
+    func toggleBookmark(for eventID: String) {
         do {
             guard let event = try storageService.fetchEvent(id: eventID) else {
                 AppLogger.shared.error("Failed to toggle bookmark for event \(eventID). Event not found.",
@@ -122,7 +122,7 @@ final class DayViewModel: DayViewModelProtocol {
         }
     }
 
-    func copyToClipboardEvent(id: UUID) {
+    func copyToClipboardEvent(id: String) {
         let event = day?.eventsArray.first(where: { $0.id == id })
         guard let stringToCopy = event?.toSharingString(language: language) else {
             AppLogger.shared.error("Failed to copy event \(id) to clipboard. No sharing string available.",
@@ -139,7 +139,7 @@ final class DayViewModel: DayViewModelProtocol {
         AppLogger.shared.info("Event \(id) copied to clipboard: \(stringToCopy)", category: .ui)
     }
 
-    func shareEvent(id: UUID) {
+    func shareEvent(id: String) {
         let event = day?.eventsArray.first(where: { $0.id == id })
         guard let stringToShare = event?.toSharingString(language: language) else {
             AppLogger.shared.error("Failed to share event \(id) to social media. No sharing string available.",

@@ -8,15 +8,15 @@
 import Foundation
 
 protocol EventProtocol: Identifiable {
-    var id: UUID { get }
+    var id: String { get }
 }
 
 struct ShortEvent: EventProtocol {
-    let id: UUID
+    let id: String
     let title: String
     let inBookmarks: Bool
 
-    init(id: UUID = UUID(), title: String, inBookmarks: Bool) {
+    init(id: String, title: String, inBookmarks: Bool) {
         self.id = id
         self.title = title
         self.inBookmarks = inBookmarks

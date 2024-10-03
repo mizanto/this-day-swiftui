@@ -8,7 +8,7 @@
 import Foundation
 
 struct BookmarkEvent: Identifiable {
-    let id: UUID
+    let id: String
     let date: String
     let language: String
     let title: String
@@ -16,7 +16,7 @@ struct BookmarkEvent: Identifiable {
     let inBookmarks: Bool
     let category: EventCategory
 
-    init(id: UUID = UUID(),
+    init(id: String,
          date: String,
          language: String,
          title: String,

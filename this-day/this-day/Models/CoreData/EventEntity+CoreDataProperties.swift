@@ -16,14 +16,13 @@ extension EventEntity {
         return NSFetchRequest<EventEntity>(entityName: "EventEntity")
     }
 
-    @NSManaged public var id: UUID
+    @NSManaged public var id: String
     @NSManaged public var subtitle: String?
     @NSManaged public var title: String
     @NSManaged public var type: String
-    @NSManaged public var year: String?
+    @NSManaged public var year: String
     @NSManaged public var day: DayEntity?
     @NSManaged public var bookmark: BookmarkEntity?
-
 }
 
 extension EventEntity: Identifiable {}

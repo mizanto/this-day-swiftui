@@ -16,9 +16,9 @@ protocol BookmarksViewModelProtocol: ObservableObject {
     var showSnackbar: Bool { get set }
 
     func onAppear()
-    func removeBookmark(for eventID: UUID)
-    func copyToClipboardBookmark(id: UUID)
-    func shareBookmark(id: UUID)
+    func removeBookmark(for eventID: String)
+    func copyToClipboardBookmark(id: String)
+    func shareBookmark(id: String)
 }
 
 final class BookmarksViewModel: BookmarksViewModelProtocol {
@@ -56,7 +56,7 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
         }
     }
 
-    func removeBookmark(for id: UUID) {
+    func removeBookmark(for id: String) {
         do {
             try storageService.removeBookmark(id: id)
             bookmarks = try storageService.fetchBookmarks()
@@ -69,7 +69,7 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
         }
     }
 
-    func copyToClipboardBookmark(id: UUID) {
+    func copyToClipboardBookmark(id: String) {
         let event = bookmarks.first(where: { $0.id == id })?.event
         guard let stringToCopy = event?.toSharingString(language: language) else {
             AppLogger.shared.error("Failed to copy event \(id) to clipboard. No sharing string available.",
@@ -85,7 +85,7 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
         AppLogger.shared.info("Event \(id) copied to clipboard: \(stringToCopy)", category: .ui)
     }
 
-    func shareBookmark(id: UUID) {
+    func shareBookmark(id: String) {
         let event = bookmarks.first(where: { $0.id == id })?.event
         guard let stringToShare = event?.toSharingString(language: language) else {
             AppLogger.shared.error("Failed to share event \(id) to social media. No sharing string available.",

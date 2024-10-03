@@ -11,9 +11,9 @@ struct ExtendedEventRow: View {
     let event: ExtendedEvent
     @State private var inBookmarks: Bool = false
 
-    let onBookmarkPressed: (UUID) -> Void
-    let onCopyPressed: (UUID) -> Void
-    let onSharePressed: (UUID) -> Void
+    let onBookmarkPressed: (String) -> Void
+    let onCopyPressed: (String) -> Void
+    let onSharePressed: (String) -> Void
 
     var body: some View {
         HStack(alignment: .top) {
@@ -57,6 +57,7 @@ struct ExtendedEventRow: View {
 #Preview {
     ExtendedEventRow(
         event: ExtendedEvent(
+            id: "123",
             year: "1998",
             title: "Text",
             subtitle: "Subtitle",

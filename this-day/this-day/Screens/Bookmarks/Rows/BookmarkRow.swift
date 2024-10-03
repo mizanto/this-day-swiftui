@@ -9,9 +9,9 @@ import SwiftUI
 
 struct BookmarkRow: View {
     let event: BookmarkEvent
-    let onBookmarkPressed: (UUID) -> Void
-    let onCopyPressed: (UUID) -> Void
-    let onSharePressed: (UUID) -> Void
+    let onBookmarkPressed: (String) -> Void
+    let onCopyPressed: (String) -> Void
+    let onSharePressed: (String) -> Void
 
     @State private var inBookmarks: Bool = false
 
@@ -58,6 +58,7 @@ struct BookmarkRow: View {
 #Preview {
     BookmarkRow(
         event: BookmarkEvent(
+            id: "123",
             date: "25 September",
             language: "en",
             title: "Heritage Day (South Africa)",

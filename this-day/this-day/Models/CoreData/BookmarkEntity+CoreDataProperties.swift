@@ -16,10 +16,9 @@ extension BookmarkEntity {
         return NSFetchRequest<BookmarkEntity>(entityName: "BookmarkEntity")
     }
 
-    @NSManaged public var id: UUID
+    @NSManaged public var id: String
     @NSManaged public var dateAdded: Date
     @NSManaged public var event: EventEntity?
-
 }
 
 extension BookmarkEntity: Identifiable {}

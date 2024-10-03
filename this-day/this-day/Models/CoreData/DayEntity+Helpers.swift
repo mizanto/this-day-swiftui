@@ -9,7 +9,7 @@ import CoreData
 
 extension DayEntity {
     static func createID(date: Date, language: String) -> String {
-        return date.toFormat("ddMM") + language.uppercased()
+        return "\(language)-\(date.toFormat("dd-MM"))"
     }
 
     static func from(networkModel: DayNetworkModel,
@@ -30,7 +30,8 @@ extension DayEntity {
 
         for (events, type) in eventTypes {
             for eventNetworkModel in events {
-                let eventEntity = EventEntity.from(networkModel: eventNetworkModel, type: type, context: context)
+                let eventEntity = EventEntity.from(
+                    networkModel: eventNetworkModel, dayID: dayEntity.id, type: type, context: context)
                 eventEntity.day = dayEntity
                 dayEntity.addToEvents(eventEntity)
             }

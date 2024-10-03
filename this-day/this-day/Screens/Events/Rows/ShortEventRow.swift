@@ -9,9 +9,9 @@ import SwiftUI
 
 struct ShortEventRow: View {
     let event: ShortEvent
-    let onBookmarkPressed: (UUID) -> Void
-    let onCopyPressed: (UUID) -> Void
-    let onSharePressed: (UUID) -> Void
+    let onBookmarkPressed: (String) -> Void
+    let onCopyPressed: (String) -> Void
+    let onSharePressed: (String) -> Void
 
     @State private var inBookmarks: Bool = false
 
@@ -40,6 +40,7 @@ struct ShortEventRow: View {
 #Preview {
     ShortEventRow(
         event: ShortEvent(
+            id: "123",
             title: "Some long long long text.",
             inBookmarks: false
         ),

@@ -12,12 +12,19 @@ extension EventEntity {
     var inBookmarks: Bool {
         return bookmark != nil
     }
+    
+    static func createID(dayID: String, year: String) -> String {
+        let preparedYear = year.replacingOccurrences(of: " ", with: "")
+                               .replacingOccurrences(of: ".", with: "")
+        return "\(dayID)-\(preparedYear)"
+    }
 
     static func from(networkModel: EventNetworkModel,
+                     dayID: String,
                      type: EventType,
                      context: NSManagedObjectContext) -> EventEntity {
         let eventEntity = EventEntity(context: context)
-        eventEntity.id = UUID()
+        eventEntity.id = createID(dayID: dayID, year: networkModel.year)
         eventEntity.title = networkModel.title
         eventEntity.year = networkModel.year
         eventEntity.subtitle = networkModel.additional
@@ -26,14 +33,14 @@ extension EventEntity {
     }
 
     func stringDate(language: String) -> String? {
-        guard let year, let stringDate = day?.date.toLocalizedDayMonth(language: language) else { return nil }
+        guard let stringDate = day?.date.toLocalizedDayMonth(language: language) else { return nil }
         return stringDate + ", \(year)"
     }
 
     func toDisplayModel() -> any EventProtocol {
         ExtendedEvent(
             id: self.id,
-            year: self.year ?? "",
+            year: self.year,
             title: self.title,
             subtitle: self.subtitle,
             inBookmarks: self.inBookmarks
@@ -46,10 +53,7 @@ extension EventEntity {
         }
 
         var resultString = date.toLocalizedDayMonth(language: language)
-
-        if let year = self.year {
-            resultString += language == "ru" ? " \(year) г." : ", \(year)"
-        }
+        resultString += language == "ru" ? " \(year) г." : ", \(year)"
         resultString += ":\n"
 
         switch self.eventType {
