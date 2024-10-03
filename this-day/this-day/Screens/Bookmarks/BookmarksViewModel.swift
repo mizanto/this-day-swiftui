@@ -27,7 +27,7 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
     @Published var showSnackbar = false
     var snackbarMessage: String { LocalizedString("message.snackbar.copied") }
 
-    private let storageService: StorageServiceProtocol
+    private let storageService: LocalStorageProtocol
     private let localizationManager: any LocalizationManagerProtocol
 
     private var bookmarks: [BookmarkEntity] = [] {
@@ -36,7 +36,7 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
     private var uiModels: [BookmarkEvent] = []
     private var language: String { localizationManager.currentLanguage }
 
-    init(storageService: StorageServiceProtocol,
+    init(storageService: LocalStorageProtocol,
          localizationManager: any LocalizationManagerProtocol) {
         self.storageService = storageService
         self.localizationManager = localizationManager

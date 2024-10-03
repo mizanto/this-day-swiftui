@@ -11,7 +11,7 @@ import FirebaseCore
 @main
 struct ThisDayApp: App {
     let persistenceController = PersistenceController.shared
-    let storageService: StorageService
+    let storageService: LocalStorage
     let networkService: NetworkService
     let authService: AuthenticationService
 
@@ -19,7 +19,7 @@ struct ThisDayApp: App {
 
     init() {
         FirebaseApp.configure()
-        storageService = StorageService(context: persistenceController.container.viewContext)
+        storageService = LocalStorage(context: persistenceController.container.viewContext)
         networkService = NetworkService()
         authService = AuthenticationService()
     }

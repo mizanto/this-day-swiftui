@@ -90,7 +90,7 @@ final class BookmarksViewModelTests: XCTestCase {
     }
     
     func testOnAppearWithError() {
-        let error = StorageServiceError.unknownError("Test error")
+        let error = StorageError.unknownError("Test error")
         storageServiceMock.error = error
         
         let expectation = XCTestExpectation(description: "Error should be shown")

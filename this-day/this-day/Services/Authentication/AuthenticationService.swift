@@ -33,8 +33,9 @@ final class AuthenticationService: AuthenticationServiceProtocol {
         Auth.auth().authStateDidChangePublisher()
             .sink { [weak self] user in
                 if let user = user {
-                    self?.currentUser = UserInfoModel(name: user.displayName ?? "",
-                                                 email: user.email ?? "")
+                    self?.currentUser = UserInfoModel(id: user.uid,
+                                                      name: user.displayName ?? "",
+                                                      email: user.email ?? "")
                 } else {
                     self?.currentUser = nil
                 }

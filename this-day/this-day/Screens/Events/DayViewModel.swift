@@ -41,7 +41,7 @@ final class DayViewModel: DayViewModelProtocol {
 
     private var currentDate: Date = Date()
     private let networkService: NetworkServiceProtocol
-    private let storageService: StorageServiceProtocol
+    private let storageService: LocalStorageProtocol
     private let localizationManager: any LocalizationManagerProtocol
     private var cancellables = Set<AnyCancellable>()
     private var day: DayEntity? {
@@ -55,7 +55,7 @@ final class DayViewModel: DayViewModelProtocol {
     private var language: String { localizationManager.currentLanguage }
 
     init(networkService: NetworkServiceProtocol,
-         storageService: StorageServiceProtocol,
+         storageService: LocalStorageProtocol,
          localizationManager: any LocalizationManagerProtocol) {
         self.networkService = networkService
         self.storageService = storageService

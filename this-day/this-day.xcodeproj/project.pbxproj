@@ -30,6 +30,7 @@
 		AD4AC4522CAD663300C6BFBE /* UserInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC4512CAD662900C6BFBE /* UserInfoModel.swift */; };
 		AD4AC4542CAD66C200C6BFBE /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC4532CAD66BE00C6BFBE /* UserInfo.swift */; };
 		AD4AC4562CAD6D1000C6BFBE /* AuthenticationServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC4552CAD6D0F00C6BFBE /* AuthenticationServiceMock.swift */; };
+		AD4AC4592CAEBD2500C6BFBE /* CloudStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC4582CAEBD2000C6BFBE /* CloudStorage.swift */; };
 		AD4D88EE2C9841CF003DD3C4 /* ThisDayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D88ED2C9841CF003DD3C4 /* ThisDayApp.swift */; };
 		AD4D88F02C9841CF003DD3C4 /* DayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D88EF2C9841CF003DD3C4 /* DayView.swift */; };
 		AD4D88F22C9841D0003DD3C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD4D88F12C9841D0003DD3C4 /* Assets.xcassets */; };
@@ -44,8 +45,8 @@
 		AD53AA472CA2A6360024FD31 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA452CA2A6360024FD31 /* Model.xcdatamodeld */; };
 		AD53AA5A2CA2B64F0024FD31 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA592CA2B64E0024FD31 /* PersistenceController.swift */; };
 		AD53AA642CA2B97C0024FD31 /* EventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA632CA2B97A0024FD31 /* EventType.swift */; };
-		AD53AA672CA2BAF20024FD31 /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA662CA2BAF10024FD31 /* StorageService.swift */; };
-		AD53AA6A2CA2BD640024FD31 /* StorageServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA692CA2BD640024FD31 /* StorageServiceError.swift */; };
+		AD53AA672CA2BAF20024FD31 /* LocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA662CA2BAF10024FD31 /* LocalStorage.swift */; };
+		AD53AA6A2CA2BD640024FD31 /* StorageError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA692CA2BD640024FD31 /* StorageError.swift */; };
 		AD53AA6C2CA2C2C80024FD31 /* DayEntity+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA6B2CA2C2C30024FD31 /* DayEntity+Helpers.swift */; };
 		AD53AA6E2CA2C2EA0024FD31 /* EventEntity+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA6D2CA2C2E90024FD31 /* EventEntity+Helpers.swift */; };
 		AD53AA802CA4068C0024FD31 /* RowActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA7F2CA4068B0024FD31 /* RowActions.swift */; };
@@ -121,6 +122,7 @@
 		AD4AC4512CAD662900C6BFBE /* UserInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoModel.swift; sourceTree = "<group>"; };
 		AD4AC4532CAD66BE00C6BFBE /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		AD4AC4552CAD6D0F00C6BFBE /* AuthenticationServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationServiceMock.swift; sourceTree = "<group>"; };
+		AD4AC4582CAEBD2000C6BFBE /* CloudStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorage.swift; sourceTree = "<group>"; };
 		AD4D88EA2C9841CF003DD3C4 /* this-day.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "this-day.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD4D88ED2C9841CF003DD3C4 /* ThisDayApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThisDayApp.swift; sourceTree = "<group>"; };
 		AD4D88EF2C9841CF003DD3C4 /* DayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayView.swift; sourceTree = "<group>"; };
@@ -137,8 +139,8 @@
 		AD53AA462CA2A6360024FD31 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		AD53AA592CA2B64E0024FD31 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		AD53AA632CA2B97A0024FD31 /* EventType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventType.swift; sourceTree = "<group>"; };
-		AD53AA662CA2BAF10024FD31 /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
-		AD53AA692CA2BD640024FD31 /* StorageServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageServiceError.swift; sourceTree = "<group>"; };
+		AD53AA662CA2BAF10024FD31 /* LocalStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorage.swift; sourceTree = "<group>"; };
+		AD53AA692CA2BD640024FD31 /* StorageError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageError.swift; sourceTree = "<group>"; };
 		AD53AA6B2CA2C2C30024FD31 /* DayEntity+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayEntity+Helpers.swift"; sourceTree = "<group>"; };
 		AD53AA6D2CA2C2E90024FD31 /* EventEntity+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventEntity+Helpers.swift"; sourceTree = "<group>"; };
 		AD53AA7F2CA4068B0024FD31 /* RowActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowActions.swift; sourceTree = "<group>"; };
@@ -436,8 +438,9 @@
 		AD53AA442CA2A5A70024FD31 /* Storage */ = {
 			isa = PBXGroup;
 			children = (
-				AD53AA692CA2BD640024FD31 /* StorageServiceError.swift */,
-				AD53AA662CA2BAF10024FD31 /* StorageService.swift */,
+				AD53AA692CA2BD640024FD31 /* StorageError.swift */,
+				AD4AC4582CAEBD2000C6BFBE /* CloudStorage.swift */,
+				AD53AA662CA2BAF10024FD31 /* LocalStorage.swift */,
 				AD53AA592CA2B64E0024FD31 /* PersistenceController.swift */,
 			);
 			path = Storage;
@@ -783,14 +786,15 @@
 				ADEDFD222CAAE76C003AACA5 /* DayEntity+CoreDataClass.swift in Sources */,
 				ADEDFD232CAAE76C003AACA5 /* DayEntity+CoreDataProperties.swift in Sources */,
 				AD4AC4462CAC04EE00C6BFBE /* AuthView.swift in Sources */,
-				AD53AA6A2CA2BD640024FD31 /* StorageServiceError.swift in Sources */,
+				AD53AA6A2CA2BD640024FD31 /* StorageError.swift in Sources */,
 				ADE5C5042CA846E500FF2BF5 /* BundleEx.swift in Sources */,
 				AD9592352C9DC9530019BB13 /* CategoryPicker.swift in Sources */,
 				AD4D891D2C987F60003DD3C4 /* Date+Extension.swift in Sources */,
 				AD3606822CA72706008D31A9 /* SettingsViewModel.swift in Sources */,
 				AD9592392C9DCBAE0019BB13 /* LoadingView.swift in Sources */,
 				AD95920B2C99C8F80019BB13 /* NetworkServiceError.swift in Sources */,
-				AD53AA672CA2BAF20024FD31 /* StorageService.swift in Sources */,
+				AD4AC4592CAEBD2500C6BFBE /* CloudStorage.swift in Sources */,
+				AD53AA672CA2BAF20024FD31 /* LocalStorage.swift in Sources */,
 				AD53AA402CA185AD0024FD31 /* Event.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

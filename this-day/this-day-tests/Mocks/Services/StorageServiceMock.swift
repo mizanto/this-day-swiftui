@@ -16,7 +16,7 @@ final class StorageServiceMock: StorageServiceProtocol {
     var days: [String: DayEntity] = [:]
     var events: [UUID: EventEntity] = [:]
     var bookmarks: [UUID: BookmarkEntity] = [:]
-    var error: StorageServiceError?
+    var error: StorageError?
 
     var fetchDayCalled = false
     var saveDayCalled = false
@@ -84,7 +84,7 @@ final class StorageServiceMock: StorageServiceProtocol {
             _ = bookmarks.removeValue(forKey: id)
             try context.save()
         } else {
-            throw StorageServiceError.notFound
+            throw StorageError.notFound
         }
     }
     

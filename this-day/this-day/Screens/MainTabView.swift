@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MainTabView: View {
     let networkService: NetworkServiceProtocol
-    let storageService: StorageServiceProtocol
+    let storageService: LocalStorageProtocol
     let authService: AuthenticationServiceProtocol
 
     @EnvironmentObject private var localizationManager: LocalizationManager
