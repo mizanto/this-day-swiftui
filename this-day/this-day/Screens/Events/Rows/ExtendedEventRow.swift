@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ExtendedEventRow: View {
-    let event: ExtendedEvent
+    let event: Event
     @State private var inBookmarks: Bool = false
 
     let onBookmarkPressed: (String) -> Void
@@ -56,7 +56,7 @@ struct ExtendedEventRow: View {
 
 #Preview {
     ExtendedEventRow(
-        event: ExtendedEvent(
+        event: Event(
             id: "123",
             year: "1998",
             title: "Text",

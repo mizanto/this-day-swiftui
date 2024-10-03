@@ -10,7 +10,7 @@ import Combine
 import UIKit
 
 protocol DayViewModelProtocol: ObservableObject {
-    var state: ViewState<[any EventProtocol]> { get }
+    var state: ViewState<[Event]> { get }
     var title: String { get }
     var subtitle: String { get }
     var snackbarMessage: String { get }
@@ -27,7 +27,7 @@ protocol DayViewModelProtocol: ObservableObject {
 }
 
 final class DayViewModel: DayViewModelProtocol {
-    @Published var state: ViewState<[any EventProtocol]> = .initial
+    @Published var state: ViewState<[Event]> = .initial
     @Published var title: String = ""
     @Published var subtitle: String = ""
     @Published var itemsForSahre: ShareableItems?
@@ -51,7 +51,7 @@ final class DayViewModel: DayViewModelProtocol {
             cacheEvents(for: day)
         }
     }
-    private var uiModels: [EventCategory: [any EventProtocol]] = [:]
+    private var uiModels: [EventCategory: [Event]] = [:]
     private var language: String { localizationManager.currentLanguage }
 
     init(networkService: NetworkServiceProtocol,
@@ -207,7 +207,7 @@ final class DayViewModel: DayViewModelProtocol {
         state = .data(events)
     }
 
-    private func mapEvents(from events: [EventEntity], for type: EventType) -> [any EventProtocol] {
+    private func mapEvents(from events: [EventEntity], for type: EventType) -> [Event] {
         return events.compactMap { event in
             guard event.eventType == type else { return nil }
             return event.toDisplayModel()

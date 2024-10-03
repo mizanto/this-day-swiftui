@@ -37,10 +37,9 @@
 		AD4D89032C985B23003DD3C4 /* DayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D89022C985B23003DD3C4 /* DayViewModel.swift */; };
 		AD4D89072C98664F003DD3C4 /* DayViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D89062C98664F003DD3C4 /* DayViewBuilder.swift */; };
 		AD4D89112C98703C003DD3C4 /* EventNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D89102C98703C003DD3C4 /* EventNetworkModel.swift */; };
-		AD4D89182C987F05003DD3C4 /* ShortEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D89172C987F05003DD3C4 /* ShortEvent.swift */; };
 		AD4D891D2C987F60003DD3C4 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D891C2C987F60003DD3C4 /* Date+Extension.swift */; };
 		AD4D891F2C988810003DD3C4 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D891E2C988810003DD3C4 /* AppLogger.swift */; };
-		AD53AA402CA185AD0024FD31 /* ExtendedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA3F2CA185AA0024FD31 /* ExtendedEvent.swift */; };
+		AD53AA402CA185AD0024FD31 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA3F2CA185AA0024FD31 /* Event.swift */; };
 		AD53AA432CA1F1430024FD31 /* WikipediaParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA422CA1F1430024FD31 /* WikipediaParserTests.swift */; };
 		AD53AA472CA2A6360024FD31 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA452CA2A6360024FD31 /* Model.xcdatamodeld */; };
 		AD53AA5A2CA2B64F0024FD31 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD53AA592CA2B64E0024FD31 /* PersistenceController.swift */; };
@@ -86,7 +85,6 @@
 		ADEDFD232CAAE76C003AACA5 /* DayEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADEDFD212CAAE76C003AACA5 /* DayEntity+CoreDataProperties.swift */; };
 		ADF08E312CA02B6400CB877A /* ResponseNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF08E302CA02B6000CB877A /* ResponseNetworkModel.swift */; };
 		ADF08E332CA02DF100CB877A /* WikipediaURLBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF08E322CA02DF000CB877A /* WikipediaURLBuilder.swift */; };
-		ADF4F2992CA171F80057F9CA /* ShortEventRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF4F2982CA171F70057F9CA /* ShortEventRow.swift */; };
 		ADFE36922CA5A9F90050337D /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADFE36912CA5A9F60050337D /* Badge.swift */; };
 		ADFE36992CA5ABDA0050337D /* BookmarkEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADFE36932CA5ABDA0050337D /* BookmarkEntity+CoreDataClass.swift */; };
 		ADFE369A2CA5ABDA0050337D /* BookmarkEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADFE36942CA5ABDA0050337D /* BookmarkEntity+CoreDataProperties.swift */; };
@@ -132,10 +130,9 @@
 		AD4D89022C985B23003DD3C4 /* DayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayViewModel.swift; sourceTree = "<group>"; };
 		AD4D89062C98664F003DD3C4 /* DayViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayViewBuilder.swift; sourceTree = "<group>"; };
 		AD4D89102C98703C003DD3C4 /* EventNetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventNetworkModel.swift; sourceTree = "<group>"; };
-		AD4D89172C987F05003DD3C4 /* ShortEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortEvent.swift; sourceTree = "<group>"; };
 		AD4D891C2C987F60003DD3C4 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		AD4D891E2C988810003DD3C4 /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
-		AD53AA3F2CA185AA0024FD31 /* ExtendedEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtendedEvent.swift; sourceTree = "<group>"; };
+		AD53AA3F2CA185AA0024FD31 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		AD53AA422CA1F1430024FD31 /* WikipediaParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikipediaParserTests.swift; sourceTree = "<group>"; };
 		AD53AA462CA2A6360024FD31 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		AD53AA592CA2B64E0024FD31 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
@@ -181,7 +178,6 @@
 		ADEDFD212CAAE76C003AACA5 /* DayEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		ADF08E302CA02B6000CB877A /* ResponseNetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseNetworkModel.swift; sourceTree = "<group>"; };
 		ADF08E322CA02DF000CB877A /* WikipediaURLBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikipediaURLBuilder.swift; sourceTree = "<group>"; };
-		ADF4F2982CA171F70057F9CA /* ShortEventRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortEventRow.swift; sourceTree = "<group>"; };
 		ADFE36912CA5A9F60050337D /* Badge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Badge.swift; sourceTree = "<group>"; };
 		ADFE36932CA5ABDA0050337D /* BookmarkEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BookmarkEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		ADFE36942CA5ABDA0050337D /* BookmarkEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BookmarkEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -412,8 +408,7 @@
 			isa = PBXGroup;
 			children = (
 				AD4AC4532CAD66BE00C6BFBE /* UserInfo.swift */,
-				AD4D89172C987F05003DD3C4 /* ShortEvent.swift */,
-				AD53AA3F2CA185AA0024FD31 /* ExtendedEvent.swift */,
+				AD53AA3F2CA185AA0024FD31 /* Event.swift */,
 				AD8BDFF72CA58C4D006B9D58 /* BookmarkEvent.swift */,
 			);
 			path = UI;
@@ -433,7 +428,6 @@
 		AD53AA412CA185E10024FD31 /* Rows */ = {
 			isa = PBXGroup;
 			children = (
-				ADF4F2982CA171F70057F9CA /* ShortEventRow.swift */,
 				AD95923A2C9DCDD60019BB13 /* ExtendedEventRow.swift */,
 			);
 			path = Rows;
@@ -753,7 +747,6 @@
 				AD5F1F4B2CA484C000966944 /* MainTabView.swift in Sources */,
 				AD53AA6C2CA2C2C80024FD31 /* DayEntity+Helpers.swift in Sources */,
 				AD36067E2CA724A6008D31A9 /* SettingsView.swift in Sources */,
-				AD4D89182C987F05003DD3C4 /* ShortEvent.swift in Sources */,
 				AD4AC4522CAD663300C6BFBE /* UserInfoModel.swift in Sources */,
 				AD4AC44E2CAC750A00C6BFBE /* AuthenticationError.swift in Sources */,
 				AD4AC4542CAD66C200C6BFBE /* UserInfo.swift in Sources */,
@@ -779,7 +772,6 @@
 				AD4AC44B2CAC330D00C6BFBE /* AuthViewBuilder.swift in Sources */,
 				AD95922E2C9D96E30019BB13 /* DayNetworkModel.swift in Sources */,
 				AD53AA5A2CA2B64F0024FD31 /* PersistenceController.swift in Sources */,
-				ADF4F2992CA171F80057F9CA /* ShortEventRow.swift in Sources */,
 				AD5F1F502CA4873600966944 /* BookmarksViewBuilder.swift in Sources */,
 				AD53AA802CA4068C0024FD31 /* RowActions.swift in Sources */,
 				AD5F1F542CA570E500966944 /* PlaceholderView.swift in Sources */,
@@ -799,7 +791,7 @@
 				AD9592392C9DCBAE0019BB13 /* LoadingView.swift in Sources */,
 				AD95920B2C99C8F80019BB13 /* NetworkServiceError.swift in Sources */,
 				AD53AA672CA2BAF20024FD31 /* StorageService.swift in Sources */,
-				AD53AA402CA185AD0024FD31 /* ExtendedEvent.swift in Sources */,
+				AD53AA402CA185AD0024FD31 /* Event.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

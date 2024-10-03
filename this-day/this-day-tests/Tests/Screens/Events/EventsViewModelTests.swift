@@ -189,7 +189,7 @@ final class DayViewModelTests: XCTestCase {
                     guard !events.isEmpty else { return }
                     
                     XCTAssertEqual(events.count, 1)
-                    let event = events.first as? ExtendedEvent
+                    let event = events.first as? Event
                     XCTAssertNotNil(event)
                     XCTAssertEqual(event!.year, day.general.first?.year)
                     XCTAssertEqual(event!.title, day.general.first?.title)
@@ -219,7 +219,7 @@ final class DayViewModelTests: XCTestCase {
                     guard !events.isEmpty else { return }
                     
                     XCTAssertEqual(events.count, 1)
-                    let event = events.first as? ExtendedEvent
+                    let event = events.first as? Event
                     XCTAssertNotNil(event)
                     XCTAssertEqual(event!.year, day.births.first?.year)
                     XCTAssertEqual(event!.title, day.births.first?.title)
@@ -246,7 +246,7 @@ final class DayViewModelTests: XCTestCase {
                     guard !events.isEmpty else { return }
                     
                     XCTAssertEqual(events.count, 1)
-                    let event = events.first as? ExtendedEvent
+                    let event = events.first as? Event
                     XCTAssertNotNil(event)
                     XCTAssertEqual(event!.year, day.deaths.first?.year)
                     XCTAssertEqual(event!.title, day.deaths.first?.title)

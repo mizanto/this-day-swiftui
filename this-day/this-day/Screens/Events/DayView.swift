@@ -46,7 +46,7 @@ struct DayView<ViewModel: DayViewModelProtocol>: View {
         }
     }
 
-    private func dayView(for events: [any EventProtocol]) -> some View {
+    private func dayView(for events: [Event]) -> some View {
         VStack {
             CategoryPicker(selectedCategory: $viewModel.selectedCategory)
                 .padding(.vertical, 8)
@@ -71,26 +71,13 @@ struct DayView<ViewModel: DayViewModelProtocol>: View {
     }
 
     @ViewBuilder
-    private func row(for category: EventCategory, event: any EventProtocol) -> some View {
-        if let event = event as? ShortEvent {
-            ShortEventRow(
-                event: event,
-                onBookmarkPressed: toggleBookmark,
-                onCopyPressed: copyToClipboard,
-                onSharePressed: share
-            )
-        } else if let event = event as? ExtendedEvent {
-            ExtendedEventRow(
-                event: event,
-                onBookmarkPressed: toggleBookmark,
-                onCopyPressed: copyToClipboard,
-                onSharePressed: share
-            )
-        } else {
-            Text(LocalizedString("unknown"))
-                .foregroundColor(.red)
-                .italic()
-        }
+    private func row(for category: EventCategory, event: Event) -> some View {
+        ExtendedEventRow(
+            event: event,
+            onBookmarkPressed: toggleBookmark,
+            onCopyPressed: copyToClipboard,
+            onSharePressed: share
+        )
     }
 
     private func toggleBookmark(for id: String) {

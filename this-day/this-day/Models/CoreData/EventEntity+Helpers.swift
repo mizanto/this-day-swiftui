@@ -37,8 +37,8 @@ extension EventEntity {
         return stringDate + ", \(year)"
     }
 
-    func toDisplayModel() -> any EventProtocol {
-        ExtendedEvent(
+    func toDisplayModel() -> Event {
+        Event(
             id: self.id,
             year: self.year,
             title: self.title,
