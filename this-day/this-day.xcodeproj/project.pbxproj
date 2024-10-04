@@ -66,7 +66,7 @@
 		AD5F1F572CA5841D00966944 /* BookmarkRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5F1F562CA5841600966944 /* BookmarkRow.swift */; };
 		AD8BDFF82CA58C63006B9D58 /* BookmarkEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8BDFF72CA58C4D006B9D58 /* BookmarkEvent.swift */; };
 		AD9592062C9994DA0019BB13 /* NetworkServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592052C9994DA0019BB13 /* NetworkServiceMock.swift */; };
-		AD95920B2C99C8F80019BB13 /* NetworkServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95920A2C99C8F60019BB13 /* NetworkServiceError.swift */; };
+		AD95920B2C99C8F80019BB13 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95920A2C99C8F60019BB13 /* NetworkError.swift */; };
 		AD95922A2C9C1D580019BB13 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592292C9C1D550019BB13 /* NetworkService.swift */; };
 		AD95922C2C9C3A000019BB13 /* WikipediaParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95922B2C9C39F00019BB13 /* WikipediaParser.swift */; };
 		AD95922E2C9D96E30019BB13 /* DayNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95922D2C9D96DA0019BB13 /* DayNetworkModel.swift */; };
@@ -161,7 +161,7 @@
 		AD5F1F562CA5841600966944 /* BookmarkRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkRow.swift; sourceTree = "<group>"; };
 		AD8BDFF72CA58C4D006B9D58 /* BookmarkEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkEvent.swift; sourceTree = "<group>"; };
 		AD9592052C9994DA0019BB13 /* NetworkServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceMock.swift; sourceTree = "<group>"; };
-		AD95920A2C99C8F60019BB13 /* NetworkServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceError.swift; sourceTree = "<group>"; };
+		AD95920A2C99C8F60019BB13 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		AD9592292C9C1D550019BB13 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		AD95922B2C9C39F00019BB13 /* WikipediaParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikipediaParser.swift; sourceTree = "<group>"; };
 		AD95922D2C9D96DA0019BB13 /* DayNetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayNetworkModel.swift; sourceTree = "<group>"; };
@@ -508,7 +508,7 @@
 				ADF08E322CA02DF000CB877A /* WikipediaURLBuilder.swift */,
 				AD95922B2C9C39F00019BB13 /* WikipediaParser.swift */,
 				AD9592292C9C1D550019BB13 /* NetworkService.swift */,
-				AD95920A2C99C8F60019BB13 /* NetworkServiceError.swift */,
+				AD95920A2C99C8F60019BB13 /* NetworkError.swift */,
 				AD2609572C99763400687D36 /* URLSessionProtocol.swift */,
 			);
 			path = Network;
@@ -796,7 +796,7 @@
 				AD4D891D2C987F60003DD3C4 /* Date+Extension.swift in Sources */,
 				AD3606822CA72706008D31A9 /* SettingsViewModel.swift in Sources */,
 				AD9592392C9DCBAE0019BB13 /* LoadingView.swift in Sources */,
-				AD95920B2C99C8F80019BB13 /* NetworkServiceError.swift in Sources */,
+				AD95920B2C99C8F80019BB13 /* NetworkError.swift in Sources */,
 				AD4AC4592CAEBD2500C6BFBE /* CloudStorage.swift in Sources */,
 				AD53AA672CA2BAF20024FD31 /* LocalStorage.swift in Sources */,
 				AD53AA402CA185AD0024FD31 /* Event.swift in Sources */,
