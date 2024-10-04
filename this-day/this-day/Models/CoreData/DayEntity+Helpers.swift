@@ -13,24 +13,24 @@ extension DayEntity {
     }
 
     @discardableResult
-    static func from(networkModel: DayNetworkModel, id: String, date: Date,
+    static func from(model: DayNetworkModel, id: String, date: Date,
                      language: String, context: NSManagedObjectContext) -> DayEntity {
         let dayEntity = DayEntity(context: context)
         dayEntity.id = id
         dayEntity.language = language
-        dayEntity.text = networkModel.text
+        dayEntity.text = model.text
         dayEntity.date = Date()
 
         let eventTypes: [(events: [EventNetworkModel], type: EventType)] = [
-            (networkModel.general, .general),
-            (networkModel.births, .birth),
-            (networkModel.deaths, .death)
+            (model.general, .general),
+            (model.births, .birth),
+            (model.deaths, .death)
         ]
 
         for (events, type) in eventTypes {
             for eventNetworkModel in events {
                 let eventEntity = EventEntity.from(
-                    networkModel: eventNetworkModel, dayID: dayEntity.id, type: type, context: context)
+                    model: eventNetworkModel, dayID: dayEntity.id, type: type, context: context)
                 eventEntity.day = dayEntity
                 dayEntity.addToEvents(eventEntity)
             }

@@ -13,21 +13,23 @@ extension EventEntity {
         return bookmark != nil
     }
 
-    static func createID(dayID: String, year: String) -> String {
+    static func createID(dayID: String, year: String, suffix: String) -> String {
         let preparedYear = year.replacingOccurrences(of: " ", with: "")
                                .replacingOccurrences(of: ".", with: "")
-        return "\(dayID)-\(preparedYear)"
+        return dayID.appending("-").appending(preparedYear)
+                    .appending("-").appending(suffix)
     }
 
-    static func from(networkModel: EventNetworkModel,
+    static func from(model: EventNetworkModel,
                      dayID: String,
                      type: EventType,
                      context: NSManagedObjectContext) -> EventEntity {
         let eventEntity = EventEntity(context: context)
-        eventEntity.id = createID(dayID: dayID, year: networkModel.year)
-        eventEntity.title = networkModel.title
-        eventEntity.year = networkModel.year
-        eventEntity.subtitle = networkModel.additional
+        eventEntity.id = createID(dayID: dayID, year: model.year,
+                                  suffix: model.title.sha256Hash(short: true))
+        eventEntity.title = model.title
+        eventEntity.year = model.year
+        eventEntity.subtitle = model.additional
         eventEntity.eventType = type
         return eventEntity
     }

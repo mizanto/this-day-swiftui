@@ -62,7 +62,7 @@ class LocalStorage: LocalStorageProtocol {
                     self.context.delete(existingDay)
                 }
 
-                DayEntity.from(networkModel: networkModel, id: id, date: date,
+                DayEntity.from(model: networkModel, id: id, date: date,
                                language: language, context: self.context)
                 try self.context.save()
                 AppLogger.shared.info("Successfully saved DayEntity for id: \(id)", category: .database)
@@ -142,7 +142,8 @@ class LocalStorage: LocalStorageProtocol {
                     promise(.success(())) // Не считать ошибкой
                 }
             } catch {
-                AppLogger.shared.error("Failed to remove event \(event.id) from bookmarks: \(error)", category: .database)
+                AppLogger.shared.error("Failed to remove event \(event.id) from bookmarks: \(error)",
+                                       category: .database)
                 promise(.failure(StorageError.deleteError(error)))
             }
         }

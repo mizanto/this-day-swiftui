@@ -50,7 +50,7 @@ final class CloudStorage: CloudStorageProtocol {
             AppLogger.shared.error("User is not logged in")
             return Fail(error: StorageError.unauthorized).eraseToAnyPublisher()
         }
-    
+
         return bookmarksReference(userID: userID)
             .order(by: "dateAdded", descending: true)
             .getDocuments()
