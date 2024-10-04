@@ -12,12 +12,11 @@ extension DayEntity {
         return "\(language)-\(date.toFormat("dd-MM"))"
     }
 
-    static func from(networkModel: DayNetworkModel,
-                     date: Date,
-                     language: String,
-                     context: NSManagedObjectContext) -> DayEntity {
+    @discardableResult
+    static func from(networkModel: DayNetworkModel, id: String, date: Date,
+                     language: String, context: NSManagedObjectContext) -> DayEntity {
         let dayEntity = DayEntity(context: context)
-        dayEntity.id = createID(date: date, language: language)
+        dayEntity.id = id
         dayEntity.language = language
         dayEntity.text = networkModel.text
         dayEntity.date = Date()

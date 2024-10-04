@@ -23,11 +23,11 @@ protocol CloudStorageProtocol {
 
 final class CloudStorage: CloudStorageProtocol {
     let authService: AuthenticationServiceProtocol
-    
+
     init(authService: AuthenticationServiceProtocol) {
         self.authService = authService
     }
-    
+
     func addBookmark(eventID: String, dateAdded: Date) -> AnyPublisher<Void, StorageError> {
         guard let userID = authService.currentUser?.id else {
             AppLogger.shared.error("User is not logged in")
@@ -50,7 +50,7 @@ final class CloudStorage: CloudStorageProtocol {
             AppLogger.shared.error("User is not logged in")
             return Fail(error: StorageError.unauthorized).eraseToAnyPublisher()
         }
-        
+    
         return bookmarksReference(userID: userID)
             .order(by: "dateAdded", descending: true)
             .getDocuments()
@@ -95,7 +95,7 @@ final class CloudStorage: CloudStorageProtocol {
             }
             .eraseToAnyPublisher()
     }
-    
+
     private func bookmarksReference(userID: String) -> CollectionReference {
         return Firestore.firestore().collection("users").document(userID).collection("bookmarks")
     }

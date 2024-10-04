@@ -82,7 +82,7 @@ final class WikipediaParser {
 
         return DayNetworkModel(
             text: introText,
-            general: parsedCategories[.events]?.filter({ $0.year != nil }) ?? [],
+            general: parsedCategories[.events] ?? [],
             births: parsedCategories[.births] ?? [],
             deaths: parsedCategories[.deaths] ?? []
         )

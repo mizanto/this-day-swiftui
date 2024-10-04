@@ -12,7 +12,7 @@ extension EventEntity {
     var inBookmarks: Bool {
         return bookmark != nil
     }
-    
+
     static func createID(dayID: String, year: String) -> String {
         let preparedYear = year.replacingOccurrences(of: " ", with: "")
                                .replacingOccurrences(of: ".", with: "")

@@ -31,6 +31,7 @@
 		AD4AC4542CAD66C200C6BFBE /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC4532CAD66BE00C6BFBE /* UserInfo.swift */; };
 		AD4AC4562CAD6D1000C6BFBE /* AuthenticationServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC4552CAD6D0F00C6BFBE /* AuthenticationServiceMock.swift */; };
 		AD4AC4592CAEBD2500C6BFBE /* CloudStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC4582CAEBD2000C6BFBE /* CloudStorage.swift */; };
+		AD4AC45B2CAEDE6D00C6BFBE /* DataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC45A2CAEDE6B00C6BFBE /* DataRepository.swift */; };
 		AD4D88EE2C9841CF003DD3C4 /* ThisDayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D88ED2C9841CF003DD3C4 /* ThisDayApp.swift */; };
 		AD4D88F02C9841CF003DD3C4 /* DayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D88EF2C9841CF003DD3C4 /* DayView.swift */; };
 		AD4D88F22C9841D0003DD3C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD4D88F12C9841D0003DD3C4 /* Assets.xcassets */; };
@@ -123,6 +124,7 @@
 		AD4AC4532CAD66BE00C6BFBE /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		AD4AC4552CAD6D0F00C6BFBE /* AuthenticationServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationServiceMock.swift; sourceTree = "<group>"; };
 		AD4AC4582CAEBD2000C6BFBE /* CloudStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorage.swift; sourceTree = "<group>"; };
+		AD4AC45A2CAEDE6B00C6BFBE /* DataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRepository.swift; sourceTree = "<group>"; };
 		AD4D88EA2C9841CF003DD3C4 /* this-day.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "this-day.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD4D88ED2C9841CF003DD3C4 /* ThisDayApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThisDayApp.swift; sourceTree = "<group>"; };
 		AD4D88EF2C9841CF003DD3C4 /* DayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayView.swift; sourceTree = "<group>"; };
@@ -438,6 +440,7 @@
 		AD53AA442CA2A5A70024FD31 /* Storage */ = {
 			isa = PBXGroup;
 			children = (
+				AD4AC45A2CAEDE6B00C6BFBE /* DataRepository.swift */,
 				AD53AA692CA2BD640024FD31 /* StorageError.swift */,
 				AD4AC4582CAEBD2000C6BFBE /* CloudStorage.swift */,
 				AD53AA662CA2BAF10024FD31 /* LocalStorage.swift */,
@@ -774,6 +777,7 @@
 				AD5E69AF2CA6E7C700F0EEFA /* Snackbar.swift in Sources */,
 				AD4AC44B2CAC330D00C6BFBE /* AuthViewBuilder.swift in Sources */,
 				AD95922E2C9D96E30019BB13 /* DayNetworkModel.swift in Sources */,
+				AD4AC45B2CAEDE6D00C6BFBE /* DataRepository.swift in Sources */,
 				AD53AA5A2CA2B64F0024FD31 /* PersistenceController.swift in Sources */,
 				AD5F1F502CA4873600966944 /* BookmarksViewBuilder.swift in Sources */,
 				AD53AA802CA4068C0024FD31 /* RowActions.swift in Sources */,

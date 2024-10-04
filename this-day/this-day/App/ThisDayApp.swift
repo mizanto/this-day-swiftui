@@ -10,25 +10,26 @@ import FirebaseCore
 
 @main
 struct ThisDayApp: App {
-    let persistenceController = PersistenceController.shared
-    let storageService: LocalStorage
-    let networkService: NetworkService
     let authService: AuthenticationService
+    let dataRepository: DataRepository
 
     @StateObject var localizationManager = LocalizationManager()
 
     init() {
         FirebaseApp.configure()
-        storageService = LocalStorage(context: persistenceController.container.viewContext)
-        networkService = NetworkService()
         authService = AuthenticationService()
+        let context = PersistenceController.shared.container.viewContext
+        dataRepository = DataRepository(
+            localStorage: LocalStorage(context: context),
+            cloudStorage: CloudStorage(authService: authService),
+            networkService: NetworkService()
+        )
     }
 
     var body: some Scene {
         WindowGroup {
-            MainTabView(networkService: networkService,
-                        storageService: storageService,
-                        authService: authService)
+            MainTabView(authService: authService,
+                        dataRepository: dataRepository)
                 .environmentObject(localizationManager)
                 .onReceive(NotificationCenter.default.publisher(for: .languageDidChange)) { _ in
                     localizationManager.objectWillChange.send()

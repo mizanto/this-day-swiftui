@@ -27,8 +27,9 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
     @Published var showSnackbar = false
     var snackbarMessage: String { LocalizedString("message.snackbar.copied") }
 
-    private let storageService: LocalStorageProtocol
+    private let dataRepository: DataRepositoryProtocol
     private let localizationManager: any LocalizationManagerProtocol
+    private var cancellables = Set<AnyCancellable>()
 
     private var bookmarks: [BookmarkEntity] = [] {
         didSet { cacheBookmarks(bookmarks) }
@@ -36,9 +37,9 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
     private var uiModels: [BookmarkEvent] = []
     private var language: String { localizationManager.currentLanguage }
 
-    init(storageService: LocalStorageProtocol,
+    init(dataRepository: DataRepositoryProtocol,
          localizationManager: any LocalizationManagerProtocol) {
-        self.storageService = storageService
+        self.dataRepository = dataRepository
         self.localizationManager = localizationManager
     }
 
@@ -46,27 +47,54 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
         AppLogger.shared.debug("BookmarksViewModel: onAppear", category: .ui)
         state = .loading
 
-        do {
-            bookmarks = try storageService.fetchBookmarks()
-            state = .data(uiModels)
-            AppLogger.shared.debug("Fetched \(bookmarks.count) bookmarks", category: .ui)
-        } catch {
-            AppLogger.shared.error("Failed to fetch bookmarks: \(error)", category: .ui)
-            state = .error("Failed to fetch bookmarks")
-        }
+        dataRepository.fetchBookmarks()
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveCompletion: { [weak self] completion in
+                    guard let self else { return }
+                    if case .failure(let error) = completion {
+                        AppLogger.shared.error("Failed to fetch bookmarks: \(error)", category: .ui)
+                        self.state = .error("Failed to fetch bookmarks")
+                    }
+                },
+                receiveValue: { [weak self] bookmarks in
+                    guard let self else { return }
+                    AppLogger.shared.debug("Fetched \(bookmarks.count) bookmarks", category: .ui)
+                    self.bookmarks = bookmarks
+                    self.state = .data(uiModels)
+                }
+            )
+            .store(in: &cancellables)
     }
 
     func removeBookmark(for id: String) {
-        do {
-            try storageService.removeBookmark(id: id)
-            bookmarks = try storageService.fetchBookmarks()
-            state = .data(uiModels)
+        dataRepository.toggleBookmark(for: id)
+            .receive(on: DispatchQueue.main)
+            .flatMap { [weak self] () -> AnyPublisher<[BookmarkEntity], RepositoryError> in
+                guard let self else {
+                    return Fail(error: .unknownError("Self is nil"))
+                        .eraseToAnyPublisher()
+                }
+                return self.dataRepository.fetchBookmarks().eraseToAnyPublisher()
+            }
+            .sink(
+                receiveCompletion: { completion in
+                    if case .failure(let error) = completion {
+                        AppLogger.shared.error("Failed to remove bookmark: \(error)", category: .ui)
+                    }
+                },
+                receiveValue: { [weak self] bookmarks in
+                    guard let self else { return }
+                    AppLogger.shared.debug("Removed bookmark: \(id)", category: .ui)
 
-            let feedbackGenerator = UINotificationFeedbackGenerator()
-            feedbackGenerator.notificationOccurred(.success)
-        } catch {
-            AppLogger.shared.error("Failed to remove bookmark: \(error)", category: .ui)
-        }
+                    self.bookmarks = bookmarks
+                    state = .data(uiModels)
+
+                    let feedbackGenerator = UINotificationFeedbackGenerator()
+                    feedbackGenerator.notificationOccurred(.success)
+                }
+            )
+            .store(in: &cancellables)
     }
 
     func copyToClipboardBookmark(id: String) {

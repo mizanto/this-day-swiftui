@@ -19,6 +19,7 @@ final class AppLogger {
         // swiftlint:disable:next identifier_name
         case ui = "UI"
         case database = "Database"
+        case repository = "Repository"
         case parser = "Parser"
         case `default` = "Default"
 
