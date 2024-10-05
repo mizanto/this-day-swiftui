@@ -116,26 +116,9 @@ final class DataRepository: DataRepositoryProtocol {
                          for date: Date,
                          language: String) -> AnyPublisher<DayEntity, RepositoryError> {
         localStorage.saveDay(networkModel: networkModel, id: id, date: date, language: language)
-            .flatMap { [weak self] () -> AnyPublisher<DayEntity?, StorageError> in
-                guard let self else {
-                    return Fail(error: StorageError.unknownError("Self is nil"))
-                        .eraseToAnyPublisher()
-                }
-                return self.localStorage.fetchDay(id: id)
-            }
             .mapError { error in
                 AppLogger.shared.error("Failed to fetch events for \(date) with error: \(error)", category: .repository)
                 return RepositoryError.fetchError
-            }
-            .flatMap { (dayEntity: DayEntity?) -> AnyPublisher<DayEntity, RepositoryError> in
-                if let dayEntity {
-                    return Just(dayEntity)
-                        .setFailureType(to: RepositoryError.self)
-                        .eraseToAnyPublisher()
-                } else {
-                    return Fail(error: RepositoryError.fetchError)
-                        .eraseToAnyPublisher()
-                }
             }
             .eraseToAnyPublisher()
     }

@@ -12,7 +12,7 @@ import Combine
 protocol LocalStorageProtocol {
     func fetchDay(id: String) -> AnyPublisher<DayEntity?, StorageError>
     func saveDay(networkModel: DayNetworkModel, id: String,
-                 date: Date, language: String) -> AnyPublisher<Void, StorageError>
+                 date: Date, language: String) -> AnyPublisher<DayEntity, StorageError>
     func fetchEvent(id: String) -> AnyPublisher<EventEntity?, StorageError>
     func addToBookmarks(event: EventEntity) -> AnyPublisher<Void, StorageError>
     func removeFromBookmarks(event: EventEntity) -> AnyPublisher<Void, StorageError>
@@ -50,7 +50,7 @@ class LocalStorage: LocalStorageProtocol {
     }
 
     func saveDay(networkModel: DayNetworkModel, id: String,
-                 date: Date, language: String) -> AnyPublisher<Void, StorageError> {
+                 date: Date, language: String) -> AnyPublisher<DayEntity, StorageError> {
         Future { [weak self] promise in
             guard let self = self else {
                 promise(.failure(.unknownError("Self is nil")))
@@ -58,15 +58,15 @@ class LocalStorage: LocalStorageProtocol {
             }
 
             do {
-                if let existingDay = try self.fetchDaySync(id: id) {
-                    self.context.delete(existingDay)
+                if let day = try self.fetchDaySync(id: id) {
+                    promise(.success(day))
                 }
 
-                DayEntity.from(model: networkModel, id: id, date: date,
-                               language: language, context: self.context)
+                let day = DayEntity.from(model: networkModel, id: id, date: date,
+                                         language: language, context: self.context)
                 try self.context.save()
                 AppLogger.shared.info("Successfully saved DayEntity for id: \(id)", category: .database)
-                promise(.success(()))
+                promise(.success(day))
             } catch {
                 AppLogger.shared.error("Failed to save DayEntity for id \(id): \(error)", category: .database)
                 promise(.failure(StorageError.saveError(error)))
