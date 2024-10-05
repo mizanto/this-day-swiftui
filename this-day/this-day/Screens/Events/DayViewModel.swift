@@ -43,10 +43,9 @@ final class DayViewModel: DayViewModelProtocol {
     private var dataRepository: DataRepositoryProtocol
     private let localizationManager: any LocalizationManagerProtocol
     private var cancellables = Set<AnyCancellable>()
-    private var day: DayEntity? {
+    private var day: DayDataModel? {
         didSet {
             guard let day else { return }
-            subtitle = day.text
             cacheEvents(for: day)
         }
     }
@@ -62,9 +61,13 @@ final class DayViewModel: DayViewModelProtocol {
     func onAppear() {
         AppLogger.shared.info("Events view appeared", category: .ui)
 
+        updateData()
+    }
+    
+    private func updateData() {
+        AppLogger.shared.info("Updating events data", category: .ui)
         currentDate = Date()
         title = currentDate.toLocalizedDayMonth(language: language)
-
         fetchEvents(for: currentDate, language: language)
     }
 
@@ -81,10 +84,10 @@ final class DayViewModel: DayViewModelProtocol {
                         self.state = .error("Failed to load events. Please try again.")
                     }
                 },
-                receiveValue: { [weak self] dayEntity in
+                receiveValue: { [weak self] model in
                     guard let self else { return }
                     AppLogger.shared.info("Loaded events for date: \(date)", category: .ui)
-                    self.day = dayEntity
+                    self.day = model
                     selectedCategory = .events
                 }
             )
@@ -111,20 +114,16 @@ final class DayViewModel: DayViewModelProtocol {
                     AppLogger.shared.info("Successfully toggled bookmark for event \(eventID)", category: .ui)
                     let feedbackGenerator = UINotificationFeedbackGenerator()
                     feedbackGenerator.notificationOccurred(.success)
-                    // TODO: update ui
-//                    if let index = day?.eventsArray.firstIndex(where: { $0.id == eventID }) {
-//                        day?.replaceEvents(at: index, with: event)
-//                        cacheEvents(for: day)
-//                        updateState(with: selectedCategory)
-//                    }
                 }
             )
             .store(in: &cancellables)
     }
 
     func copyToClipboardEvent(id: String) {
-        let event = day?.eventsArray.first(where: { $0.id == id })
-        guard let stringToCopy = event?.toSharingString(language: language) else {
+        let stringToCopy = day?.events(for: selectedCategory)
+            .first(where: { $0.id == id })?.toSharingString(language: language)
+
+        guard let stringToCopy else {
             AppLogger.shared.error("Failed to copy event \(id) to clipboard. No sharing string available.",
                                    category: .ui)
             return
@@ -140,8 +139,9 @@ final class DayViewModel: DayViewModelProtocol {
     }
 
     func shareEvent(id: String) {
-        let event = day?.eventsArray.first(where: { $0.id == id })
-        guard let stringToShare = event?.toSharingString(language: language) else {
+        let stringToShare = day?.events(for: selectedCategory)
+            .first(where: { $0.id == id })?.toSharingString(language: language)
+        guard let stringToShare else {
             AppLogger.shared.error("Failed to share event \(id) to social media. No sharing string available.",
                                    category: .ui)
             return
@@ -161,21 +161,23 @@ final class DayViewModel: DayViewModelProtocol {
         state = .data(events)
     }
 
-    private func mapEvents(from events: [EventEntity], for type: EventType) -> [Event] {
-        return events.compactMap { event in
-            guard event.eventType == type else { return nil }
-            return event.toDisplayModel()
-        }
-        .reversed()
-    }
-
-    private func cacheEvents(for day: DayEntity?) {
+    private func cacheEvents(for day: DayDataModel?) {
         guard let day else { return }
 
         uiModels = [
-            .events: mapEvents(from: day.eventsArray, for: .general),
-            .births: mapEvents(from: day.eventsArray, for: .birth),
-            .deaths: mapEvents(from: day.eventsArray, for: .death)
+            .events: day.general.reversed().map { $0.toDisplayModel() },
+            .births: day.births.reversed().map { $0.toDisplayModel() },
+            .deaths: day.deaths.reversed().map { $0.toDisplayModel() }
         ]
+    }
+}
+
+private extension DayDataModel {
+    func events(for category: EventCategory) -> [EventDataModel] {
+        switch category {
+        case .events: general
+        case .births: births
+        case .deaths: deaths
+        }
     }
 }

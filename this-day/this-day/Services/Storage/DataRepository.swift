@@ -15,9 +15,9 @@ enum RepositoryError: Error {
 }
 
 protocol DataRepositoryProtocol {
-    func fetchDay(date: Date, language: String) -> AnyPublisher<DayEntity, RepositoryError>
+    func fetchDay(date: Date, language: String) -> AnyPublisher<DayDataModel, RepositoryError>
     func toggleBookmark(for eventID: String) -> AnyPublisher<Void, RepositoryError>
-    func fetchBookmarks() -> AnyPublisher<[BookmarkEntity], RepositoryError>
+    func fetchBookmarkedEvents() -> AnyPublisher<[EventDataModel], RepositoryError>
 }
 
 final class DataRepository: DataRepositoryProtocol {
@@ -33,18 +33,18 @@ final class DataRepository: DataRepositoryProtocol {
         self.networkService = networkService
     }
 
-    func fetchDay(date: Date, language: String) -> AnyPublisher<DayEntity, RepositoryError> {
+    func fetchDay(date: Date, language: String) -> AnyPublisher<DayDataModel, RepositoryError> {
         let id = DayEntity.createID(date: date, language: language)
         return localStorage.fetchDay(id: id)
             .catch { _ in Just(nil) }
-            .flatMap { [weak self] dayEntity -> AnyPublisher<DayEntity, RepositoryError> in
+            .flatMap { [weak self] dayEntity -> AnyPublisher<DayDataModel, RepositoryError> in
                 guard let self else {
                     return Fail(error: RepositoryError.unknownError("Self is nil"))
                         .eraseToAnyPublisher()
                 }
 
                 if let dayEntity {
-                    return Just(dayEntity)
+                    return Just(DayDataModel(entity: dayEntity))
                         .setFailureType(to: RepositoryError.self)
                         .eraseToAnyPublisher()
                 } else {
@@ -61,6 +61,7 @@ final class DataRepository: DataRepositoryProtocol {
                             }
                             return self.saveDay(networkModel: dayModel, by: id, for: date, language: language)
                         }
+                        .map { DayDataModel(entity: $0) }
                         .eraseToAnyPublisher()
                 }
             }
@@ -95,6 +96,18 @@ final class DataRepository: DataRepositoryProtocol {
     func fetchBookmarks() -> AnyPublisher<[BookmarkEntity], RepositoryError> {
         localStorage.fetchBookmarks()
             .mapError { _ in RepositoryError.saveError }
+            .eraseToAnyPublisher()
+    }
+    
+    func fetchBookmarkedEvents() -> AnyPublisher<[EventDataModel], RepositoryError> {
+        localStorage.fetchBookmarks()
+            .mapError { _ in RepositoryError.saveError }
+            .map { bookmarks in
+                return bookmarks.compactMap { bookmark in
+                    guard let event = bookmark.event else { return nil }
+                    return EventDataModel(entity: event)
+                }
+            }
             .eraseToAnyPublisher()
     }
 

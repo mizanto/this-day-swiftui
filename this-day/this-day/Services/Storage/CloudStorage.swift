@@ -10,11 +10,6 @@ import Combine
 import FirebaseFirestore
 import FirebaseFirestoreCombineSwift
 
-struct BookmarkDataModel: Codable {
-    let eventID: String
-    let dateAdded: Date
-}
-
 protocol CloudStorageProtocol {
     func addBookmark(eventID: String, dateAdded: Date) -> AnyPublisher<Void, StorageError>
     func fetchBookmarks() -> AnyPublisher<[BookmarkDataModel], StorageError>
