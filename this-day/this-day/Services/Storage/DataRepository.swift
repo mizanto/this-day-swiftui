@@ -9,8 +9,10 @@ import Foundation
 import Combine
 
 enum RepositoryError: Error {
+    case unauthorized
     case fetchError
     case saveError
+    case deleteError
     case unknownError(String)
 }
 
@@ -81,13 +83,35 @@ final class DataRepository: DataRepositoryProtocol {
                     return Fail(error: RepositoryError.fetchError).eraseToAnyPublisher()
                 }
                 if event.inBookmarks {
-                    return self.localStorage.removeFromBookmarks(event: event)
-                        .mapError { _ in RepositoryError.saveError }
-                        .eraseToAnyPublisher()
+                    return Publishers.Zip(
+                        self.localStorage.removeFromBookmarks(event: event),
+                        self.cloudStorage.removeBookmark(eventID: eventID)
+                    )
+                    .map { _ in () }
+                    .mapError { error in
+                        AppLogger.shared.error("Failed to remove bookmark: \(error)", category: .repository)
+                        if case .saveError = error {
+                            return .unauthorized
+                        } else {
+                            return .deleteError
+                        }
+                    }
+                    .eraseToAnyPublisher()
                 } else {
-                    return self.localStorage.addToBookmarks(event: event)
-                        .mapError { _ in RepositoryError.saveError }
-                        .eraseToAnyPublisher()
+                    return Publishers.Zip(
+                        self.localStorage.addToBookmarks(event: event),
+                        self.cloudStorage.addBookmark(eventID: eventID)
+                    )
+                    .map { _ in () }
+                    .mapError { error in
+                        AppLogger.shared.error("Failed to add bookmark: \(error)", category: .repository)
+                        if case .saveError = error {
+                            return .unauthorized
+                        } else {
+                            return .saveError
+                        }
+                    }
+                    .eraseToAnyPublisher()
                 }
             }
             .eraseToAnyPublisher()
@@ -98,7 +122,7 @@ final class DataRepository: DataRepositoryProtocol {
             .mapError { _ in RepositoryError.saveError }
             .eraseToAnyPublisher()
     }
-    
+
     func fetchBookmarkedEvents() -> AnyPublisher<[EventDataModel], RepositoryError> {
         localStorage.fetchBookmarks()
             .mapError { _ in RepositoryError.saveError }
