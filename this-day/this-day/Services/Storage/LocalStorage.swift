@@ -43,7 +43,7 @@ class LocalStorage: LocalStorageProtocol {
                 let days = try self.context.fetch(request)
                 promise(.success(days.first))
             } catch {
-                AppLogger.shared.error("Error fetching DayEntity for id \(id): \(error)", category: .database)
+                AppLogger.shared.error("[Local Storage]: Error fetching DayEntity for id \(id): \(error)", category: .database)
                 promise(.failure(StorageError.fetchError(error)))
             }
         }
@@ -62,7 +62,7 @@ class LocalStorage: LocalStorageProtocol {
                 let days = try self.context.fetch(request)
                 promise(.success(days))
             } catch {
-                AppLogger.shared.error("Error fetching Days: \(error)", category: .database)
+                AppLogger.shared.error("[Local Storage]: Error fetching Days: \(error)", category: .database)
                 promise(.failure(.fetchError(error)))
             }
         }
@@ -85,10 +85,10 @@ class LocalStorage: LocalStorageProtocol {
                 let day = DayEntity.from(model: networkModel, id: id, date: date,
                                          language: language, context: self.context)
                 try self.context.save()
-                AppLogger.shared.info("Successfully saved DayEntity for id: \(id)", category: .database)
+                AppLogger.shared.info("[Local Storage]: Successfully saved DayEntity for id: \(id)", category: .database)
                 promise(.success(day))
             } catch {
-                AppLogger.shared.error("Failed to save DayEntity for id \(id): \(error)", category: .database)
+                AppLogger.shared.error("[Local Storage]: Failed to save DayEntity for id \(id): \(error)", category: .database)
                 promise(.failure(StorageError.saveError(error)))
             }
         }
@@ -109,7 +109,7 @@ class LocalStorage: LocalStorageProtocol {
                 let events = try self.context.fetch(request)
                 promise(.success(events.first))
             } catch {
-                AppLogger.shared.error("Error fetching EventEntity for id \(id): \(error)", category: .database)
+                AppLogger.shared.error("[Local Storage]: Error fetching EventEntity for id \(id): \(error)", category: .database)
                 promise(.failure(StorageError.fetchError(error)))
             }
         }
@@ -130,10 +130,10 @@ class LocalStorage: LocalStorageProtocol {
 
             do {
                 try self.context.save()
-                AppLogger.shared.info("Successfully added event \(event.id) to bookmarks", category: .database)
+                AppLogger.shared.info("[Local Storage]: Successfully added event \(event.id) to bookmarks", category: .database)
                 promise(.success(()))
             } catch {
-                AppLogger.shared.error("Failed to add event \(event.id) to bookmarks: \(error)", category: .database)
+                AppLogger.shared.error("[Local Storage]: Failed to add event \(event.id) to bookmarks: \(error)", category: .database)
                 promise(.failure(StorageError.saveError(error)))
             }
         }
@@ -171,14 +171,14 @@ class LocalStorage: LocalStorageProtocol {
                 if let bookmarkToDelete = bookmarks.first {
                     self.context.delete(bookmarkToDelete)
                     try self.context.save()
-                    AppLogger.shared.info("Successfully removed event \(event.id) from bookmarks", category: .database)
+                    AppLogger.shared.info("[Local Storage]: Successfully removed event \(event.id) from bookmarks", category: .database)
                     promise(.success(()))
                 } else {
-                    AppLogger.shared.warning("No bookmark found for event \(event.id) to remove", category: .database)
-                    promise(.success(())) // Не считать ошибкой
+                    AppLogger.shared.warning("[Local Storage]: No bookmark found for event \(event.id) to remove", category: .database)
+                    promise(.success(()))
                 }
             } catch {
-                AppLogger.shared.error("Failed to remove event \(event.id) from bookmarks: \(error)",
+                AppLogger.shared.error("[Local Storage]: Failed to remove event \(event.id) from bookmarks: \(error)",
                                        category: .database)
                 promise(.failure(StorageError.deleteError(error)))
             }
@@ -200,14 +200,14 @@ class LocalStorage: LocalStorageProtocol {
                 if let bookmarkToDelete = try self.context.fetch(request).first {
                     self.context.delete(bookmarkToDelete)
                     try self.context.save()
-                    AppLogger.shared.info("Successfully removed bookmark with id \(id)", category: .database)
+                    AppLogger.shared.info("[Local Storage]: Successfully removed bookmark with id \(id)", category: .database)
                     promise(.success(()))
                 } else {
-                    AppLogger.shared.warning("No bookmark found with id \(id) to remove", category: .database)
-                    promise(.success(())) // Не считать ошибкой
+                    AppLogger.shared.warning("[Local Storage]: No bookmark found with id \(id) to remove", category: .database)
+                    promise(.success(()))
                 }
             } catch {
-                AppLogger.shared.error("Failed to remove bookmark with id \(id): \(error)", category: .database)
+                AppLogger.shared.error("[Local Storage]: Failed to remove bookmark with id \(id): \(error)", category: .database)
                 promise(.failure(StorageError.deleteError(error)))
             }
         }
@@ -226,10 +226,10 @@ class LocalStorage: LocalStorageProtocol {
 
             do {
                 let bookmarks = try self.context.fetch(request)
-                AppLogger.shared.info("Successfully fetched \(bookmarks.count) bookmarks", category: .database)
+                AppLogger.shared.info("[Local Storage]: Successfully fetched \(bookmarks.count) bookmarks", category: .database)
                 promise(.success(bookmarks))
             } catch {
-                AppLogger.shared.error("Failed to fetch bookmarks: \(error)", category: .database)
+                AppLogger.shared.error("[Local Storage]: Failed to fetch bookmarks: \(error)", category: .database)
                 promise(.failure(StorageError.fetchError(error)))
             }
         }

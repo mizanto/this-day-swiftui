@@ -161,9 +161,10 @@ final class DataRepository: DataRepositoryProtocol {
     }
     
     private func removeBookmark(_ bookmark: BookmarkEntity) -> AnyPublisher<Void, RepositoryError> {
+        let id = bookmark.id
         return Publishers.Zip(
-            self.localStorage.removeBookmark(id: bookmark.id),
-            self.cloudStorage.removeBookmark(id: bookmark.id)
+            self.localStorage.removeBookmark(id: id),
+            self.cloudStorage.removeBookmark(id: id)
         )
         .map { _ in () }
         .mapError { error in

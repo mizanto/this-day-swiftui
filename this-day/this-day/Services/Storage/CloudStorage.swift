@@ -25,7 +25,7 @@ final class CloudStorage: CloudStorageProtocol {
 
     func addBookmark(id: String, eventID: String, dateAdded: Date) -> AnyPublisher<Void, StorageError> {
         guard let userID = authService.currentUser?.id else {
-            AppLogger.shared.error("User is not logged in")
+            AppLogger.shared.error("[Cloud Storage]: User is not logged in")
             return Fail(error: StorageError.unauthorized).eraseToAnyPublisher()
         }
 
@@ -35,7 +35,7 @@ final class CloudStorage: CloudStorageProtocol {
             .retry(3)
             .map { _ in () }
             .mapError { error in
-                AppLogger.shared.error("Failed to add bookmark: \(error)")
+                AppLogger.shared.error("[Cloud Storage]: Failed to add bookmark: \(error)")
                 return StorageError.saveError(error)
             }
             .eraseToAnyPublisher()
@@ -43,7 +43,7 @@ final class CloudStorage: CloudStorageProtocol {
 
     func removeBookmark(id: String) -> AnyPublisher<Void, StorageError> {
         guard let userID = authService.currentUser?.id else {
-            AppLogger.shared.error("User is not logged in")
+            AppLogger.shared.error("[Cloud Storage]: User is not logged in")
             return Fail(error: StorageError.unauthorized).eraseToAnyPublisher()
         }
 
@@ -53,7 +53,7 @@ final class CloudStorage: CloudStorageProtocol {
             .getDocuments()
             .retry(3)
             .mapError { error in
-                AppLogger.shared.error("Failed to fetch bookmarks: \(error)")
+                AppLogger.shared.error("[Cloud Storage]: Failed to fetch bookmarks: \(error)")
                 return StorageError.fetchError(error)
             }
             .flatMap { snapshot -> AnyPublisher<Void, StorageError> in
@@ -66,7 +66,7 @@ final class CloudStorage: CloudStorageProtocol {
                     .delete()
                     .map { _ in () }
                     .mapError { error in
-                        AppLogger.shared.error("Failed to delete bookmark: \(error)")
+                        AppLogger.shared.error("[Cloud Storage]: Failed to delete bookmark: \(error)")
                         return StorageError.deleteError(error)
                     }
                     .eraseToAnyPublisher()
@@ -76,7 +76,7 @@ final class CloudStorage: CloudStorageProtocol {
 
     func fetchBookmarks() -> AnyPublisher<[BookmarkDataModel], StorageError> {
         guard let userID = authService.currentUser?.id else {
-            AppLogger.shared.error("User is not logged in")
+            AppLogger.shared.error("[Cloud Storage]: User is not logged in")
             return Fail(error: StorageError.unauthorized).eraseToAnyPublisher()
         }
 
@@ -88,7 +88,7 @@ final class CloudStorage: CloudStorageProtocol {
                 snapshot.documents.compactMap { try? $0.data(as: BookmarkDataModel.self) }
             }
             .mapError { error in
-                AppLogger.shared.error("Error fetching bookmarks: \(error)")
+                AppLogger.shared.error("[Cloud Storage]: Error fetching bookmarks: \(error)")
                 return StorageError.fetchError(error)
             }
             .eraseToAnyPublisher()
