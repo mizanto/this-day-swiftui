@@ -10,6 +10,7 @@ import Combine
 
 enum RepositoryError: Error {
     case unauthorized
+    case notFound
     case fetchError
     case saveError
     case deleteError
@@ -20,6 +21,7 @@ protocol DataRepositoryProtocol {
     func fetchDay(date: Date, language: String) -> AnyPublisher<DayDataModel, RepositoryError>
     func toggleBookmark(for eventID: String) -> AnyPublisher<Void, RepositoryError>
     func fetchBookmarkedEvents() -> AnyPublisher<[EventDataModel], RepositoryError>
+    func syncBookmarks() -> AnyPublisher<Void, RepositoryError>
 }
 
 final class DataRepository: DataRepositoryProtocol {
@@ -38,14 +40,18 @@ final class DataRepository: DataRepositoryProtocol {
     func fetchDay(date: Date, language: String) -> AnyPublisher<DayDataModel, RepositoryError> {
         let id = DayEntity.createID(date: date, language: language)
         return localStorage.fetchDay(id: id)
-            .catch { _ in Just(nil) }
+            .mapError { error in
+                AppLogger.shared.error("Failed to fetch day locally for id \(id) with error: \(error)",
+                                       category: .repository)
+                return RepositoryError.fetchError
+            }
             .flatMap { [weak self] dayEntity -> AnyPublisher<DayDataModel, RepositoryError> in
-                guard let self else {
+                guard let self = self else {
                     return Fail(error: RepositoryError.unknownError("Self is nil"))
                         .eraseToAnyPublisher()
                 }
-
-                if let dayEntity {
+                
+                if let dayEntity = dayEntity {
                     return Just(DayDataModel(entity: dayEntity))
                         .setFailureType(to: RepositoryError.self)
                         .eraseToAnyPublisher()
@@ -57,7 +63,7 @@ final class DataRepository: DataRepositoryProtocol {
                             return RepositoryError.fetchError
                         }
                         .flatMap { [weak self] dayModel -> AnyPublisher<DayEntity, RepositoryError> in
-                            guard let self else {
+                            guard let self = self else {
                                 return Fail(error: RepositoryError.unknownError("Self is nil"))
                                     .eraseToAnyPublisher()
                             }
@@ -80,38 +86,12 @@ final class DataRepository: DataRepositoryProtocol {
                 guard let event else {
                     AppLogger.shared.error("Failed to toggle bookmark for event \(eventID). Event not found.",
                                            category: .ui)
-                    return Fail(error: RepositoryError.fetchError).eraseToAnyPublisher()
+                    return Fail(error: RepositoryError.notFound).eraseToAnyPublisher()
                 }
-                if event.inBookmarks {
-                    return Publishers.Zip(
-                        self.localStorage.removeFromBookmarks(event: event),
-                        self.cloudStorage.removeBookmark(eventID: eventID)
-                    )
-                    .map { _ in () }
-                    .mapError { error in
-                        AppLogger.shared.error("Failed to remove bookmark: \(error)", category: .repository)
-                        if case .saveError = error {
-                            return .unauthorized
-                        } else {
-                            return .deleteError
-                        }
-                    }
-                    .eraseToAnyPublisher()
+                if let bookmark = event.bookmark {
+                    return self.removeBookmark(bookmark)
                 } else {
-                    return Publishers.Zip(
-                        self.localStorage.addToBookmarks(event: event),
-                        self.cloudStorage.addBookmark(eventID: eventID)
-                    )
-                    .map { _ in () }
-                    .mapError { error in
-                        AppLogger.shared.error("Failed to add bookmark: \(error)", category: .repository)
-                        if case .saveError = error {
-                            return .unauthorized
-                        } else {
-                            return .saveError
-                        }
-                    }
-                    .eraseToAnyPublisher()
+                    return self.addToBookmarks(event: event)
                 }
             }
             .eraseToAnyPublisher()
@@ -119,7 +99,7 @@ final class DataRepository: DataRepositoryProtocol {
 
     func fetchBookmarks() -> AnyPublisher<[BookmarkEntity], RepositoryError> {
         localStorage.fetchBookmarks()
-            .mapError { _ in RepositoryError.saveError }
+            .mapError { _ in RepositoryError.fetchError }
             .eraseToAnyPublisher()
     }
 
@@ -132,6 +112,170 @@ final class DataRepository: DataRepositoryProtocol {
                     return EventDataModel(entity: event)
                 }
             }
+            .eraseToAnyPublisher()
+    }
+
+    func syncBookmarks() -> AnyPublisher<Void, RepositoryError> {
+        localStorage.fetchBookmarks()
+            .flatMap { localBookmarks in
+                if localBookmarks.isEmpty {
+                    return self.cloudStorage.fetchBookmarks()
+                } else {
+                    return Just([])
+                        .setFailureType(to: StorageError.self)
+                        .eraseToAnyPublisher()
+                }
+            }
+            .mapError { error in
+                AppLogger.shared.error("Failed to fetch bookmarks from cloud storage", category: .repository)
+                return RepositoryError.fetchError
+            }
+            .flatMap { [weak self] cloudBookmarks -> AnyPublisher<Void, RepositoryError> in
+                guard let self else {
+                    return Fail(error: RepositoryError.fetchError)
+                        .eraseToAnyPublisher()
+                }
+                return self.tryToSaveCloudBookmarks(cloudBookmarks)
+            }
+            .map { _ in () }
+            .eraseToAnyPublisher()
+    }
+    
+    private func addToBookmarks(event: EventEntity) -> AnyPublisher<Void, RepositoryError> {
+        let date = Date()
+        let id = UUID().uuidString
+        return Publishers.Zip(
+            self.localStorage.addToBookmarks(event: event, by: id, dateAdded: date),
+            self.cloudStorage.addBookmark(id: id, eventID: event.id, dateAdded: date)
+        )
+        .map { _ in () }
+        .mapError { error in
+            AppLogger.shared.error("Failed to add bookmark: \(error)", category: .repository)
+            if case .saveError = error {
+                return .unauthorized
+            } else {
+                return .saveError
+            }
+        }
+        .eraseToAnyPublisher()
+    }
+    
+    private func removeBookmark(_ bookmark: BookmarkEntity) -> AnyPublisher<Void, RepositoryError> {
+        return Publishers.Zip(
+            self.localStorage.removeBookmark(id: bookmark.id),
+            self.cloudStorage.removeBookmark(id: bookmark.id)
+        )
+        .map { _ in () }
+        .mapError { error in
+            AppLogger.shared.error("Failed to remove bookmark: \(error)", category: .repository)
+            if case .saveError = error {
+                return .unauthorized
+            } else {
+                return .deleteError
+            }
+        }
+        .eraseToAnyPublisher()
+    }
+    
+    private func tryToSaveCloudBookmarks(_ bookmarks: [BookmarkDataModel]) -> AnyPublisher<Void, RepositoryError> {
+        guard !bookmarks.isEmpty else {
+            return Just(())
+                .setFailureType(to: RepositoryError.self)
+                .eraseToAnyPublisher()
+        }
+
+        let eventIDs = bookmarks.map { $0.eventID }
+        let dayIDs = eventIDs.compactMap { EventEntity.extractDayID(from: $0) }
+        
+        return self.localStorage.fetchDays()
+            .map { entities -> [String] in
+                let localDayIDs = entities.map { $0.id }
+                return dayIDs.filter { !localDayIDs.contains($0) }
+            }
+            .mapError { _ in RepositoryError.fetchError }
+            .flatMap { [weak self] missingDayIDs -> AnyPublisher<[(String, DayNetworkModel)], RepositoryError> in
+                guard let self else {
+                    return Fail(error: RepositoryError.unknownError("Self is nil"))
+                        .eraseToAnyPublisher()
+                }
+                return self.fetchDays(ids: missingDayIDs)
+            }
+            .flatMap { [weak self] fetchedDays -> AnyPublisher<Void, RepositoryError> in
+                guard let self else {
+                    return Fail(error: RepositoryError.unknownError("Self is nil"))
+                        .eraseToAnyPublisher()
+                }
+                return self.saveDaysLocally(fetchedDays)
+            }
+            .flatMap { [weak self] _ -> AnyPublisher<Void, RepositoryError> in
+                guard let self else {
+                    return Fail(error: RepositoryError.unknownError("Self is nil"))
+                        .eraseToAnyPublisher()
+                }
+                return self.saveBokmarksLocally(bookmarks)
+            }
+            .eraseToAnyPublisher()
+    }
+    
+    private func fetchDays(ids: [String]) -> AnyPublisher<[(String, DayNetworkModel)], RepositoryError> {
+        guard !ids.isEmpty else {
+            return Just<[(String, DayNetworkModel)]>([])
+                .setFailureType(to: RepositoryError.self)
+                .eraseToAnyPublisher()
+        }
+        
+        let fetchPublishers = ids.map { dayID in
+            guard let (date, language) = DayEntity.extractDateAndLanguage(from: dayID) else {
+                return Fail<(String, DayNetworkModel), RepositoryError>(error: .unknownError("Unknown day ID: \(dayID)"))
+                    .eraseToAnyPublisher()
+            }
+            return self.networkService.fetchEvents(for: date, language: language)
+                .map { (dayID, $0) }
+                .mapError { _ in RepositoryError.fetchError }
+                .eraseToAnyPublisher()
+        }
+        return Publishers.MergeMany(fetchPublishers)
+            .collect()
+            .eraseToAnyPublisher()
+    }
+
+    private func saveDaysLocally(_ days: [(id: String, model: DayNetworkModel)]) -> AnyPublisher<Void, RepositoryError> {
+        guard !days.isEmpty else {
+            return Just(())
+                .setFailureType(to: RepositoryError.self)
+                .eraseToAnyPublisher()
+        }
+        
+        let savePublishers = days.map { dayID, dayModel in
+            guard let (date, language) = DayEntity.extractDateAndLanguage(from: dayID) else {
+                return Fail<Void, RepositoryError>(error: .fetchError)
+                    .eraseToAnyPublisher()
+            }
+            return self.saveDay(networkModel: dayModel, by: dayID, for: date, language: language)
+                .map { _ in () }
+                .eraseToAnyPublisher()
+        }
+        
+        return Publishers.MergeMany(savePublishers)
+            .collect()
+            .map { _ in () }
+            .eraseToAnyPublisher()
+    }
+
+    private func saveBokmarksLocally(_ bookmarks: [BookmarkDataModel]) -> AnyPublisher<Void, RepositoryError> {
+        let saveBookmarksPublishers = bookmarks.map { bookmark in
+            return self.localStorage.addToBookmarksEvent(eventID: bookmark.eventID,
+                                                         bookmarkID: bookmark.id,
+                                                         dateAdded: bookmark.dateAdded)
+                .mapError { error in
+                    AppLogger.shared.error("Failed to save bookmark with error: \(error)", category: .repository)
+                    return RepositoryError.saveError
+                }
+                .eraseToAnyPublisher()
+        }
+        return Publishers.MergeMany(saveBookmarksPublishers)
+            .collect()
+            .map { _ in () }
             .eraseToAnyPublisher()
     }
 

@@ -11,11 +11,12 @@ import Combine
 
 protocol LocalStorageProtocol {
     func fetchDay(id: String) -> AnyPublisher<DayEntity?, StorageError>
+    func fetchDays() -> AnyPublisher<[DayEntity], StorageError>
     func saveDay(networkModel: DayNetworkModel, id: String,
                  date: Date, language: String) -> AnyPublisher<DayEntity, StorageError>
     func fetchEvent(id: String) -> AnyPublisher<EventEntity?, StorageError>
-    func addToBookmarks(event: EventEntity) -> AnyPublisher<Void, StorageError>
-    func removeFromBookmarks(event: EventEntity) -> AnyPublisher<Void, StorageError>
+    func addToBookmarks(event: EventEntity, by id: String, dateAdded: Date) -> AnyPublisher<Void, StorageError>
+    func addToBookmarksEvent(eventID: String, bookmarkID: String, dateAdded: Date) -> AnyPublisher<Void, StorageError>
     func removeBookmark(id: String) -> AnyPublisher<Void, StorageError>
     func fetchBookmarks() -> AnyPublisher<[BookmarkEntity], StorageError>
 }
@@ -44,6 +45,25 @@ class LocalStorage: LocalStorageProtocol {
             } catch {
                 AppLogger.shared.error("Error fetching DayEntity for id \(id): \(error)", category: .database)
                 promise(.failure(StorageError.fetchError(error)))
+            }
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func fetchDays() -> AnyPublisher<[DayEntity], StorageError> {
+        Future { [weak self] promise in
+            guard let self = self else {
+                promise(.failure(.unknownError("Self is nil")))
+                return
+            }
+            
+            let request: NSFetchRequest<DayEntity> = DayEntity.fetchRequest()
+            do {
+                let days = try self.context.fetch(request)
+                promise(.success(days))
+            } catch {
+                AppLogger.shared.error("Error fetching Days: \(error)", category: .database)
+                promise(.failure(.fetchError(error)))
             }
         }
         .eraseToAnyPublisher()
@@ -96,7 +116,7 @@ class LocalStorage: LocalStorageProtocol {
         .eraseToAnyPublisher()
     }
 
-    func addToBookmarks(event: EventEntity) -> AnyPublisher<Void, StorageError> {
+    func addToBookmarks(event: EventEntity, by id: String, dateAdded: Date) -> AnyPublisher<Void, StorageError> {
         Future { [weak self] promise in
             guard let self = self else {
                 promise(.failure(.unknownError("Self is nil")))
@@ -104,8 +124,8 @@ class LocalStorage: LocalStorageProtocol {
             }
 
             let bookmark = BookmarkEntity(context: self.context)
-            bookmark.id = UUID().uuidString
-            bookmark.dateAdded = Date()
+            bookmark.id = id
+            bookmark.dateAdded = dateAdded
             bookmark.event = event
 
             do {
@@ -118,6 +138,22 @@ class LocalStorage: LocalStorageProtocol {
             }
         }
         .eraseToAnyPublisher()
+    }
+
+    func addToBookmarksEvent(eventID: String, bookmarkID: String, dateAdded: Date) -> AnyPublisher<Void, StorageError> {
+        return fetchEvent(id: eventID)
+            .flatMap { [weak self] event -> AnyPublisher<Void, StorageError> in
+                guard let self else {
+                    return Fail(error: .unknownError("Self is nil")).eraseToAnyPublisher()
+                }
+
+                if let event {
+                    return self.addToBookmarks(event: event, by: bookmarkID, dateAdded: dateAdded)
+                } else {
+                    return Fail(error: .notFound).eraseToAnyPublisher()
+                }
+            }
+            .eraseToAnyPublisher()
     }
 
     func removeFromBookmarks(event: EventEntity) -> AnyPublisher<Void, StorageError> {

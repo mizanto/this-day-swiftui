@@ -11,8 +11,8 @@ import FirebaseFirestore
 import FirebaseFirestoreCombineSwift
 
 protocol CloudStorageProtocol {
-    func addBookmark(eventID: String) -> AnyPublisher<Void, StorageError>
-    func removeBookmark(eventID: String) -> AnyPublisher<Void, StorageError>
+    func addBookmark(id: String, eventID: String, dateAdded: Date) -> AnyPublisher<Void, StorageError>
+    func removeBookmark(id: String) -> AnyPublisher<Void, StorageError>
     func fetchBookmarks() -> AnyPublisher<[BookmarkDataModel], StorageError>
 }
 
@@ -23,13 +23,13 @@ final class CloudStorage: CloudStorageProtocol {
         self.authService = authService
     }
 
-    func addBookmark(eventID: String) -> AnyPublisher<Void, StorageError> {
+    func addBookmark(id: String, eventID: String, dateAdded: Date) -> AnyPublisher<Void, StorageError> {
         guard let userID = authService.currentUser?.id else {
             AppLogger.shared.error("User is not logged in")
             return Fail(error: StorageError.unauthorized).eraseToAnyPublisher()
         }
 
-        let bookmark = BookmarkDataModel(eventID: eventID, dateAdded: Date())
+        let bookmark = BookmarkDataModel(id: id, eventID: eventID, dateAdded: dateAdded)
         return bookmarksReference(userID: userID)
             .addDocument(from: bookmark)
             .retry(3)
@@ -41,7 +41,7 @@ final class CloudStorage: CloudStorageProtocol {
             .eraseToAnyPublisher()
     }
 
-    func removeBookmark(eventID: String) -> AnyPublisher<Void, StorageError> {
+    func removeBookmark(id: String) -> AnyPublisher<Void, StorageError> {
         guard let userID = authService.currentUser?.id else {
             AppLogger.shared.error("User is not logged in")
             return Fail(error: StorageError.unauthorized).eraseToAnyPublisher()
@@ -49,7 +49,7 @@ final class CloudStorage: CloudStorageProtocol {
 
         let bookmarksRef = bookmarksReference(userID: userID)
         return bookmarksRef
-            .whereField("eventID", isEqualTo: eventID)
+            .whereField("id", isEqualTo: id)
             .getDocuments()
             .retry(3)
             .mapError { error in

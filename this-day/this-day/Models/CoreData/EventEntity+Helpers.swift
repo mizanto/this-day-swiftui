@@ -20,6 +20,17 @@ extension EventEntity {
                     .appending("-").appending(suffix)
     }
 
+    static func extractDayID(from eventID: String) -> String? {
+        let components = eventID.split(separator: "-")
+        guard components.count >= 3 else { return nil }
+
+        let dayIDComponents = components.prefix(3)
+        let dayID = dayIDComponents.joined(separator: "-")
+
+        if dayID.isEmpty { return nil }
+        return dayID
+    }
+
     static func from(model: EventNetworkModel,
                      dayID: String,
                      type: EventType,

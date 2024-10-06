@@ -8,6 +8,7 @@
 import Foundation
 
 struct BookmarkDataModel: Codable {
+    let id: String
     let eventID: String
     let dateAdded: Date
 }
