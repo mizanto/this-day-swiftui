@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import FirebaseAuth
 import FirebaseFirestore
 import FirebaseFirestoreCombineSwift
 
@@ -28,7 +29,6 @@ final class CloudStorage: CloudStorageProtocol {
             AppLogger.shared.error("[Cloud Storage]: User is not logged in")
             return Fail(error: StorageError.unauthorized).eraseToAnyPublisher()
         }
-
         let bookmark = BookmarkDataModel(id: id, eventID: eventID, dateAdded: dateAdded)
         return bookmarksReference(userID: userID)
             .addDocument(from: bookmark)
@@ -79,7 +79,6 @@ final class CloudStorage: CloudStorageProtocol {
             AppLogger.shared.error("[Cloud Storage]: User is not logged in")
             return Fail(error: StorageError.unauthorized).eraseToAnyPublisher()
         }
-
         return bookmarksReference(userID: userID)
             .order(by: "dateAdded", descending: true)
             .getDocuments()

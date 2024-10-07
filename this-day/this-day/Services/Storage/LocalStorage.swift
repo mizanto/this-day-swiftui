@@ -19,6 +19,7 @@ protocol LocalStorageProtocol {
     func addToBookmarksEvent(eventID: String, bookmarkID: String, dateAdded: Date) -> AnyPublisher<Void, StorageError>
     func removeBookmark(id: String) -> AnyPublisher<Void, StorageError>
     func fetchBookmarks() -> AnyPublisher<[BookmarkEntity], StorageError>
+    func clearStorage() -> AnyPublisher<Void, StorageError>
 }
 
 class LocalStorage: LocalStorageProtocol {
@@ -231,6 +232,44 @@ class LocalStorage: LocalStorageProtocol {
             } catch {
                 AppLogger.shared.error("[Local Storage]: Failed to fetch bookmarks: \(error)", category: .database)
                 promise(.failure(StorageError.fetchError(error)))
+            }
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func clearStorage() -> AnyPublisher<Void, StorageError> {
+        Future { [weak self] promise in
+            guard let self = self else {
+                promise(.failure(.unknownError("Self is nil")))
+                return
+            }
+
+            guard let persistentStoreCoordinator = self.context.persistentStoreCoordinator else {
+                promise(.failure(.unknownError("Persistent Store Coordinator is nil")))
+                return
+            }
+
+            let entities = persistentStoreCoordinator.managedObjectModel.entities
+
+            do {
+                for entity in entities {
+                    guard let entityName = entity.name else { continue }
+                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+                    let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+                    batchDeleteRequest.resultType = .resultTypeObjectIDs
+
+                    let result = try self.context.execute(batchDeleteRequest) as? NSBatchDeleteResult
+                    if let objectIDs = result?.result as? [NSManagedObjectID], !objectIDs.isEmpty {
+                        let changes = [NSDeletedObjectsKey: objectIDs]
+                        NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [self.context])
+                    }
+                }
+
+                AppLogger.shared.info("[Local Storage]: Successfully cleared storage", category: .database)
+                promise(.success(()))
+            } catch {
+                AppLogger.shared.error("[Local Storage]: Failed to clear storage: \(error)", category: .database)
+                promise(.failure(.deleteError(error)))
             }
         }
         .eraseToAnyPublisher()

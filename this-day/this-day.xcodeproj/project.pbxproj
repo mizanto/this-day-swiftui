@@ -35,6 +35,10 @@
 		AD4AC45E2CB0089400C6BFBE /* DayDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC45D2CB0088E00C6BFBE /* DayDataModel.swift */; };
 		AD4AC4602CB009CF00C6BFBE /* EventDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC45F2CB009CD00C6BFBE /* EventDataModel.swift */; };
 		AD4AC4622CB009F400C6BFBE /* BookmarkDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC4612CB009F200C6BFBE /* BookmarkDataModel.swift */; };
+		AD4AC4672CB4543200C6BFBE /* LaunchViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC4662CB4543100C6BFBE /* LaunchViewBuilder.swift */; };
+		AD4AC4692CB4545900C6BFBE /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC4682CB4545600C6BFBE /* LaunchView.swift */; };
+		AD4AC46B2CB4548100C6BFBE /* LaunchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC46A2CB4548000C6BFBE /* LaunchViewModel.swift */; };
+		AD4AC46D2CB4557500C6BFBE /* FlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4AC46C2CB4557300C6BFBE /* FlowCoordinator.swift */; };
 		AD4D88EE2C9841CF003DD3C4 /* ThisDayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D88ED2C9841CF003DD3C4 /* ThisDayApp.swift */; };
 		AD4D88F02C9841CF003DD3C4 /* DayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D88EF2C9841CF003DD3C4 /* DayView.swift */; };
 		AD4D88F22C9841D0003DD3C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD4D88F12C9841D0003DD3C4 /* Assets.xcassets */; };
@@ -131,6 +135,10 @@
 		AD4AC45D2CB0088E00C6BFBE /* DayDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayDataModel.swift; sourceTree = "<group>"; };
 		AD4AC45F2CB009CD00C6BFBE /* EventDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDataModel.swift; sourceTree = "<group>"; };
 		AD4AC4612CB009F200C6BFBE /* BookmarkDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkDataModel.swift; sourceTree = "<group>"; };
+		AD4AC4662CB4543100C6BFBE /* LaunchViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewBuilder.swift; sourceTree = "<group>"; };
+		AD4AC4682CB4545600C6BFBE /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
+		AD4AC46A2CB4548000C6BFBE /* LaunchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewModel.swift; sourceTree = "<group>"; };
+		AD4AC46C2CB4557300C6BFBE /* FlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowCoordinator.swift; sourceTree = "<group>"; };
 		AD4D88EA2C9841CF003DD3C4 /* this-day.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "this-day.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD4D88ED2C9841CF003DD3C4 /* ThisDayApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThisDayApp.swift; sourceTree = "<group>"; };
 		AD4D88EF2C9841CF003DD3C4 /* DayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayView.swift; sourceTree = "<group>"; };
@@ -315,6 +323,16 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
+		AD4AC4652CB453FA00C6BFBE /* Launch */ = {
+			isa = PBXGroup;
+			children = (
+				AD4AC4662CB4543100C6BFBE /* LaunchViewBuilder.swift */,
+				AD4AC4682CB4545600C6BFBE /* LaunchView.swift */,
+				AD4AC46A2CB4548000C6BFBE /* LaunchViewModel.swift */,
+			);
+			path = Launch;
+			sourceTree = "<group>";
+		};
 		AD4D88E12C9841CF003DD3C4 = {
 			isa = PBXGroup;
 			children = (
@@ -367,6 +385,7 @@
 				AD4AC4472CAC32C100C6BFBE /* Auth */,
 				AD5F1F4C2CA486EB00966944 /* Bookmarks */,
 				AD4D89002C985AF7003DD3C4 /* Events */,
+				AD4AC4652CB453FA00C6BFBE /* Launch */,
 				AD36067A2CA72476008D31A9 /* Settings */,
 			);
 			path = Screens;
@@ -387,6 +406,7 @@
 			isa = PBXGroup;
 			children = (
 				AD4D88ED2C9841CF003DD3C4 /* ThisDayApp.swift */,
+				AD4AC46C2CB4557300C6BFBE /* FlowCoordinator.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -776,6 +796,7 @@
 				AD4D89072C98664F003DD3C4 /* DayViewBuilder.swift in Sources */,
 				AD95923B2C9DCDD60019BB13 /* ExtendedEventRow.swift in Sources */,
 				AD9592372C9DC9C90019BB13 /* ErrorView.swift in Sources */,
+				AD4AC46B2CB4548100C6BFBE /* LaunchViewModel.swift in Sources */,
 				AD53AA642CA2B97C0024FD31 /* EventType.swift in Sources */,
 				AD4D891F2C988810003DD3C4 /* AppLogger.swift in Sources */,
 				AD53AA472CA2A6360024FD31 /* Model.xcdatamodeld in Sources */,
@@ -787,6 +808,7 @@
 				AD53AA822CA435150024FD31 /* ShareableItems.swift in Sources */,
 				AD5F1F572CA5841D00966944 /* BookmarkRow.swift in Sources */,
 				AD3606802CA724BF008D31A9 /* SettingsViewBuilder.swift in Sources */,
+				AD4AC4692CB4545900C6BFBE /* LaunchView.swift in Sources */,
 				AD4AC4492CAC32DB00C6BFBE /* AuthViewModel.swift in Sources */,
 				AD4D89112C98703C003DD3C4 /* EventNetworkModel.swift in Sources */,
 				AD5F1F4E2CA4870D00966944 /* BookmarksView.swift in Sources */,
@@ -795,6 +817,7 @@
 				AD4AC44B2CAC330D00C6BFBE /* AuthViewBuilder.swift in Sources */,
 				AD95922E2C9D96E30019BB13 /* DayNetworkModel.swift in Sources */,
 				AD4AC45B2CAEDE6D00C6BFBE /* DataRepository.swift in Sources */,
+				AD4AC46D2CB4557500C6BFBE /* FlowCoordinator.swift in Sources */,
 				AD4AC4602CB009CF00C6BFBE /* EventDataModel.swift in Sources */,
 				AD53AA5A2CA2B64F0024FD31 /* PersistenceController.swift in Sources */,
 				AD5F1F502CA4873600966944 /* BookmarksViewBuilder.swift in Sources */,
@@ -820,6 +843,7 @@
 				AD53AA672CA2BAF20024FD31 /* LocalStorage.swift in Sources */,
 				AD53AA402CA185AD0024FD31 /* Event.swift in Sources */,
 				AD4AC4622CB009F400C6BFBE /* BookmarkDataModel.swift in Sources */,
+				AD4AC4672CB4543200C6BFBE /* LaunchViewBuilder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

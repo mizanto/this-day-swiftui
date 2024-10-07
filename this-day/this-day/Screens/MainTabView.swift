@@ -14,6 +14,16 @@ struct MainTabView: View {
     @EnvironmentObject private var localizationManager: LocalizationManager
     @State private var selectedTab: Int = 0
 
+    let completion: VoidClosure
+    
+    init(authService: AuthenticationServiceProtocol,
+         dataRepository: DataRepositoryProtocol,
+         completion: @escaping VoidClosure) {
+        self.authService = authService
+        self.dataRepository = dataRepository
+        self.completion = completion
+    }
+
     var body: some View {
         TabView {
             DayViewBuilder.build(dataRepository: dataRepository,
@@ -33,7 +43,8 @@ struct MainTabView: View {
                 .tag(1)
 
             SettingsViewBuilder.build(authService: authService,
-                                      localizationManager: localizationManager)
+                                      localizationManager: localizationManager,
+                                      onLogout: completion)
                 .tabItem {
                     Image(systemName: "gearshape")
                     Text(NSLocalizedString("tab_title.settings", comment: ""))

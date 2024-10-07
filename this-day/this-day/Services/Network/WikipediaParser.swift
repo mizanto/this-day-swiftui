@@ -61,7 +61,6 @@ final class WikipediaParser {
     }
 
     func parseWikipediaDay(from extract: String) throws -> DayNetworkModel {
-        print("Parsing Wikipedia day from extract: \(extract)")
         AppLogger.shared.debug("Parsing Wikipedia day from extract", category: .parser)
 
         let cleanedExtract = cleanExtract(from: extract)

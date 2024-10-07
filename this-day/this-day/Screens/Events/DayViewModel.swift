@@ -63,7 +63,7 @@ final class DayViewModel: DayViewModelProtocol {
 
         updateData()
     }
-    
+
     private func updateData() {
         AppLogger.shared.info("Updating events data", category: .ui)
         currentDate = Date()

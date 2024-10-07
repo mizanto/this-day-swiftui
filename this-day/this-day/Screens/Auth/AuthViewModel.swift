@@ -36,7 +36,7 @@ final class AuthViewModel: AuthViewModelProtocol {
 
     var snackbarErrorMessage: String = ""
 
-    var onAuthenticated: () -> Void
+    var onAuthenticated: VoidClosure
 
     var title: String {
         isSignUpMode ? LocalizedString("auth.title.sing_up")
@@ -56,7 +56,7 @@ final class AuthViewModel: AuthViewModelProtocol {
     private let authService: AuthenticationServiceProtocol
     private var cancellables = Set<AnyCancellable>()
 
-    init(authService: AuthenticationServiceProtocol, onAuthenticated: @escaping () -> Void) {
+    init(authService: AuthenticationServiceProtocol, onAuthenticated: @escaping VoidClosure) {
         self.authService = authService
         self.onAuthenticated = onAuthenticated
 
