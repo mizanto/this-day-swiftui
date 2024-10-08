@@ -16,6 +16,10 @@ extension Date {
         return Calendar.current.dateComponents([.month], from: self).month
     }
 
+    func isTheSamDay(as date: Date) -> Bool {
+        Calendar.current.isDate(self, inSameDayAs: date)
+    }
+
     func toFormat(_ format: String) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = format

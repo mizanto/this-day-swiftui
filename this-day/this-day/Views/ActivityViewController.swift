@@ -10,7 +10,7 @@ import SwiftUI
 struct ActivityViewController: UIViewControllerRepresentable {
     let activityItems: [Any]
     let applicationActivities: [UIActivity]? = nil
-    var completion: (() -> Void)?
+    var completion: VoidClosure?
 
     func makeUIViewController(
         context: UIViewControllerRepresentableContext<ActivityViewController>

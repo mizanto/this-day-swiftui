@@ -7,6 +7,8 @@
 
 import Foundation
 
+typealias VoidClosure = () -> Void
+
 // swiftlint:disable:next identifier_name
 public func LocalizedString(_ key: String) -> String {
     NSLocalizedString(key, comment: "")

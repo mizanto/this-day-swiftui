@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension View {
-    func showError(message: String, action: @escaping () -> Void) -> some View {
+    func showError(message: String, action: @escaping VoidClosure) -> some View {
         ErrorView(message: message, retryAction: action)
     }
 

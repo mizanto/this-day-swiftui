@@ -10,9 +10,9 @@ import SwiftUI
 struct RowActions: View {
     @Binding var inBookmarks: Bool
 
-    var onBookmarkTap: () -> Void
-    var onCopyTap: () -> Void
-    var onShareTap: () -> Void
+    var onBookmarkTap: VoidClosure
+    var onCopyTap: VoidClosure
+    var onShareTap: VoidClosure
 
     var body: some View {
         HStack {

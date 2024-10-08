@@ -40,93 +40,91 @@ final class DayViewModel: DayViewModelProtocol {
     var snackbarMessage: String { LocalizedString("message.snackbar.copied") }
 
     private var currentDate: Date = Date()
-    private let networkService: NetworkServiceProtocol
-    private let storageService: StorageServiceProtocol
+    private var dataRepository: DataRepositoryProtocol
     private let localizationManager: any LocalizationManagerProtocol
     private var cancellables = Set<AnyCancellable>()
-    private var day: DayEntity? {
+    private var day: DayDataModel? {
         didSet {
             guard let day else { return }
-            subtitle = day.text
             cacheEvents(for: day)
         }
     }
     private var uiModels: [EventCategory: [Event]] = [:]
     private var language: String { localizationManager.currentLanguage }
 
-    init(networkService: NetworkServiceProtocol,
-         storageService: StorageServiceProtocol,
+    init(dataRepository: DataRepositoryProtocol,
          localizationManager: any LocalizationManagerProtocol) {
-        self.networkService = networkService
-        self.storageService = storageService
+        self.dataRepository = dataRepository
         self.localizationManager = localizationManager
     }
 
     func onAppear() {
-        AppLogger.shared.info("Events view appeared", category: .ui)
+        updateData()
+    }
 
+    private func updateData() {
+        AppLogger.shared.debug("[Events View]: Updating events data", category: .ui)
         currentDate = Date()
         title = currentDate.toLocalizedDayMonth(language: language)
-        let dayID = DayEntity.createID(date: currentDate, language: language)
+        fetchEvents(for: currentDate, language: language)
+    }
 
-        do {
-            if let dayEntity = try storageService.fetchDay(id: dayID) {
-                AppLogger.shared.info("Data found in storage for day with id: \(dayID)", category: .ui)
-                day = dayEntity
-                if state == .initial {
+    private func fetchEvents(for date: Date, language: String) {
+        state = .loading
+        dataRepository.fetchDay(date: date, language: language)
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveCompletion: { [weak self] completion in
+                    if case .failure(let error) = completion {
+                        guard let self else { return }
+                        AppLogger.shared.error(
+                            "[Events View]: Failed to load events for date: \(date). Error: \(error)", category: .ui)
+                        self.state = .error("Failed to load events. Please try again.")
+                    }
+                },
+                receiveValue: { [weak self] model in
+                    guard let self else { return }
+                    AppLogger.shared.debug("[Events View]: Loaded events for date: \(date)", category: .ui)
+                    self.day = model
                     selectedCategory = .events
-                } else {
-                    updateState(with: selectedCategory)
                 }
-            } else {
-                AppLogger.shared.info("No data in storage for id: \(dayID). Fetching from network.", category: .ui)
-                fetchEvents(for: currentDate, language: language)
-            }
-        } catch {
-            AppLogger.shared.error("Error fetching data for day with id: \(dayID): \(error)", category: .ui)
-            fetchEvents(for: currentDate, language: language)
-        }
+            )
+            .store(in: &cancellables)
     }
 
     func onTryAgain() {
-        AppLogger.shared.info("Trying to fetch events after error", category: .ui)
+        AppLogger.shared.debug("[Events View]: Trying to fetch events after error", category: .ui)
         fetchEvents(for: currentDate, language: language)
     }
 
     func toggleBookmark(for eventID: String) {
-        do {
-            guard let event = try storageService.fetchEvent(id: eventID) else {
-                AppLogger.shared.error("Failed to toggle bookmark for event \(eventID). Event not found.",
-                                       category: .ui)
-                return
-            }
-
-            // Check if the event is currently a favorite
-            if event.inBookmarks {
-                try storageService.removeFromBookmarks(event: event)
-            } else {
-                try storageService.addToBookmarks(event: event)
-            }
-            AppLogger.shared.info("Successfully toggled bookmark for event \(eventID)", category: .database)
-
-            let feedbackGenerator = UINotificationFeedbackGenerator()
-            feedbackGenerator.notificationOccurred(.success)
-
-            if let index = day?.eventsArray.firstIndex(where: { $0.id == eventID }) {
-                day?.replaceEvents(at: index, with: event)
-                cacheEvents(for: day)
-                updateState(with: selectedCategory)
-            }
-        } catch {
-            AppLogger.shared.error("Failed to toggle bookmark for event \(eventID): \(error)", category: .ui)
-        }
+        dataRepository.toggleBookmark(for: eventID)
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveCompletion: { completion in
+                    if case .failure = completion {
+                        AppLogger.shared.debug("[Events View]: Failed to toggle bookmark for event \(eventID).",
+                                               category: .ui)
+                        // TODO: show snackbar with error
+                    }
+                },
+                receiveValue: {
+                    AppLogger.shared.debug(
+                        "[Events View]: Successfully toggled bookmark for event \(eventID)", category: .ui)
+                    let feedbackGenerator = UINotificationFeedbackGenerator()
+                    feedbackGenerator.notificationOccurred(.success)
+                }
+            )
+            .store(in: &cancellables)
     }
 
     func copyToClipboardEvent(id: String) {
-        let event = day?.eventsArray.first(where: { $0.id == id })
-        guard let stringToCopy = event?.toSharingString(language: language) else {
-            AppLogger.shared.error("Failed to copy event \(id) to clipboard. No sharing string available.",
-                                   category: .ui)
+        let stringToCopy = day?.events(for: selectedCategory)
+            .first(where: { $0.id == id })?.toSharingString(language: language)
+
+        guard let stringToCopy else {
+            AppLogger.shared.error(
+                "[Events View]: Failed to copy event \(id) to clipboard. No sharing string available.", category: .ui)
             return
         }
 
@@ -136,92 +134,48 @@ final class DayViewModel: DayViewModelProtocol {
         let feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
         feedbackGenerator.impactOccurred()
 
-        AppLogger.shared.info("Event \(id) copied to clipboard: \(stringToCopy)", category: .ui)
+        AppLogger.shared.debug("[Events View]: Event \(id) copied to clipboard: \(stringToCopy)", category: .ui)
     }
 
     func shareEvent(id: String) {
-        let event = day?.eventsArray.first(where: { $0.id == id })
-        guard let stringToShare = event?.toSharingString(language: language) else {
-            AppLogger.shared.error("Failed to share event \(id) to social media. No sharing string available.",
-                                   category: .ui)
+        let stringToShare = day?.events(for: selectedCategory)
+            .first(where: { $0.id == id })?.toSharingString(language: language)
+        guard let stringToShare else {
+            AppLogger.shared.error(
+                "[Events View]: Failed to share event \(id) to social media. No sharing string available.",
+                category: .ui)
             return
         }
         itemsForSahre = ShareableItems(items: [stringToShare])
-        AppLogger.shared.info("Prepared sharing content: \(stringToShare)", category: .ui)
+        AppLogger.shared.debug("[Events View]: Prepared sharing content: \(stringToShare)", category: .ui)
     }
 
     func onCompleteShare() {
         itemsForSahre = nil
     }
 
-    private func fetchEvents(for date: Date, language: String) {
-        AppLogger.shared.info("Starting to fetch events for date: \(date)", category: .ui)
-
-        state = .loading
-
-        networkService.fetchEvents(for: date, language: language)
-            .receive(on: DispatchQueue.main)
-            .sink(
-                receiveCompletion: { [weak self] completion in
-                    switch completion {
-                    case .failure(let error):
-                        AppLogger.shared.error("Failed to load events for date: \(date). Error: \(error)",
-                                               category: .ui)
-                        self?.state = .error("Failed to load events. Please try again.")
-                    case .finished:
-                        AppLogger.shared.info("Successfully finished fetching events for date: \(date)",
-                                              category: .ui)
-                    }
-                },
-                receiveValue: { [weak self] model in
-                    guard let self else { return }
-                    // swiftlint:disable:next line_length
-                    AppLogger.shared.info("Loaded \(model.general.count) events, \(model.births.count) births and \(model.deaths.count) deaths for date: \(date)", category: .ui)
-
-                    self.save(networkModel: model, for: date)
-                }
-            )
-            .store(in: &cancellables)
-    }
-
-    private func save(networkModel: DayNetworkModel, for date: Date) {
-        do {
-            try storageService.saveDay(networkModel: networkModel,
-                                       for: date,
-                                       language: language)
-            let id = DayEntity.createID(date: currentDate, language: language)
-            if let dayEntity = try storageService.fetchDay(id: id) {
-                day = dayEntity
-                selectedCategory = .events
-            }
-        } catch {
-            AppLogger.shared.error("Failed to save or fetch events for date: \(date). Error: \(error)", category: .ui)
-            self.state = .error("Failed to load events. Please try again.")
-        }
-    }
-
     private func updateState(with category: EventCategory) {
-        AppLogger.shared.debug("Updating state with category: \(category)")
-
+        AppLogger.shared.debug("[Events View]: Updating state with category: \(category)")
         let events = uiModels[category] ?? []
         state = .data(events)
     }
 
-    private func mapEvents(from events: [EventEntity], for type: EventType) -> [Event] {
-        return events.compactMap { event in
-            guard event.eventType == type else { return nil }
-            return event.toDisplayModel()
-        }
-        .reversed()
-    }
-
-    private func cacheEvents(for day: DayEntity?) {
+    private func cacheEvents(for day: DayDataModel?) {
         guard let day else { return }
-
         uiModels = [
-            .events: mapEvents(from: day.eventsArray, for: .general),
-            .births: mapEvents(from: day.eventsArray, for: .birth),
-            .deaths: mapEvents(from: day.eventsArray, for: .death)
+            .events: day.general.reversed().map { $0.toDisplayModel() },
+            .births: day.births.reversed().map { $0.toDisplayModel() },
+            .deaths: day.deaths.reversed().map { $0.toDisplayModel() }
         ]
+    }
+}
+
+private extension DayDataModel {
+    func events(for category: EventCategory) -> [EventDataModel] {
+        switch category {
+        case .events: general
+        case .births: births
+        case .deaths: deaths
+        }
     }
 }

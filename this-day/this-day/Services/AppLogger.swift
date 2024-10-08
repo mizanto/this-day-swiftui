@@ -15,10 +15,12 @@ final class AppLogger {
 
     enum LogCategory: String {
         case auth = "Authorization"
+        case coordinator = "Coordinator"
         case network = "Network"
         // swiftlint:disable:next identifier_name
         case ui = "UI"
         case database = "Database"
+        case repository = "Repository"
         case parser = "Parser"
         case `default` = "Default"
 

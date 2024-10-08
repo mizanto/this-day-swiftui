@@ -11,7 +11,7 @@ import CoreData
 @testable import this_day
 
 final class StorageServiceTests: XCTestCase {
-    var storageService: StorageService!
+    var storageService: LocalStorage!
     var context: NSManagedObjectContext!
 
     override func setUpWithError() throws {
@@ -19,7 +19,7 @@ final class StorageServiceTests: XCTestCase {
         
         let persistenceController = PersistenceController(inMemory: true)
         context = persistenceController.container.viewContext
-        storageService = StorageService(context: context)
+        storageService = LocalStorage(context: context)
     }
 
     override func tearDownWithError() throws {

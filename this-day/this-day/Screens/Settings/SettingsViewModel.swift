@@ -21,7 +21,7 @@ protocol SettingsViewModelProtocol: ObservableObject {
 
     func signOut()
     func updateLanguage(_ languageId: String)
-    func makeAuthView(onAuthenticated: @escaping () -> Void) -> AuthViewType
+    func makeAuthView(onAuthenticated: @escaping VoidClosure) -> AuthViewType
 }
 
 final class SettingsViewModel: SettingsViewModelProtocol {
@@ -35,14 +35,17 @@ final class SettingsViewModel: SettingsViewModelProtocol {
 
     private var authService: AuthenticationServiceProtocol
     private var localizationManager: any LocalizationManagerProtocol
+    private var onLogout: VoidClosure
 
     private var cancellables = Set<AnyCancellable>()
 
     init(authService: AuthenticationServiceProtocol,
-         localizationManager: any LocalizationManagerProtocol) {
+         localizationManager: any LocalizationManagerProtocol,
+         onLogout: @escaping VoidClosure) {
         self.authService = authService
         self.localizationManager = localizationManager
         self.selectedLanguage = localizationManager.currentLanguage
+        self.onLogout = onLogout
 
         bind()
     }
@@ -54,11 +57,13 @@ final class SettingsViewModel: SettingsViewModelProtocol {
             .sink(
                 receiveCompletion: { completion in
                     if case .failure(let error) = completion {
-                        AppLogger.shared.error("Failed to sign out: \(error)", category: .auth)
+                        AppLogger.shared.error("[Settings View]: Failed to sign out: \(error)", category: .auth)
                     }
                 },
-                receiveValue: {
-                    AppLogger.shared.info("Signed out successfully", category: .auth)
+                receiveValue: { [weak self] in
+                    guard let self else { return }
+                    AppLogger.shared.debug("[Settings View]: Signed out successfully", category: .auth)
+                    self.onLogout()
                 }
             )
             .store(in: &cancellables)
@@ -69,7 +74,7 @@ final class SettingsViewModel: SettingsViewModelProtocol {
         selectedLanguage = languageId
     }
 
-    func makeAuthView(onAuthenticated: @escaping () -> Void) -> some View {
+    func makeAuthView(onAuthenticated: @escaping VoidClosure) -> some View {
         AuthViewBuilder.build(authService: authService, onAuthenticated: onAuthenticated)
     }
 

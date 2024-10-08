@@ -23,8 +23,8 @@ line_length:
   error: 150
 
 type_body_length:
-  warning: 250
-  error: 400
+  warning: 300
+  error: 500
 
 function_body_length:
   warning: 50
@@ -33,6 +33,9 @@ function_body_length:
 cyclomatic_complexity:
   warning: 12
   error: 25
+
+file_name: 
+  excluded: ["Utils.swift"]
 
 included:
   - this-day/this-day

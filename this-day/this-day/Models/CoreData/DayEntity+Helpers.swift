@@ -12,26 +12,50 @@ extension DayEntity {
         return "\(language)-\(date.toFormat("dd-MM"))"
     }
 
-    static func from(networkModel: DayNetworkModel,
-                     date: Date,
-                     language: String,
-                     context: NSManagedObjectContext) -> DayEntity {
+    static func extractDateAndLanguage(from dayID: String) -> (date: Date, language: String)? {
+        let components = dayID.split(separator: "-")
+
+        guard components.count == 3 else {
+            AppLogger.shared.error("Invalid dayID format: \(dayID)", category: .database)
+            return nil
+        }
+
+        let language = String(components[0])
+        let day = String(components[1])
+        let month = String(components[2])
+        let year = String(Calendar.current.component(.year, from: Date()))
+
+        let dateString = "\(day)-\(month)-\(year)"
+
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd-MM-yyyy"
+        formatter.locale = Locale(identifier: language)
+        formatter.timeZone = TimeZone.current
+
+        guard let date = formatter.date(from: dateString) else { return nil }
+
+        return (date, language)
+    }
+
+    @discardableResult
+    static func from(model: DayNetworkModel, id: String, date: Date,
+                     language: String, context: NSManagedObjectContext) -> DayEntity {
         let dayEntity = DayEntity(context: context)
-        dayEntity.id = createID(date: date, language: language)
+        dayEntity.id = id
         dayEntity.language = language
-        dayEntity.text = networkModel.text
-        dayEntity.date = Date()
+        dayEntity.text = model.text
+        dayEntity.date = date
 
         let eventTypes: [(events: [EventNetworkModel], type: EventType)] = [
-            (networkModel.general, .general),
-            (networkModel.births, .birth),
-            (networkModel.deaths, .death)
+            (model.general, .general),
+            (model.births, .birth),
+            (model.deaths, .death)
         ]
 
         for (events, type) in eventTypes {
             for eventNetworkModel in events {
                 let eventEntity = EventEntity.from(
-                    networkModel: eventNetworkModel, dayID: dayEntity.id, type: type, context: context)
+                    model: eventNetworkModel, dayID: dayEntity.id, type: type, context: context)
                 eventEntity.day = dayEntity
                 dayEntity.addToEvents(eventEntity)
             }

@@ -36,7 +36,7 @@ final class AuthViewModel: AuthViewModelProtocol {
 
     var snackbarErrorMessage: String = ""
 
-    var onAuthenticated: () -> Void
+    var onAuthenticated: VoidClosure
 
     var title: String {
         isSignUpMode ? LocalizedString("auth.title.sing_up")
@@ -56,7 +56,7 @@ final class AuthViewModel: AuthViewModelProtocol {
     private let authService: AuthenticationServiceProtocol
     private var cancellables = Set<AnyCancellable>()
 
-    init(authService: AuthenticationServiceProtocol, onAuthenticated: @escaping () -> Void) {
+    init(authService: AuthenticationServiceProtocol, onAuthenticated: @escaping VoidClosure) {
         self.authService = authService
         self.onAuthenticated = onAuthenticated
 
@@ -93,12 +93,12 @@ final class AuthViewModel: AuthViewModelProtocol {
             .sink(
                 receiveCompletion: { [weak self] completion in
                     if case .failure(let error) = completion {
-                        AppLogger.shared.error("Sign in failed: \(error)", category: .auth)
+                        AppLogger.shared.error("[Auth View]: Sign in failed: \(error)", category: .auth)
                         self?.processError(error: error)
                     }
                 },
                 receiveValue: { [weak self] in
-                    AppLogger.shared.info("Sign in successful", category: .auth)
+                    AppLogger.shared.debug("[Auth View]: Sign in successful", category: .auth)
                     self?.isAuthenticated = true
                 }
             )
@@ -111,12 +111,12 @@ final class AuthViewModel: AuthViewModelProtocol {
             .sink(
                 receiveCompletion: { [weak self] completion in
                     if case .failure(let error) = completion {
-                        AppLogger.shared.error("Sign up failed: \(error)", category: .auth)
+                        AppLogger.shared.error("[Auth View]: Sign up failed: \(error)", category: .auth)
                         self?.processError(error: error)
                     }
                 },
                 receiveValue: { [weak self] in
-                    AppLogger.shared.info("Sign up successful", category: .auth)
+                    AppLogger.shared.debug("[Auth View]: Sign up successful", category: .auth)
                     self?.isAuthenticated = true
                 }
             )

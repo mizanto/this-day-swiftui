@@ -8,17 +8,25 @@
 import SwiftUI
 
 struct MainTabView: View {
-    let networkService: NetworkServiceProtocol
-    let storageService: StorageServiceProtocol
     let authService: AuthenticationServiceProtocol
+    let dataRepository: DataRepositoryProtocol
 
     @EnvironmentObject private var localizationManager: LocalizationManager
     @State private var selectedTab: Int = 0
 
+    let completion: VoidClosure
+
+    init(authService: AuthenticationServiceProtocol,
+         dataRepository: DataRepositoryProtocol,
+         completion: @escaping VoidClosure) {
+        self.authService = authService
+        self.dataRepository = dataRepository
+        self.completion = completion
+    }
+
     var body: some View {
         TabView {
-            DayViewBuilder.build(networkService: networkService,
-                                 storageService: storageService,
+            DayViewBuilder.build(dataRepository: dataRepository,
                                  localizationManager: localizationManager)
                 .tabItem {
                     Image(systemName: "list.bullet")
@@ -26,7 +34,7 @@ struct MainTabView: View {
                 }
                 .tag(0)
 
-            BookmarksViewBuilder.build(storageService: storageService,
+            BookmarksViewBuilder.build(dataRepository: dataRepository,
                                        localizationManager: localizationManager)
                 .tabItem {
                     Image(systemName: "bookmark")
@@ -35,7 +43,8 @@ struct MainTabView: View {
                 .tag(1)
 
             SettingsViewBuilder.build(authService: authService,
-                                      localizationManager: localizationManager)
+                                      localizationManager: localizationManager,
+                                      onLogout: completion)
                 .tabItem {
                     Image(systemName: "gearshape")
                     Text(NSLocalizedString("tab_title.settings", comment: ""))
