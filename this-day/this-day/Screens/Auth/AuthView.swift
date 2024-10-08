@@ -18,7 +18,6 @@ struct AuthView<ViewModel: AuthViewModelProtocol>: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 16) {
-                Spacer()
                 if viewModel.isSignUpMode {
                     TextField(LocalizedString("auth.enter_name"), text: $viewModel.name)
                         .padding(12)
@@ -34,6 +33,7 @@ struct AuthView<ViewModel: AuthViewModelProtocol>: View {
                     .cornerRadius(8)
                     .focused($isTextFieldFocused)
                 SecureField(LocalizedString("auth.enter_password"), text: $viewModel.password)
+
                     .padding(12)
                     .background(Color(.systemGray6))
                     .cornerRadius(8)
@@ -66,14 +66,15 @@ struct AuthView<ViewModel: AuthViewModelProtocol>: View {
                             .foregroundColor(.blue)
                     }
                 )
-                Spacer()
             }
             .padding(32)
+            .frame(maxHeight: .infinity, alignment: .center)
             .navigationTitle(viewModel.title)
             .onChange(of: viewModel.isSignUpMode) {
                 isTextFieldFocused = false
             }
         }
+        .navigationViewStyle(StackNavigationViewStyle())
         .snackbar(isPresented: $viewModel.showErrorSnackbar, message: viewModel.snackbarErrorMessage, type: .error)
     }
 }
