@@ -9,7 +9,6 @@ import SwiftUI
 
 struct SettingsView<ViewModel: SettingsViewModelProtocol>: View {
     @StateObject private var viewModel: ViewModel
-    @State private var showingAuthView = false
 
     init(viewModel: ViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -19,11 +18,6 @@ struct SettingsView<ViewModel: SettingsViewModelProtocol>: View {
         NavigationView {
             content()
                 .navigationTitle(LocalizedString("tab_title.settings"))
-                .sheet(isPresented: $showingAuthView) {
-                    viewModel.makeAuthView {
-                        showingAuthView = false
-                    }
-                }
         }
     }
 
@@ -39,43 +33,29 @@ struct SettingsView<ViewModel: SettingsViewModelProtocol>: View {
     private func profileSection() -> some View {
         Section(header: Text(LocalizedString("settings.section.profile")),
                 footer: !viewModel.isAuthenticated ? profileFooterView() : nil) {
-            if let user = viewModel.currentUser {
-                HStack {
-                    Text(LocalizedString("settings.name"))
-                    Spacer()
-                    Text(user.name)
-                        .foregroundColor(.secondary)
-                }
-                HStack {
-                    Text(LocalizedString("settings.email"))
-                    Spacer()
-                    Text(user.email)
-                        .foregroundColor(.secondary)
-                }
-                Button(
-                    action: {
-                        viewModel.signOut()
-                    },
-                    label: {
-                        Text(LocalizedString("auth.button.sign_out"))
-                            .frame(maxWidth: .infinity)
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(.red)
-                    }
-                )
-            } else {
-                Button(
-                    action: {
-                        showingAuthView = true
-                    },
-                    label: {
-                        Text(LocalizedString("auth.button.sign_in"))
-                            .frame(maxWidth: .infinity)
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(.blue)
-                    }
-                )
+            HStack {
+                Text(LocalizedString("settings.name"))
+                Spacer()
+                Text(viewModel.currentUser?.name ?? "???")
+                    .foregroundColor(.secondary)
             }
+            HStack {
+                Text(LocalizedString("settings.email"))
+                Spacer()
+                Text(viewModel.currentUser?.email ?? "???")
+                    .foregroundColor(.secondary)
+            }
+            Button(
+                action: {
+                    viewModel.signOut()
+                },
+                label: {
+                    Text(LocalizedString("auth.button.sign_out"))
+                        .frame(maxWidth: .infinity)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.red)
+                }
+            )
         }
     }
 

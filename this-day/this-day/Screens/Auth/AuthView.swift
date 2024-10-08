@@ -18,6 +18,7 @@ struct AuthView<ViewModel: AuthViewModelProtocol>: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 16) {
+                Spacer()
                 if viewModel.isSignUpMode {
                     TextField(LocalizedString("auth.enter_name"), text: $viewModel.name)
                         .padding(12)
@@ -67,7 +68,7 @@ struct AuthView<ViewModel: AuthViewModelProtocol>: View {
                 )
                 Spacer()
             }
-            .padding()
+            .padding(32)
             .navigationTitle(viewModel.title)
             .onChange(of: viewModel.isSignUpMode) {
                 isTextFieldFocused = false

@@ -27,10 +27,6 @@ final class AuthenticationService: AuthenticationServiceProtocol {
         $currentUser.eraseToAnyPublisher()
     }
 
-    private var keychain: KeychainHelper = .shared
-    private let keychainService: String = "com.thisday.service"
-    private let keychainAccount: String = "user_info"
-
     private var cancellables = Set<AnyCancellable>()
 
     init() {
@@ -51,10 +47,6 @@ final class AuthenticationService: AuthenticationServiceProtocol {
     func signIn(email: String, password: String) -> AnyPublisher<Void, AuthenticationError> {
         guard isEmailValid(email) else {
             return Fail(error: AuthenticationError.invalidEmail).eraseToAnyPublisher()
-        }
-
-        guard isPasswordValid(password) else {
-            return Fail(error: AuthenticationError.weakPassword).eraseToAnyPublisher()
         }
 
         return Auth.auth()
@@ -83,7 +75,7 @@ final class AuthenticationService: AuthenticationServiceProtocol {
         return Auth.auth()
             .createUser(withEmail: email, password: password)
             .mapError { error in
-                AppLogger.shared.error("Error signing up user: \(error.localizedDescription)", category: .auth)
+                AppLogger.shared.error("[Auth]: Error signing up user: \(error.localizedDescription)", category: .auth)
                 return AuthenticationError.creationFailed
             }
             .flatMap { authResult -> AnyPublisher<Void, AuthenticationError> in
@@ -146,92 +138,5 @@ final class AuthenticationService: AuthenticationServiceProtocol {
         guard password.range(of: digitPattern, options: .regularExpression) != nil else { return false }
 
         return true
-    }
-
-    private func saveUserInfoToKeychain(_ user: UserInfoModel) {
-        if let data = try? JSONEncoder().encode(user) {
-            keychain.save(service: keychainService, account: keychainAccount, data: data)
-            AppLogger.shared.info("[Auth]: User info saved to Keychain", category: .auth)
-        } else {
-            AppLogger.shared.error("[Auth]: Failed to encode user info", category: .auth)
-        }
-    }
-
-    private func readUserInfoFromKeychain() -> UserInfoModel? {
-        guard let data = keychain.read(service: keychainService, account: keychainAccount) else {
-            AppLogger.shared.info("[Auth]: No credentials found in Keychain", category: .auth)
-            return nil
-        }
-        return try? JSONDecoder().decode(UserInfoModel.self, from: data)
-    }
-
-    private func removeUserInfoFromKeychain() {
-        keychain.delete(service: keychainService, account: keychainAccount)
-        AppLogger.shared.info("[Auth]: Credentials deleted from Keychain", category: .auth)
-    }
-}
-
-import Security
-
-final class KeychainHelper {
-
-    static let shared = KeychainHelper()
-
-    private init() {}
-
-    func save(service: String, account: String, data: Data) {
-        // Create query
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword, // Password class
-            kSecAttrService as String: service,            // Service identifier
-            kSecAttrAccount as String: account,            // Account identifier
-            kSecValueData as String: data                  // Data to store
-        ]
-
-        // Delete any existing items
-        SecItemDelete(query as CFDictionary)
-
-        // Add new item
-        let status = SecItemAdd(query as CFDictionary, nil)
-
-        if status != errSecSuccess {
-            print("Keychain save error: \(status)")
-        }
-    }
-
-    func read(service: String, account: String) -> Data? {
-        // Create query
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service,
-            kSecAttrAccount as String: account,
-            kSecReturnData as String: true,                // Return data
-            kSecMatchLimit as String: kSecMatchLimitOne    // Only one item
-        ]
-
-        var result: AnyObject?
-        let status = SecItemCopyMatching(query as CFDictionary, &result)
-
-        if status == errSecSuccess {
-            return result as? Data
-        } else {
-            print("Keychain read error: \(status)")
-            return nil
-        }
-    }
-
-    func delete(service: String, account: String) {
-        // Create query
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service,
-            kSecAttrAccount as String: account
-        ]
-
-        let status = SecItemDelete(query as CFDictionary)
-
-        if status != errSecSuccess {
-            print("Keychain delete error: \(status)")
-        }
     }
 }
