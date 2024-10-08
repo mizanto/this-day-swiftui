@@ -30,6 +30,7 @@ final class CloudStorage: CloudStorageProtocol {
             return Fail(error: StorageError.unauthorized).eraseToAnyPublisher()
         }
         let bookmark = BookmarkDataModel(id: id, eventID: eventID, dateAdded: dateAdded)
+        AppLogger.shared.debug("[Cloud Storage]: Adding bookmark: \(bookmark)")
         return bookmarksReference(userID: userID)
             .addDocument(from: bookmark)
             .retry(3)
@@ -46,8 +47,8 @@ final class CloudStorage: CloudStorageProtocol {
             AppLogger.shared.error("[Cloud Storage]: User is not logged in")
             return Fail(error: StorageError.unauthorized).eraseToAnyPublisher()
         }
-
         let bookmarksRef = bookmarksReference(userID: userID)
+        AppLogger.shared.debug("[Cloud Storage]: Removing bookmark: \(id)")
         return bookmarksRef
             .whereField("id", isEqualTo: id)
             .getDocuments()
@@ -79,6 +80,7 @@ final class CloudStorage: CloudStorageProtocol {
             AppLogger.shared.error("[Cloud Storage]: User is not logged in")
             return Fail(error: StorageError.unauthorized).eraseToAnyPublisher()
         }
+        AppLogger.shared.debug("[Cloud Storage]: Fetching bookmarks for user: \(userID)")
         return bookmarksReference(userID: userID)
             .order(by: "dateAdded", descending: true)
             .getDocuments()

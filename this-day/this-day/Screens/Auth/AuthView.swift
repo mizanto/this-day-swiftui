@@ -17,7 +17,7 @@ struct AuthView<ViewModel: AuthViewModelProtocol>: View {
 
     var body: some View {
         NavigationView {
-            VStack(spacing: 20) {
+            VStack(spacing: 16) {
                 if viewModel.isSignUpMode {
                     TextField(LocalizedString("auth.enter_name"), text: $viewModel.name)
                         .padding(12)

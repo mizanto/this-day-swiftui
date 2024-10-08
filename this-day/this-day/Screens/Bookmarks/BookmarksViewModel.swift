@@ -47,22 +47,20 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
     }
 
     func onAppear() {
-        AppLogger.shared.debug("BookmarksViewModel: onAppear", category: .ui)
         state = .loading
-
         dataRepository.fetchBookmarkedEvents()
             .receive(on: DispatchQueue.main)
             .sink(
                 receiveCompletion: { [weak self] completion in
                     guard let self else { return }
                     if case .failure(let error) = completion {
-                        AppLogger.shared.error("Failed to fetch bookmarked events: \(error)", category: .ui)
+                        AppLogger.shared.error("[Bookmarks View]: Failed to fetch bookmarked events: \(error)", category: .ui)
                         self.state = .error("Failed to fetch bookmarked events")
                     }
                 },
                 receiveValue: { [weak self] events in
                     guard let self else { return }
-                    AppLogger.shared.info("Fetched \(events.count) bookmarks", category: .ui)
+                    AppLogger.shared.debug("[Bookmarks View]: Fetched \(events.count) bookmarks", category: .ui)
 
                     self.events = events
                 }
@@ -83,12 +81,12 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
             .sink(
                 receiveCompletion: { completion in
                     if case .failure(let error) = completion {
-                        AppLogger.shared.error("Failed to remove bookmark: \(error)", category: .ui)
+                        AppLogger.shared.error("[Bookmarks View]: Failed to remove bookmark: \(error)", category: .ui)
                     }
                 },
                 receiveValue: { [weak self] events in
                     guard let self else { return }
-                    AppLogger.shared.debug("Removed bookmark: \(id)", category: .ui)
+                    AppLogger.shared.debug("[Bookmarks View]: Removed bookmark: \(id)", category: .ui)
 
                     self.events = events
 
@@ -102,7 +100,7 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
     func copyToClipboardBookmark(id: String) {
         let stringToCopy = events.first(where: { $0.id == id })?.toSharingString(language: language)
         guard let stringToCopy else {
-            AppLogger.shared.error("Failed to copy event \(id) to clipboard. No sharing string available.",
+            AppLogger.shared.error("[Bookmarks View]: Failed to copy event \(id) to clipboard. No sharing string available.",
                                    category: .ui)
             return
         }
@@ -112,18 +110,18 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
         let feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
         feedbackGenerator.impactOccurred()
 
-        AppLogger.shared.info("Event \(id) copied to clipboard: \(stringToCopy)", category: .ui)
+        AppLogger.shared.debug("[Bookmarks View]: Event \(id) copied to clipboard: \(stringToCopy)", category: .ui)
     }
 
     func shareBookmark(id: String) {
         let stringToShare = events.first(where: { $0.id == id })?.toSharingString(language: language)
         guard let stringToShare else {
-            AppLogger.shared.error("Failed to share event \(id) to social media. No sharing string available.",
+            AppLogger.shared.error("[Bookmarks View]: Failed to share event \(id) to social media. No sharing string available.",
                                    category: .ui)
             return
         }
         itemsForSahre = ShareableItems(items: [stringToShare])
-        AppLogger.shared.info("Prepared sharing content: \(stringToShare)", category: .ui)
+        AppLogger.shared.debug("[Bookmarks View]: Prepared sharing content: \(stringToShare)", category: .ui)
     }
     
     private func cacheEvents(_ events: [EventDataModel]) {

@@ -59,13 +59,11 @@ final class DayViewModel: DayViewModelProtocol {
     }
 
     func onAppear() {
-        AppLogger.shared.info("Events view appeared", category: .ui)
-
         updateData()
     }
 
     private func updateData() {
-        AppLogger.shared.info("Updating events data", category: .ui)
+        AppLogger.shared.debug("[Events View]: Updating events data", category: .ui)
         currentDate = Date()
         title = currentDate.toLocalizedDayMonth(language: language)
         fetchEvents(for: currentDate, language: language)
@@ -79,14 +77,14 @@ final class DayViewModel: DayViewModelProtocol {
                 receiveCompletion: { [weak self] completion in
                     if case .failure(let error) = completion {
                         guard let self else { return }
-                        AppLogger.shared.error("Failed to load events for date: \(date). Error: \(error)",
+                        AppLogger.shared.error("[Events View]: Failed to load events for date: \(date). Error: \(error)",
                                                category: .ui)
                         self.state = .error("Failed to load events. Please try again.")
                     }
                 },
                 receiveValue: { [weak self] model in
                     guard let self else { return }
-                    AppLogger.shared.info("Loaded events for date: \(date)", category: .ui)
+                    AppLogger.shared.debug("[Events View]: Loaded events for date: \(date)", category: .ui)
                     self.day = model
                     selectedCategory = .events
                 }
@@ -95,7 +93,7 @@ final class DayViewModel: DayViewModelProtocol {
     }
 
     func onTryAgain() {
-        AppLogger.shared.info("Trying to fetch events after error", category: .ui)
+        AppLogger.shared.debug("[Events View]: Trying to fetch events after error", category: .ui)
         fetchEvents(for: currentDate, language: language)
     }
 
@@ -105,13 +103,13 @@ final class DayViewModel: DayViewModelProtocol {
             .sink(
                 receiveCompletion: { completion in
                     if case .failure = completion {
-                        AppLogger.shared.error("Failed to toggle bookmark for event \(eventID).",
+                        AppLogger.shared.debug("[Events View]: Failed to toggle bookmark for event \(eventID).",
                                                category: .ui)
                         // TODO: show snackbar with error
                     }
                 },
                 receiveValue: {
-                    AppLogger.shared.info("Successfully toggled bookmark for event \(eventID)", category: .ui)
+                    AppLogger.shared.debug("[Events View]: Successfully toggled bookmark for event \(eventID)", category: .ui)
                     let feedbackGenerator = UINotificationFeedbackGenerator()
                     feedbackGenerator.notificationOccurred(.success)
                 }
@@ -124,7 +122,7 @@ final class DayViewModel: DayViewModelProtocol {
             .first(where: { $0.id == id })?.toSharingString(language: language)
 
         guard let stringToCopy else {
-            AppLogger.shared.error("Failed to copy event \(id) to clipboard. No sharing string available.",
+            AppLogger.shared.error("[Events View]: Failed to copy event \(id) to clipboard. No sharing string available.",
                                    category: .ui)
             return
         }
@@ -135,19 +133,19 @@ final class DayViewModel: DayViewModelProtocol {
         let feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
         feedbackGenerator.impactOccurred()
 
-        AppLogger.shared.info("Event \(id) copied to clipboard: \(stringToCopy)", category: .ui)
+        AppLogger.shared.debug("[Events View]: Event \(id) copied to clipboard: \(stringToCopy)", category: .ui)
     }
 
     func shareEvent(id: String) {
         let stringToShare = day?.events(for: selectedCategory)
             .first(where: { $0.id == id })?.toSharingString(language: language)
         guard let stringToShare else {
-            AppLogger.shared.error("Failed to share event \(id) to social media. No sharing string available.",
+            AppLogger.shared.error("[Events View]: Failed to share event \(id) to social media. No sharing string available.",
                                    category: .ui)
             return
         }
         itemsForSahre = ShareableItems(items: [stringToShare])
-        AppLogger.shared.info("Prepared sharing content: \(stringToShare)", category: .ui)
+        AppLogger.shared.debug("[Events View]: Prepared sharing content: \(stringToShare)", category: .ui)
     }
 
     func onCompleteShare() {
@@ -155,15 +153,13 @@ final class DayViewModel: DayViewModelProtocol {
     }
 
     private func updateState(with category: EventCategory) {
-        AppLogger.shared.debug("Updating state with category: \(category)")
-
+        AppLogger.shared.debug("[Events View]: Updating state with category: \(category)")
         let events = uiModels[category] ?? []
         state = .data(events)
     }
 
     private func cacheEvents(for day: DayDataModel?) {
         guard let day else { return }
-
         uiModels = [
             .events: day.general.reversed().map { $0.toDisplayModel() },
             .births: day.births.reversed().map { $0.toDisplayModel() },

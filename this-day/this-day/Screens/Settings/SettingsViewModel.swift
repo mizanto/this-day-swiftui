@@ -57,12 +57,12 @@ final class SettingsViewModel: SettingsViewModelProtocol {
             .sink(
                 receiveCompletion: { completion in
                     if case .failure(let error) = completion {
-                        AppLogger.shared.error("Failed to sign out: \(error)", category: .auth)
+                        AppLogger.shared.error("[Settings View]: Failed to sign out: \(error)", category: .auth)
                     }
                 },
                 receiveValue: { [weak self] in
                     guard let self else { return }
-                    AppLogger.shared.info("Signed out successfully", category: .auth)
+                    AppLogger.shared.debug("[Settings View]: Signed out successfully", category: .auth)
                     self.onLogout()
                 }
             )

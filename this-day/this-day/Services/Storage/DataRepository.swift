@@ -202,7 +202,6 @@ final class DataRepository: DataRepositoryProtocol {
     }
 
     private func tryToSaveCloudBookmarks(_ bookmarks: [BookmarkDataModel]) -> AnyPublisher<Void, RepositoryError> {
-        AppLogger.shared.debug("[Repo]: Trying to save cloud bookmarks: \(bookmarks)", category: .repository)
         guard !bookmarks.isEmpty else {
             AppLogger.shared.debug("[Repo]: No bookmarks to save", category: .repository)
             return Just(())
@@ -210,6 +209,7 @@ final class DataRepository: DataRepositoryProtocol {
                 .eraseToAnyPublisher()
         }
 
+        AppLogger.shared.debug("[Repo]: Trying to save cloud bookmarks: \(bookmarks)", category: .repository)
         let eventIDs = bookmarks.map { $0.eventID }
         let dayIDs = eventIDs.compactMap { EventEntity.extractDayID(from: $0) }
 
