@@ -54,8 +54,10 @@ extension DayEntity {
 
         for (events, type) in eventTypes {
             for eventNetworkModel in events {
-                let eventEntity = EventEntity.from(
-                    model: eventNetworkModel, dayID: dayEntity.id, type: type, context: context)
+                let eventEntity = EventEntity.from(model: eventNetworkModel,
+                                                   dayID: dayEntity.id,
+                                                   type: type,
+                                                   context: context)
                 eventEntity.day = dayEntity
                 dayEntity.addToEvents(eventEntity)
             }

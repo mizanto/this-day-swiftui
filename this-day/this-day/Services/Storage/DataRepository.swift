@@ -48,12 +48,7 @@ final class DataRepository: DataRepositoryProtocol {
                                        category: .repository)
                 return RepositoryError.fetchError
             }
-            .flatMap { [weak self] dayEntity -> AnyPublisher<DayDataModel, RepositoryError> in
-                guard let self = self else {
-                    return Fail(error: RepositoryError.unknownError("Self is nil"))
-                        .eraseToAnyPublisher()
-                }
-
+            .flatMap { [unowned self] dayEntity -> AnyPublisher<DayDataModel, RepositoryError> in
                 if let dayEntity = dayEntity {
                     AppLogger.shared.debug("[Repo]: Found day entity for id \(id)", category: .repository)
                     return Just(DayDataModel(entity: dayEntity))
@@ -87,10 +82,7 @@ final class DataRepository: DataRepositoryProtocol {
         AppLogger.shared.debug("[Repo]: Toggle bookmark for event \(eventID).", category: .ui)
         return localStorage.fetchEvent(id: eventID)
             .mapError { _ in RepositoryError.fetchError }
-            .flatMap { [weak self] event -> AnyPublisher<Void, RepositoryError> in
-                guard let self else {
-                    return Fail(error: RepositoryError.unknownError("Self is nil")).eraseToAnyPublisher()
-                }
+            .flatMap { [unowned self] event -> AnyPublisher<Void, RepositoryError> in
                 guard let event else {
                     AppLogger.shared.error("[Repo]: Failed to toggle bookmark for event \(eventID). Event not found.",
                                            category: .repository)
@@ -128,36 +120,68 @@ final class DataRepository: DataRepositoryProtocol {
     }
 
     func syncBookmarks() -> AnyPublisher<Void, RepositoryError> {
-        AppLogger.shared.debug("[Repo]: Start syncing bookmarks", category: .repository)
         return localStorage.fetchBookmarks()
-            .flatMap { localBookmarks in
-                AppLogger.shared.debug(
-                    "[Repo]: Found \(localBookmarks.count) bookmarks in local storage", category: .repository)
-                if localBookmarks.isEmpty {
-                    return self.cloudStorage.fetchBookmarks()
-                } else {
-                    return Just([])
-                        .setFailureType(to: StorageError.self)
-                        .eraseToAnyPublisher()
-                }
-            }
             .mapError { error in
                 AppLogger.shared.error(
-                    "[Repo]: Failed to fetch bookmarks from cloud storage: \(error)", category: .repository)
+                    "[Repo]: Failed to fetch bookmarks from local storage: \(error)", category: .repository)
                 return RepositoryError.fetchError
             }
-            .flatMap { [weak self] cloudBookmarks -> AnyPublisher<Void, RepositoryError> in
-                AppLogger.shared.debug(
-                    "[Repo]: Found \(cloudBookmarks.count) bookmarks in cloud storage", category: .repository)
-                guard let self else {
-                    return Fail(error: RepositoryError.fetchError)
-                        .eraseToAnyPublisher()
+            .flatMap { localBookmarks in
+                guard localBookmarks.isEmpty else {
+                    AppLogger.shared.debug(
+                        "[Repo]: Found \(localBookmarks.count) bookmarks in local storage", category: .repository)
+                    return Just(()).setFailureType(to: RepositoryError.self).eraseToAnyPublisher()
                 }
-                return self.tryToSaveCloudBookmarks(cloudBookmarks)
+                return self.cloudStorage.fetchBookmarks()
+                    .mapError { error in
+                        AppLogger.shared.error(
+                            "[Repo]: Failed to fetch bookmarks from cloud storage: \(error)", category: .repository)
+                        return RepositoryError.fetchError
+                    }
+                    .flatMap { [unowned self] cloudBookmarks -> AnyPublisher<Void, RepositoryError> in
+                        AppLogger.shared.debug(
+                            "[Repo]: Found \(cloudBookmarks.count) bookmarks in cloud storage", category: .repository)
+                        return self.tryToSaveCloudBookmarks(cloudBookmarks)
+                    }
+                    .map { _ in () }
+                    .eraseToAnyPublisher()
             }
-            .map { _ in () }
             .eraseToAnyPublisher()
     }
+
+//    func syncBookmarks() -> AnyPublisher<Void, RepositoryError> {
+//        AppLogger.shared.debug("[Repo]: Start syncing bookmarks", category: .repository)
+//        return localStorage.fetchBookmarks()
+//            .flatMap { localBookmarks in
+//                AppLogger.shared.debug(
+//                    "[Repo]: Found \(localBookmarks.count) bookmarks in local storage", category: .repository)
+//                if localBookmarks.isEmpty {
+//                    AppLogger.shared.debug(
+//                        "[Repo]: No bookmarks in local storage, fetching from cloud", category: .repository)
+//                    return self.cloudStorage.fetchBookmarks()
+//                } else {
+//                    return Just([])
+//                        .setFailureType(to: StorageError.self)
+//                        .eraseToAnyPublisher()
+//                }
+//            }
+//            .mapError { error in
+//                AppLogger.shared.error(
+//                    "[Repo]: Failed to fetch bookmarks from cloud storage: \(error)", category: .repository)
+//                return RepositoryError.fetchError
+//            }
+//            .flatMap { [weak self] cloudBookmarks -> AnyPublisher<Void, RepositoryError> in
+//                AppLogger.shared.debug(
+//                    "[Repo]: Found \(cloudBookmarks.count) bookmarks in cloud storage", category: .repository)
+//                guard let self else {
+//                    return Fail(error: RepositoryError.fetchError)
+//                        .eraseToAnyPublisher()
+//                }
+//                return self.tryToSaveCloudBookmarks(cloudBookmarks)
+//            }
+//            .map { _ in () }
+//            .eraseToAnyPublisher()
+//    }
 
     func clearLocalStorage() -> AnyPublisher<Void, RepositoryError> {
         AppLogger.shared.debug("Clearing local storage", category: .repository)
@@ -216,9 +240,10 @@ final class DataRepository: DataRepositoryProtocol {
 
         AppLogger.shared.debug("[Repo]: Trying to save cloud bookmarks: \(bookmarks)", category: .repository)
         let eventIDs = bookmarks.map { $0.eventID }
-        let dayIDs = eventIDs.compactMap { EventEntity.extractDayID(from: $0) }
+        let dayIDs = eventIDs
+            .compactMap { EventEntity.extractDayID(from: $0) }
+            .removingDuplicates()
 
-        AppLogger.shared.debug("[Repo]: Fetching missing days: \(dayIDs)", category: .repository)
         return self.localStorage.fetchDays()
             .map { entities -> [String] in
                 let localDayIDs = entities.map { $0.id }
@@ -226,29 +251,20 @@ final class DataRepository: DataRepositoryProtocol {
                 AppLogger.shared.debug("[Repo]: Missing days: \(missingIDs)", category: .repository)
                 return missingIDs
             }
-            .mapError { _ in RepositoryError.fetchError }
-            .flatMap { [weak self] missingDayIDs -> AnyPublisher<[(String, DayNetworkModel)], RepositoryError> in
+            .mapError { error in
+                AppLogger.shared.error("[Repo]: Failed to fetch missing days: \(error)", category: .repository)
+                return RepositoryError.fetchError
+            }
+            .flatMap { [unowned self] missingDayIDs -> AnyPublisher<[(String, DayNetworkModel)], RepositoryError> in
                 AppLogger.shared.debug("[Repo]: Fetching missing days: \(missingDayIDs)", category: .repository)
-                guard let self else {
-                    return Fail(error: RepositoryError.unknownError("Self is nil"))
-                        .eraseToAnyPublisher()
-                }
                 return self.fetchDays(ids: missingDayIDs)
             }
-            .flatMap { [weak self] fetchedDays -> AnyPublisher<Void, RepositoryError> in
+            .flatMap { [unowned self] fetchedDays -> AnyPublisher<Void, RepositoryError> in
                 AppLogger.shared.debug("[Repo]: Saving fetched days: \(fetchedDays)", category: .repository)
-                guard let self else {
-                    return Fail(error: RepositoryError.unknownError("Self is nil"))
-                        .eraseToAnyPublisher()
-                }
                 return self.saveDaysLocally(fetchedDays)
             }
-            .flatMap { [weak self] _ -> AnyPublisher<Void, RepositoryError> in
+            .flatMap { [unowned self] _ -> AnyPublisher<Void, Never> in
                 AppLogger.shared.debug("[Repo]: Saving fetched bookmarks: \(bookmarks)", category: .repository)
-                guard let self else {
-                    return Fail(error: RepositoryError.unknownError("Self is nil"))
-                        .eraseToAnyPublisher()
-                }
                 return self.saveBokmarksLocally(bookmarks)
             }
             .eraseToAnyPublisher()
@@ -299,16 +315,21 @@ final class DataRepository: DataRepositoryProtocol {
             .eraseToAnyPublisher()
     }
 
-    private func saveBokmarksLocally(_ bookmarks: [BookmarkDataModel]) -> AnyPublisher<Void, RepositoryError> {
+    private func saveBokmarksLocally(_ bookmarks: [BookmarkDataModel]) -> AnyPublisher<Void, Never> {
         let saveBookmarksPublishers = bookmarks.map { bookmark in
             return self.localStorage.addToBookmarksEvent(eventID: bookmark.eventID,
                                                          bookmarkID: bookmark.id,
                                                          dateAdded: bookmark.dateAdded)
-                .mapError { error in
-                    AppLogger.shared.error("Failed to save bookmark with error: \(error)", category: .repository)
-                    return RepositoryError.saveError
+            .catch { [unowned self] error in
+                if case .notFound = error {
+                    return self.cloudStorage.removeBookmark(id: bookmark.id)
+                        .replaceError(with: ())
+                        .eraseToAnyPublisher()
+                } else {
+                    return Just(()).eraseToAnyPublisher()
                 }
-                .eraseToAnyPublisher()
+            }
+            .eraseToAnyPublisher()
         }
         return Publishers.MergeMany(saveBookmarksPublishers)
             .collect()
@@ -322,7 +343,7 @@ final class DataRepository: DataRepositoryProtocol {
                          language: String) -> AnyPublisher<DayEntity, RepositoryError> {
         localStorage.saveDay(networkModel: networkModel, id: id, date: date, language: language)
             .mapError { error in
-                AppLogger.shared.error("Failed to fetch events for \(date) with error: \(error)", category: .repository)
+                AppLogger.shared.error("[Repo]: Failed to fetch events for \(date) with error: \(error)", category: .repository)
                 return RepositoryError.fetchError
             }
             .eraseToAnyPublisher()

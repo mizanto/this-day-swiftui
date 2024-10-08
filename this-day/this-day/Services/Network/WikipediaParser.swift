@@ -47,26 +47,20 @@ final class WikipediaParser {
     }
 
     func cleanExtract(from extract: String) -> String {
-        AppLogger.shared.debug("Cleaning extract by removing subcategories and unwanted symbols", category: .parser)
-
         let cleanedLines = extract
             .components(separatedBy: "\n")
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .filter {
                 !$0.isEmpty && !$0.hasPrefix("===") && !$0.hasSuffix(":") && !$0.hasPrefix("-")
             }
-
-        AppLogger.shared.debug("Finished cleaning extract", category: .parser)
         return cleanedLines.joined(separator: "\n")
     }
 
     func parseWikipediaDay(from extract: String) throws -> DayNetworkModel {
-        AppLogger.shared.debug("Parsing Wikipedia day from extract", category: .parser)
-
         let cleanedExtract = cleanExtract(from: extract)
 
         guard let introRange = cleanedExtract.range(of: "==") else {
-            AppLogger.shared.error("No section headings found in Wikipedia extract", category: .parser)
+            AppLogger.shared.error("[Parser]: No section headings found in Wikipedia extract", category: .parser)
             throw DecodingError.dataCorrupted(
                 .init(codingPath: [], debugDescription: "No section headings found in the Wikipedia extract."))
         }
@@ -89,10 +83,10 @@ final class WikipediaParser {
 
     func parseCategory(from extract: String, category: Category) -> [EventNetworkModel] {
         let categoryString = category.toLanguage(language)
-        AppLogger.shared.debug("Parsing category: \(categoryString)", category: .parser)
 
         guard let categoryText = rawCategory(from: extract, for: category) else {
-            AppLogger.shared.info("No \(categoryString) section found in Wikipedia extract", category: .parser)
+            AppLogger.shared.debug(
+                "[Parser]: No \(categoryString) section found in Wikipedia extract", category: .parser)
             return []
         }
 
@@ -141,7 +135,8 @@ final class WikipediaParser {
 
         // find the beegining of the current category
         guard let categoryRange = extract.range(of: categoryString) else {
-            AppLogger.shared.info("No \(categoryString) section found in Wikipedia extract", category: .parser)
+            AppLogger.shared.debug(
+                "[Parser]: No \(categoryString) section found in Wikipedia extract", category: .parser)
             return nil
         }
 

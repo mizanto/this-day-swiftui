@@ -82,13 +82,15 @@ class LocalStorage: LocalStorageProtocol {
             do {
                 if let day = try self.fetchDaySync(id: id) {
                     promise(.success(day))
+                    return
                 }
 
                 let day = DayEntity.from(model: networkModel, id: id, date: date,
                                          language: language, context: self.context)
+                try self.context.obtainPermanentIDs(for: [day])
                 try self.context.save()
                 AppLogger.shared.info(
-                    "[Local Storage]: Successfully saved DayEntity for id: \(id)", category: .database)
+                    "[Local Storage]: Successfully saved DayEntity for id: \(id) in context: \(self.context)", category: .database)
                 promise(.success(day))
             } catch {
                 AppLogger.shared.error(
@@ -110,6 +112,7 @@ class LocalStorage: LocalStorageProtocol {
             request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
 
             do {
+                AppLogger.shared.debug("[Local Storage]: Fetching EventEntity for id \(id) from context: \(self.context)", category: .database)
                 let events = try self.context.fetch(request)
                 promise(.success(events.first))
             } catch {

@@ -88,7 +88,10 @@ final class FlowCoordinator: ObservableObject {
     private func handleMainCompletion() {
         dataRepository.clearLocalStorage()
             .receive(on: DispatchQueue.main)
-            .map { _ in Flow.authorization }
+            .map { _ in
+                self.view = AnyView(EmptyView())
+                return Flow.authorization
+            }
             .catch { _ in Just(.main) }
             .assign(to: &$flow)
     }
