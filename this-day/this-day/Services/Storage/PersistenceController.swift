@@ -18,7 +18,8 @@ final class PersistenceController {
         container = NSPersistentContainer(name: "Model")
 
         if inMemory {
-            AppLogger.shared.info("[Local Storage]: Configuring in-memory store for PersistenceController", category: .database)
+            AppLogger.shared.info(
+                "[Local Storage]: Configuring in-memory store for PersistenceController", category: .database)
             container.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")
         }
 
@@ -29,7 +30,8 @@ final class PersistenceController {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             } else {
                 let urlInfo = storeDescription.url?.absoluteString ?? "Unknown URL"
-                AppLogger.shared.info("[Local Storage]: Successfully loaded persistent store at \(urlInfo)", category: .database)
+                AppLogger.shared.info(
+                    "[Local Storage]: Successfully loaded persistent store at \(urlInfo)", category: .database)
             }
         }
     }

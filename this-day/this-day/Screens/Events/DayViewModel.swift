@@ -77,8 +77,8 @@ final class DayViewModel: DayViewModelProtocol {
                 receiveCompletion: { [weak self] completion in
                     if case .failure(let error) = completion {
                         guard let self else { return }
-                        AppLogger.shared.error("[Events View]: Failed to load events for date: \(date). Error: \(error)",
-                                               category: .ui)
+                        AppLogger.shared.error(
+                            "[Events View]: Failed to load events for date: \(date). Error: \(error)", category: .ui)
                         self.state = .error("Failed to load events. Please try again.")
                     }
                 },
@@ -109,7 +109,8 @@ final class DayViewModel: DayViewModelProtocol {
                     }
                 },
                 receiveValue: {
-                    AppLogger.shared.debug("[Events View]: Successfully toggled bookmark for event \(eventID)", category: .ui)
+                    AppLogger.shared.debug(
+                        "[Events View]: Successfully toggled bookmark for event \(eventID)", category: .ui)
                     let feedbackGenerator = UINotificationFeedbackGenerator()
                     feedbackGenerator.notificationOccurred(.success)
                 }
@@ -122,8 +123,8 @@ final class DayViewModel: DayViewModelProtocol {
             .first(where: { $0.id == id })?.toSharingString(language: language)
 
         guard let stringToCopy else {
-            AppLogger.shared.error("[Events View]: Failed to copy event \(id) to clipboard. No sharing string available.",
-                                   category: .ui)
+            AppLogger.shared.error(
+                "[Events View]: Failed to copy event \(id) to clipboard. No sharing string available.", category: .ui)
             return
         }
 
@@ -140,8 +141,9 @@ final class DayViewModel: DayViewModelProtocol {
         let stringToShare = day?.events(for: selectedCategory)
             .first(where: { $0.id == id })?.toSharingString(language: language)
         guard let stringToShare else {
-            AppLogger.shared.error("[Events View]: Failed to share event \(id) to social media. No sharing string available.",
-                                   category: .ui)
+            AppLogger.shared.error(
+                "[Events View]: Failed to share event \(id) to social media. No sharing string available.",
+                category: .ui)
             return
         }
         itemsForSahre = ShareableItems(items: [stringToShare])

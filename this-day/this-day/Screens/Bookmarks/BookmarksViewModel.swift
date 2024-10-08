@@ -54,7 +54,8 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
                 receiveCompletion: { [weak self] completion in
                     guard let self else { return }
                     if case .failure(let error) = completion {
-                        AppLogger.shared.error("[Bookmarks View]: Failed to fetch bookmarked events: \(error)", category: .ui)
+                        AppLogger.shared.error("[Bookmarks View]: Failed to fetch bookmarked events: \(error)",
+                                               category: .ui)
                         self.state = .error("Failed to fetch bookmarked events")
                     }
                 },
@@ -100,8 +101,9 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
     func copyToClipboardBookmark(id: String) {
         let stringToCopy = events.first(where: { $0.id == id })?.toSharingString(language: language)
         guard let stringToCopy else {
-            AppLogger.shared.error("[Bookmarks View]: Failed to copy event \(id) to clipboard. No sharing string available.",
-                                   category: .ui)
+            AppLogger.shared.error(
+                "[Bookmarks View]: Failed to copy event \(id) to clipboard. No sharing string available.",
+                category: .ui)
             return
         }
         UIPasteboard.general.string = stringToCopy
@@ -116,14 +118,15 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
     func shareBookmark(id: String) {
         let stringToShare = events.first(where: { $0.id == id })?.toSharingString(language: language)
         guard let stringToShare else {
-            AppLogger.shared.error("[Bookmarks View]: Failed to share event \(id) to social media. No sharing string available.",
-                                   category: .ui)
+            AppLogger.shared.error(
+                "[Bookmarks View]: Failed to share event \(id) to social media. No sharing string available.",
+                category: .ui)
             return
         }
         itemsForSahre = ShareableItems(items: [stringToShare])
         AppLogger.shared.debug("[Bookmarks View]: Prepared sharing content: \(stringToShare)", category: .ui)
     }
-    
+
     private func cacheEvents(_ events: [EventDataModel]) {
         uiModels = events.map { event in
             return BookmarkEvent(

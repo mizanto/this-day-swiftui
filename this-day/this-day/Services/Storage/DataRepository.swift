@@ -39,7 +39,8 @@ final class DataRepository: DataRepositoryProtocol {
     }
 
     func fetchDay(date: Date, language: String) -> AnyPublisher<DayDataModel, RepositoryError> {
-        AppLogger.shared.debug("[Repo]: Start fetching day for date \(date) and language \(language)", category: .repository)
+        AppLogger.shared.debug(
+            "[Repo]: Start fetching day for date \(date) and language \(language)", category: .repository)
         let id = DayEntity.createID(date: date, language: language)
         return localStorage.fetchDay(id: id)
             .mapError { error in
@@ -52,14 +53,15 @@ final class DataRepository: DataRepositoryProtocol {
                     return Fail(error: RepositoryError.unknownError("Self is nil"))
                         .eraseToAnyPublisher()
                 }
-                
+
                 if let dayEntity = dayEntity {
                     AppLogger.shared.debug("[Repo]: Found day entity for id \(id)", category: .repository)
                     return Just(DayDataModel(entity: dayEntity))
                         .setFailureType(to: RepositoryError.self)
                         .eraseToAnyPublisher()
                 } else {
-                    AppLogger.shared.debug("[Repo]: No day entity found for id \(id), fetching from network", category: .repository)
+                    AppLogger.shared.debug(
+                        "[Repo]: No day entity found for id \(id), fetching from network", category: .repository)
                     return self.networkService.fetchEvents(for: date, language: language)
                         .mapError { error in
                             AppLogger.shared.error("[Repo]: Failed to fetch events for \(date) with error: \(error)",
@@ -129,7 +131,8 @@ final class DataRepository: DataRepositoryProtocol {
         AppLogger.shared.debug("[Repo]: Start syncing bookmarks", category: .repository)
         return localStorage.fetchBookmarks()
             .flatMap { localBookmarks in
-                AppLogger.shared.debug("[Repo]: Found \(localBookmarks.count) bookmarks in local storage", category: .repository)
+                AppLogger.shared.debug(
+                    "[Repo]: Found \(localBookmarks.count) bookmarks in local storage", category: .repository)
                 if localBookmarks.isEmpty {
                     return self.cloudStorage.fetchBookmarks()
                 } else {
@@ -139,11 +142,13 @@ final class DataRepository: DataRepositoryProtocol {
                 }
             }
             .mapError { error in
-                AppLogger.shared.error("[Repo]: Failed to fetch bookmarks from cloud storage: \(error)", category: .repository)
+                AppLogger.shared.error(
+                    "[Repo]: Failed to fetch bookmarks from cloud storage: \(error)", category: .repository)
                 return RepositoryError.fetchError
             }
             .flatMap { [weak self] cloudBookmarks -> AnyPublisher<Void, RepositoryError> in
-                AppLogger.shared.debug("[Repo]: Found \(cloudBookmarks.count) bookmarks in cloud storage", category: .repository)
+                AppLogger.shared.debug(
+                    "[Repo]: Found \(cloudBookmarks.count) bookmarks in cloud storage", category: .repository)
                 guard let self else {
                     return Fail(error: RepositoryError.fetchError)
                         .eraseToAnyPublisher()
@@ -182,7 +187,7 @@ final class DataRepository: DataRepositoryProtocol {
         }
         .eraseToAnyPublisher()
     }
-    
+
     private func removeBookmark(_ bookmark: BookmarkEntity) -> AnyPublisher<Void, RepositoryError> {
         let id = bookmark.id
         return Publishers.Zip(
@@ -258,7 +263,7 @@ final class DataRepository: DataRepositoryProtocol {
 
         let fetchPublishers = ids.map { dayID in
             guard let (date, language) = DayEntity.extractDateAndLanguage(from: dayID) else {
-                return Fail<(String, DayNetworkModel), RepositoryError>(error: .unknownError("Unknown day ID: \(dayID)"))
+                return Fail<(String, DayNetworkModel), RepositoryError>(error: .unknownError("Unknown dayID: \(dayID)"))
                     .eraseToAnyPublisher()
             }
             return self.networkService.fetchEvents(for: date, language: language)
@@ -271,6 +276,7 @@ final class DataRepository: DataRepositoryProtocol {
             .eraseToAnyPublisher()
     }
 
+    // swiftlint:disable:next line_length
     private func saveDaysLocally(_ days: [(id: String, model: DayNetworkModel)]) -> AnyPublisher<Void, RepositoryError> {
         guard !days.isEmpty else {
             return Just(())

@@ -15,7 +15,7 @@ struct MainTabView: View {
     @State private var selectedTab: Int = 0
 
     let completion: VoidClosure
-    
+
     init(authService: AuthenticationServiceProtocol,
          dataRepository: DataRepositoryProtocol,
          completion: @escaping VoidClosure) {

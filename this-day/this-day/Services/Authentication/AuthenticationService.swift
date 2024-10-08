@@ -26,7 +26,7 @@ final class AuthenticationService: AuthenticationServiceProtocol {
     var currentUserPublisher: AnyPublisher<UserInfoModel?, Never> {
         $currentUser.eraseToAnyPublisher()
     }
-    
+
     private var keychain: KeychainHelper = .shared
     private let keychainService: String = "com.thisday.service"
     private let keychainAccount: String = "user_info"
@@ -39,7 +39,7 @@ final class AuthenticationService: AuthenticationServiceProtocol {
                 guard let self else { return }
                 if let user = user {
                     self.currentUser = UserInfoModel(from: user)
-                    AppLogger.shared.info("[Auth]: User signed in: \(self.currentUser)")
+                    AppLogger.shared.info("[Auth]: User signed in: \(String(describing: self.currentUser))")
                 } else {
                     self.currentUser = nil
                     AppLogger.shared.info("[Auth]: User signed out")
