@@ -11,9 +11,16 @@ struct LaunchView<ViewModel: LaunchViewModelProtocol>: View {
     @StateObject var viewModel: ViewModel
 
     var body: some View {
-        showLoading(message: "Launching...")
-            .onAppear {
-                viewModel.onAppear()
-            }
+        ZStack {
+            Color.white
+            Image("logo_light")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 128, height: 128)
+        }
+        .ignoresSafeArea()
+        .onAppear {
+            viewModel.onAppear()
+        }
     }
 }
