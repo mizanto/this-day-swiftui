@@ -18,6 +18,12 @@ protocol AppSettingsProtocol {
     var appVersion: String { get }
     /// Build number
     var buildNumber: String { get }
+    /// App Store page URL
+    var appStorePageURL: String { get }
+    /// Returns true if current version less than `minVersion`
+    var isCurrentVersionLessThanMinVersion: Bool { get }
+    /// Returns true if current version less than `appStoreVersion`
+    var isUpdateAvailable: Bool { get }
 }
 
 final class AppSettings: AppSettingsProtocol, ObservableObject {
@@ -25,12 +31,14 @@ final class AppSettings: AppSettingsProtocol, ObservableObject {
         case minVersion = "min_version"
         case currentVersion = "current_version"
         case language = "language"
+        case appStoreURL = "app_store_url"
     }
 
     private enum DefaultValue {
         static let minVersion: String = "1.0.0"
         static let currentVersion: String = "1.0.0"
         static let language: String = "en"
+        static let appStoreURL: String = "https://apps.apple.com"
     }
 
     static let shared = AppSettings()
@@ -52,6 +60,14 @@ final class AppSettings: AppSettingsProtocol, ObservableObject {
 
     var appVersion: String { Bundle.main.versionNumber }
     var buildNumber: String { Bundle.main.buildNumber }
+
+    var appStorePageURL: String {
+        set { saveString(value: newValue, forKey: .appStoreURL) }
+        get { getString(forKey: .appStoreURL) ?? DefaultValue.appStoreURL }
+    }
+
+    var isCurrentVersionLessThanMinVersion: Bool { appVersion.isVersionLessThan(minVersion) }
+    var isUpdateAvailable: Bool { appVersion.isVersionLessThan(appStoreVersion) }
 
     private let userDefaults: UserDefaults = .standard
     

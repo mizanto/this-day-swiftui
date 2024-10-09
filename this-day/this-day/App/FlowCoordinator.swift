@@ -14,6 +14,7 @@ final class FlowCoordinator: ObservableObject {
         case launching
         case authorization
         case main
+        case error
     }
 
     @Published var flow: Flow = .idle
@@ -69,6 +70,18 @@ final class FlowCoordinator: ObservableObject {
                             self.settings.objectWillChange.send()
                         }
                     )
+                case .error:
+                    AppLogger.shared.error("[Coordinator]: Showing error", category: .coordinator)
+                    self.view = AnyView(
+                        ErrorView(
+                            message: LocalizedString("message.hard_update"),
+                            buttonTitle: LocalizedString("button.update"),
+                            retryAction: { [unowned self] in
+                                guard let url = URL(string: self.settings.appStorePageURL) else { return }
+                                UIApplication.shared.open(url)
+                            }
+                        )
+                    )
                 }
             }
             .store(in: &cancellables)
@@ -79,20 +92,26 @@ final class FlowCoordinator: ObservableObject {
             AppLogger.shared.debug("[Coordinator]: Remote settings loaded successfully: \(settings)")
             self.settings.appStoreVersion = settings.currentVersion
             self.settings.minVersion = settings.minVersion
+            self.settings.appStorePageURL = settings.storeURL
         }
-        authService.currentUserPublisher
-            .first()
-            .flatMap { user -> AnyPublisher<Flow, Never> in
-                if let user {
-                    self.analyticsService.setUserId(user.id)
-                    self.analyticsService.setUserProperty(.language, value: self.settings.language)
-                    return self.synchronizeBookmarks()
-                } else {
-                    return Just(.authorization).eraseToAnyPublisher()
+        
+        if self.settings.isCurrentVersionLessThanMinVersion {
+            self.flow = .error
+        } else {
+            authService.currentUserPublisher
+                .first()
+                .flatMap { user -> AnyPublisher<Flow, Never> in
+                    if let user {
+                        self.analyticsService.setUserId(user.id)
+                        self.analyticsService.setUserProperty(.language, value: self.settings.language)
+                        return self.synchronizeBookmarks()
+                    } else {
+                        return Just(.authorization).eraseToAnyPublisher()
+                    }
                 }
-            }
-            .receive(on: DispatchQueue.main)
-            .assign(to: &$flow)
+                .receive(on: DispatchQueue.main)
+                .assign(to: &$flow)
+        }
     }
 
     private func handleAuthentication() {
@@ -120,5 +139,28 @@ final class FlowCoordinator: ObservableObject {
                 return Just(.main)
             }
             .eraseToAnyPublisher()
+    }
+}
+
+extension String {
+    func isVersionLessThan(_ version: String) -> Bool {
+        let currentComponents = split(separator: ".").compactMap { Int($0) }
+        let compareComponents = version.split(separator: ".").compactMap { Int($0) }
+        
+        let maxCount = max(currentComponents.count, compareComponents.count)
+        
+        let paddedCurrent = currentComponents + Array(repeating: 0, count: maxCount - currentComponents.count)
+        let paddedCompare = compareComponents + Array(repeating: 0, count: maxCount - compareComponents.count)
+        
+        for (current, compare) in zip(paddedCurrent, paddedCompare) {
+            if current < compare {
+                return true
+            } else if current > compare {
+                return false
+            }
+        }
+        
+        // if equals
+        return false
     }
 }

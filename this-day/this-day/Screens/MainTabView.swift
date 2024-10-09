@@ -11,7 +11,7 @@ struct MainTabView: View {
     let authService: AuthenticationServiceProtocol
     let dataRepository: DataRepositoryProtocol
     let analyticsService: AnalyticsServiceProtocol
-    
+
     @EnvironmentObject var settings: AppSettings
 
     @State private var selectedTab: Int = 0
@@ -56,6 +56,7 @@ struct MainTabView: View {
                     Image(systemName: "gearshape")
                     Text(NSLocalizedString("tab_title.settings", comment: ""))
                 }
+                .badge(settings.isUpdateAvailable ? "!" : nil)
                 .tag(2)
         }
         .onAppear {

@@ -8,25 +8,30 @@
 import Foundation
 import FirebaseAuth
 import Combine
+import UIKit
 
 protocol SettingsViewModelProtocol: ObservableObject {
     var appVersion: String { get }
-    var buildNumber: String { get }
     var availableLanguages: [Language] { get }
     var selectedLanguage: String { get set }
     var currentUser: UserInfo? { get }
+    var showSnackbar: Bool { get set }
     var isAuthenticated: Bool { get }
+    var isUpdateAvailable: Bool { get }
+    var appVersionMessage: String { get }
 
     func signOut()
-    func updateLanguage(_ languageId: String)
+    func updateLanguage(_ id: String)
+    func updateApplication()
+    func copyAppVersion()
 }
 
 final class SettingsViewModel: SettingsViewModelProtocol {
     @Published var selectedLanguage: String
     @Published var currentUser: UserInfo?
+    @Published var showSnackbar = false
 
-    var appVersion: String { settings.appVersion }
-    var buildNumber: String { settings.buildNumber }
+    var appVersion: String { "\(settings.appVersion) (\(settings.buildNumber))" }
     var availableLanguages: [Language] {
         [
             Language(id: "en", name: "English"),
@@ -34,6 +39,8 @@ final class SettingsViewModel: SettingsViewModelProtocol {
         ]
     }
     var isAuthenticated: Bool { authService.isAuthenticated }
+    var isUpdateAvailable: Bool { settings.isUpdateAvailable }
+    var appVersionMessage: String { LocalizedString("message.snackbar.app_version") }
 
     private var settings: AppSettingsProtocol
     private var authService: AuthenticationServiceProtocol
@@ -79,11 +86,21 @@ final class SettingsViewModel: SettingsViewModelProtocol {
         settings.language = id
         Bundle.setLanguage(id)
         NotificationCenter.default.post(name: .languageDidChange, object: nil)
-    
+        
         objectWillChange.send()
-
+        
         analyticsService.setUserProperty(.language, value: id)
         analyticsService.logEvent(.languageSelected, parameters: ["id": id])
+    }
+
+    func updateApplication() {
+        guard let url = URL(string: self.settings.appStorePageURL) else { return }
+        UIApplication.shared.open(url)
+    }
+
+    func copyAppVersion() {
+        UIPasteboard.general.string = appVersion
+        showSnackbar = true
     }
 
     private func bind() {

@@ -17,6 +17,7 @@ final class RemoteConfigService: RemoteConfigServiceProtocol {
     enum ConfigKey: String {
         case minVersion = "min_version"
         case currentVersion = "current_version"
+        case storeURL = "store_url"
     }
 
     static let shared = RemoteConfigService()
@@ -28,7 +29,8 @@ final class RemoteConfigService: RemoteConfigServiceProtocol {
 
         let defaultValues: [String: NSObject] = [
             ConfigKey.minVersion.rawValue: "1.0.0" as NSObject,
-            ConfigKey.currentVersion.rawValue: "1.0.0" as NSObject
+            ConfigKey.currentVersion.rawValue: "1.0.0" as NSObject,
+            ConfigKey.storeURL.rawValue: "https://apps.apple.com" as NSObject
         ]
         remoteConfig.setDefaults(defaultValues)
     }
@@ -48,7 +50,8 @@ final class RemoteConfigService: RemoteConfigServiceProtocol {
                 }
                 let settings = RemoteSettings(
                     minVersion: self.getString(forKey: .minVersion),
-                    currentVersion: self.getString(forKey: .currentVersion)
+                    currentVersion: self.getString(forKey: .currentVersion),
+                    storeURL: self.getString(forKey: .storeURL)
                 )
                 promise(.success(settings))
             }

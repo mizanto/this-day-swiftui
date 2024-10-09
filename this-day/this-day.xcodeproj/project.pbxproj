@@ -454,10 +454,10 @@
 		AD4D89092C986C96003DD3C4 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				ADA358F62CB6B667002BB6D5 /* RemoteConfig */,
 				ADA358F32CB696DD002BB6D5 /* Analytics */,
 				AD4AC44C2CAC74FB00C6BFBE /* Authentication */,
 				AD9592092C99C8E60019BB13 /* Network */,
+				ADA358F62CB6B667002BB6D5 /* RemoteConfig */,
 				AD53AA442CA2A5A70024FD31 /* Storage */,
 				AD4D891E2C988810003DD3C4 /* AppLogger.swift */,
 			);

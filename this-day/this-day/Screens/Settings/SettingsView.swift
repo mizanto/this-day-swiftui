@@ -19,6 +19,7 @@ struct SettingsView<ViewModel: SettingsViewModelProtocol>: View {
             content()
                 .navigationTitle(LocalizedString("tab_title.settings"))
         }
+        .snackbar(isPresented: $viewModel.showSnackbar, message: viewModel.appVersionMessage)
     }
 
     @ViewBuilder
@@ -82,12 +83,29 @@ struct SettingsView<ViewModel: SettingsViewModelProtocol>: View {
                 Spacer()
                 Text(viewModel.appVersion)
                     .foregroundColor(.secondary)
+                    .onLongPressGesture {
+                        viewModel.copyAppVersion()
+                    }
             }
-            HStack {
-                Text(LocalizedString("settings.build"))
-                Spacer()
-                Text(viewModel.buildNumber)
-                    .foregroundColor(.secondary)
+            if viewModel.isUpdateAvailable {
+                HStack {
+                    Text(LocalizedString("settings.update_available"))
+                    Spacer()
+                    Button(
+                        action: {
+                            viewModel.updateApplication()
+                        },
+                        label: {
+                            Text(LocalizedString("button.update"))
+                                .multilineTextAlignment(.center)
+                                .padding(.vertical, 4)
+                                .padding(.horizontal, 8)
+                                .foregroundColor(.white)
+                                .background(.appRed)
+                                .cornerRadius(4)
+                        }
+                    )
+                }
             }
         }
     }

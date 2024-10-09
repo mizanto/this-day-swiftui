@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "!" : {
+
+    },
     "auth.button.already_have_account" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -290,6 +293,23 @@
         }
       }
     },
+    "button.update" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Update"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Обновить"
+          }
+        }
+      }
+    },
     "category_picker.title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -375,6 +395,23 @@
         }
       }
     },
+    "message.hard_update" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please update the app to the latest version to continue using it"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пожалуйста, обновите приложение до последней версии для продолжения использования"
+          }
+        }
+      }
+    },
     "message.loading.default" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -409,6 +446,23 @@
         }
       }
     },
+    "message.snackbar.app_version" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App version copied to clipboard"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Номер версии приложения скопирован"
+          }
+        }
+      }
+    },
     "message.snackbar.copied" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -422,23 +476,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Скопировано"
-          }
-        }
-      }
-    },
-    "settings.build" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Build"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Сборка"
           }
         }
       }
@@ -558,6 +595,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Войдите в профиль, чтобы сохранять события в закладках и синхронизировать их между устройствами"
+          }
+        }
+      }
+    },
+    "settings.update_available" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Update available"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Доступно обновление"
           }
         }
       }

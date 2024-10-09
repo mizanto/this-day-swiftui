@@ -10,4 +10,5 @@ import Foundation
 struct RemoteSettings {
     let minVersion: String
     let currentVersion: String
+    let storeURL: String
 }

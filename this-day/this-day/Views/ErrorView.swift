@@ -9,7 +9,18 @@ import SwiftUI
 
 struct ErrorView: View {
     let message: String
+    let buttonTitle: String?
     let retryAction: VoidClosure?
+
+    init(
+        message: String,
+        buttonTitle: String? = nil,
+        retryAction: VoidClosure? = nil
+    ) {
+        self.message = message
+        self.buttonTitle = buttonTitle
+        self.retryAction = retryAction
+    }
 
     var body: some View {
         VStack {
@@ -24,7 +35,7 @@ struct ErrorView: View {
                 Button(
                     action: retryAction,
                     label: {
-                        Text(LocalizedString("error.retry"))
+                        titleForButton()
                             .font(.headline)
                             .padding(12)
                             .background(.main)
@@ -35,8 +46,16 @@ struct ErrorView: View {
             }
         }
     }
+
+    func titleForButton() -> Text {
+        if let buttonTitle {
+            Text(buttonTitle)
+        } else {
+            Text(LocalizedString("error.retry"))
+        }
+    }
 }
 
 #Preview {
-    ErrorView(message: "Some long long long long long long error message", retryAction: {})
+    ErrorView(message: "Some long long long long long long error message")
 }
