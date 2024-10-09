@@ -90,7 +90,7 @@ class LocalStorage: LocalStorageProtocol {
                 try self.context.obtainPermanentIDs(for: [day])
                 try self.context.save()
                 AppLogger.shared.info(
-                    "[Local Storage]: Successfully saved DayEntity for id: \(id) in context: \(self.context)", category: .database)
+                    "[Local Storage]: Successfully saved DayEntity for id: \(id):", category: .database)
                 promise(.success(day))
             } catch {
                 AppLogger.shared.error(
@@ -112,7 +112,7 @@ class LocalStorage: LocalStorageProtocol {
             request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
 
             do {
-                AppLogger.shared.debug("[Local Storage]: Fetching EventEntity for id \(id) from context: \(self.context)", category: .database)
+                AppLogger.shared.debug("[Local Storage]: Fetching EventEntity for id \(id):", category: .database)
                 let events = try self.context.fetch(request)
                 promise(.success(events.first))
             } catch {

@@ -9,8 +9,10 @@ import Foundation
 import SwiftUI
 
 final class LaunchViewBuilder {
-    static func build(completion: @escaping VoidClosure) -> some View {
-        let viewModel = LaunchViewModel(completion: completion)
+    static func build(remoteConfigService: RemoteConfigServiceProtocol,
+                      completion: @escaping (Result<RemoteSettings, Never>) -> Void) -> some View {
+        let viewModel = LaunchViewModel(remoteConfigService: remoteConfigService,
+                                        completion: completion)
         return LaunchView(viewModel: viewModel)
     }
 }

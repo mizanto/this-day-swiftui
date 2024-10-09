@@ -5,6 +5,7 @@
 //  Created by Sergey Bendak on 7.10.2024.
 //
 
+import Foundation
 import Combine
 
 protocol LaunchViewModelProtocol: ObservableObject {
@@ -13,13 +14,23 @@ protocol LaunchViewModelProtocol: ObservableObject {
 
 final class LaunchViewModel: LaunchViewModelProtocol {
 
-    private let completion: VoidClosure
+    private let remoteConfigService: RemoteConfigServiceProtocol
+    private let completion: (Result<RemoteSettings, Never>) -> Void
 
-    init(completion: @escaping VoidClosure) {
+    private var cancellables: Set<AnyCancellable> = []
+
+    init(remoteConfigService: RemoteConfigServiceProtocol,
+         completion: @escaping (Result<RemoteSettings, Never>) -> Void) {
+        self.remoteConfigService = remoteConfigService
         self.completion = completion
     }
 
     func onAppear() {
-        completion()
+        remoteConfigService.fetchRemoteSettings()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] settings in
+                self?.completion(.success(settings))
+            }
+            .store(in: &cancellables)
     }
 }

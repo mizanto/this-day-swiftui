@@ -48,7 +48,7 @@ class AnalyticsService: AnalyticsServiceProtocol {
     func setUserProperty(_ property: UserProperty, value: String) {
         setUserProperty(property.rawValue, value: value)
     }
-    
+
     func setUserId(_ id: String) {
         Analytics.setUserID(id)
     }

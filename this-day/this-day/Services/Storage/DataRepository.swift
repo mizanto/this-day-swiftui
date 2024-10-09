@@ -347,7 +347,8 @@ final class DataRepository: DataRepositoryProtocol {
                          language: String) -> AnyPublisher<DayEntity, RepositoryError> {
         localStorage.saveDay(networkModel: networkModel, id: id, date: date, language: language)
             .mapError { error in
-                AppLogger.shared.error("[Repo]: Failed to fetch events for \(date) with error: \(error)", category: .repository)
+                AppLogger.shared.error(
+                    "[Repo]: Failed to fetch events for \(date) with error: \(error)", category: .repository)
                 return RepositoryError.fetchError
             }
             .eraseToAnyPublisher()

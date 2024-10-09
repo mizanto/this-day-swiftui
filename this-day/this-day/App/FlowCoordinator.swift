@@ -24,6 +24,7 @@ final class FlowCoordinator: ObservableObject {
     private let authService: AuthenticationServiceProtocol
     private let localizationManager: LocalizationManager
     private let analyticsService: AnalyticsServiceProtocol
+    private let remoteConfigService: RemoteConfigService
 
     private var cancellables: Set<AnyCancellable> = []
 
@@ -35,6 +36,7 @@ final class FlowCoordinator: ObservableObject {
         self.authService = authService
         self.localizationManager = localizationManager
         self.analyticsService = analyticsService
+        self.remoteConfigService = .shared
     }
 
     func start() {
@@ -47,7 +49,8 @@ final class FlowCoordinator: ObservableObject {
                     self.flow = .launching
                 case .launching:
                     AppLogger.shared.info("[Coordinator]: Launching application", category: .coordinator)
-                    self.view = AnyView(LaunchViewBuilder.build(completion: self.handleLaunchCompletion))
+                    self.view = AnyView(LaunchViewBuilder.build(remoteConfigService: remoteConfigService,
+                                                                completion: self.handleLaunchCompletion))
                 case .authorization:
                     AppLogger.shared.info("[Coordinator]: Start authorization", category: .coordinator)
                     self.view = AnyView(AuthViewBuilder.build(authService: self.authService,
@@ -70,7 +73,10 @@ final class FlowCoordinator: ObservableObject {
             .store(in: &cancellables)
     }
 
-    private func handleLaunchCompletion() {
+    private func handleLaunchCompletion(settings: Result<RemoteSettings, Never>) {
+        if case .success(let settings) = settings {
+            AppLogger.shared.debug("[Coordinator]: Remote settings loaded successfully: \(settings)")
+        }
         authService.currentUserPublisher
             .first()
             .flatMap { user -> AnyPublisher<Flow, Never> in
