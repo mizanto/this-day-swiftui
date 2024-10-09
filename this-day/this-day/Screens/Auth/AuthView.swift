@@ -40,7 +40,7 @@ struct AuthView<ViewModel: AuthViewModelProtocol>: View {
                     .focused($isTextFieldFocused)
                 if let errorMessage = viewModel.errorMessage {
                     Text(errorMessage)
-                        .foregroundColor(.red)
+                        .foregroundColor(.appRed)
                         .font(.caption)
                 }
                 Button(
@@ -51,7 +51,7 @@ struct AuthView<ViewModel: AuthViewModelProtocol>: View {
                         Text(viewModel.actionButtonTitle)
                             .frame(maxWidth: .infinity)
                             .padding(12)
-                            .background(.blue)
+                            .background(.main)
                             .foregroundColor(.white)
                             .cornerRadius(8)
                     }
@@ -63,7 +63,7 @@ struct AuthView<ViewModel: AuthViewModelProtocol>: View {
                     label: {
                         Text(viewModel.changeModeButtonTitle)
                             .font(.footnote)
-                            .foregroundColor(.blue)
+                            .foregroundColor(.main)
                     }
                 )
             }

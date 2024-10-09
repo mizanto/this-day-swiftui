@@ -29,9 +29,9 @@ struct Snackbar: View {
 
     private var backgroundColor: Color {
         switch type {
-        case .success: return .green.opacity(0.9)
-        case .error: return .red.opacity(0.9)
-        case .message: return .black.opacity(0.7)
+        case .success: return .appGreen.opacity(0.9)
+        case .error: return .appRed.opacity(0.9)
+        case .message: return .main.opacity(0.7)
         }
     }
 

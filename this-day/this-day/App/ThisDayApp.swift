@@ -7,7 +7,6 @@
 
 import SwiftUI
 import FirebaseCore
-import Combine
 
 @main
 struct ThisDayApp: App {
@@ -39,6 +38,8 @@ struct ThisDayApp: App {
                 localizationManager: localization
             )
         )
+
+        Apperance.apply()
     }
 
     var body: some Scene {

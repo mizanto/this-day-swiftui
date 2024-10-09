@@ -27,7 +27,7 @@ struct ErrorView: View {
                         Text(LocalizedString("error.retry"))
                             .font(.headline)
                             .padding(12)
-                            .background(.blue)
+                            .background(.main)
                             .foregroundColor(.white)
                             .cornerRadius(8)
                     }

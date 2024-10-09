@@ -48,9 +48,12 @@ struct DayView<ViewModel: DayViewModelProtocol>: View {
 
     private func dayView(for events: [Event]) -> some View {
         VStack {
-            CategoryPicker(selectedCategory: $viewModel.selectedCategory)
-                .padding(.vertical, 8)
-                .padding(.horizontal)
+            Group {
+                CategoryPicker(selectedCategory: $viewModel.selectedCategory)
+                    .padding(.vertical, 8)
+                    .padding(.horizontal)
+            }
+            .background(.main)
 
             ScrollViewReader { proxy in
                 List(events, id: \.id) { event in
@@ -59,6 +62,7 @@ struct DayView<ViewModel: DayViewModelProtocol>: View {
                         .listRowInsets(EdgeInsets(top: 12, leading: 0, bottom: 12, trailing: 0))
                         .listRowBackground(Color.clear)
                 }
+                .scrollIndicators(.hidden)
                 .listStyle(PlainListStyle())
                 .id(viewModel.selectedCategory)
                 .onChange(of: viewModel.selectedCategory) {

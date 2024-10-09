@@ -24,8 +24,8 @@ enum EventCategory: String, CaseIterable, Identifiable {
 
     var color: Color {
         switch self {
-        case .events: return .blue
-        case .births: return .green
+        case .events: return .appBlue
+        case .births: return .appGreen
         case .deaths: return .gray
         }
     }

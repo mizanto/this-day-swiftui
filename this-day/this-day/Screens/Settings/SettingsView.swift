@@ -51,9 +51,10 @@ struct SettingsView<ViewModel: SettingsViewModelProtocol>: View {
                 },
                 label: {
                     Text(LocalizedString("auth.button.sign_out"))
+                        .bold()
                         .frame(maxWidth: .infinity)
                         .multilineTextAlignment(.center)
-                        .foregroundColor(.red)
+                        .foregroundColor(.appRed)
                 }
             )
         }
@@ -66,6 +67,7 @@ struct SettingsView<ViewModel: SettingsViewModelProtocol>: View {
                     Text(language.name).tag(language.id)
                 }
             }
+            .colorMultiply(.appBlue)
             .pickerStyle(MenuPickerStyle())
             .onChange(of: viewModel.selectedLanguage) { _, newLanguage in
                 viewModel.updateLanguage(newLanguage)

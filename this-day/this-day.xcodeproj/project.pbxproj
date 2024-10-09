@@ -84,6 +84,8 @@
 		AD9592392C9DCBAE0019BB13 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9592382C9DCBAE0019BB13 /* LoadingView.swift */; };
 		AD95923B2C9DCDD60019BB13 /* ExtendedEventRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95923A2C9DCDD60019BB13 /* ExtendedEventRow.swift */; };
 		AD95923E2C9DD53E0019BB13 /* ViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95923D2C9DD53C0019BB13 /* ViewState.swift */; };
+		ADA358F02CB59D17002BB6D5 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ADA358EF2CB59D17002BB6D5 /* Colors.xcassets */; };
+		ADA358F22CB688B1002BB6D5 /* Apperance.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA358F12CB688AF002BB6D5 /* Apperance.swift */; };
 		ADD1CF962C99936F00739278 /* EventsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */; };
 		ADE5C4FB2CA808A300FF2BF5 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = ADE5C4FA2CA808A300FF2BF5 /* Localizable.xcstrings */; };
 		ADE5C4FD2CA810D800FF2BF5 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE5C4FC2CA810CF00FF2BF5 /* Utils.swift */; };
@@ -188,6 +190,8 @@
 		AD9592382C9DCBAE0019BB13 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		AD95923A2C9DCDD60019BB13 /* ExtendedEventRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtendedEventRow.swift; sourceTree = "<group>"; };
 		AD95923D2C9DD53C0019BB13 /* ViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewState.swift; sourceTree = "<group>"; };
+		ADA358EF2CB59D17002BB6D5 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
+		ADA358F12CB688AF002BB6D5 /* Apperance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Apperance.swift; sourceTree = "<group>"; };
 		ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewModelTests.swift; sourceTree = "<group>"; };
 		ADE5C4FA2CA808A300FF2BF5 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		ADE5C4FC2CA810CF00FF2BF5 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
@@ -409,6 +413,7 @@
 			isa = PBXGroup;
 			children = (
 				AD4D88ED2C9841CF003DD3C4 /* ThisDayApp.swift */,
+				ADA358F12CB688AF002BB6D5 /* Apperance.swift */,
 				AD4AC46C2CB4557300C6BFBE /* FlowCoordinator.swift */,
 			);
 			path = App;
@@ -620,6 +625,7 @@
 				AD4AC4432CABFC6400C6BFBE /* GoogleService-Info.plist */,
 				AD4D88F12C9841D0003DD3C4 /* Assets.xcassets */,
 				ADF169D42CB570CD00A7D82F /* Launch Screen.storyboard */,
+				ADA358EF2CB59D17002BB6D5 /* Colors.xcassets */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -729,6 +735,7 @@
 				ADF169D52CB570CD00A7D82F /* Launch Screen.storyboard in Resources */,
 				AD4D88F62C9841D0003DD3C4 /* Preview Assets.xcassets in Resources */,
 				AD4AC4442CABFC6400C6BFBE /* GoogleService-Info.plist in Resources */,
+				ADA358F02CB59D17002BB6D5 /* Colors.xcassets in Resources */,
 				AD4D88F22C9841D0003DD3C4 /* Assets.xcassets in Resources */,
 				ADE5C4FB2CA808A300FF2BF5 /* Localizable.xcstrings in Resources */,
 			);
@@ -793,6 +800,7 @@
 				ADE5C5002CA81D8900FF2BF5 /* LocalizationManager.swift in Sources */,
 				AD4D88F02C9841CF003DD3C4 /* DayView.swift in Sources */,
 				AD5E69B12CA6E7E800F0EEFA /* SnackbarModifier.swift in Sources */,
+				ADA358F22CB688B1002BB6D5 /* Apperance.swift in Sources */,
 				AD4D89032C985B23003DD3C4 /* DayViewModel.swift in Sources */,
 				AD5F1F4B2CA484C000966944 /* MainTabView.swift in Sources */,
 				AD53AA6C2CA2C2C80024FD31 /* DayEntity+Helpers.swift in Sources */,
