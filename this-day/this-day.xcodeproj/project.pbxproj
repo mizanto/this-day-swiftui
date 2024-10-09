@@ -99,10 +99,12 @@
 		ADA3590A2CB6B907002BB6D5 /* FirebaseInstallations in Frameworks */ = {isa = PBXBuildFile; productRef = ADA359092CB6B907002BB6D5 /* FirebaseInstallations */; };
 		ADA3590C2CB6B907002BB6D5 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = ADA3590B2CB6B907002BB6D5 /* FirebaseRemoteConfig */; };
 		ADA3590E2CB6C596002BB6D5 /* RemoteSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA3590D2CB6C595002BB6D5 /* RemoteSettings.swift */; };
+		ADA359102CB70A5C002BB6D5 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA3590F2CB70A5A002BB6D5 /* AppSettings.swift */; };
+		ADA359122CB71C12002BB6D5 /* Notification+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA359112CB71C0D002BB6D5 /* Notification+Extension.swift */; };
+		ADA359142CB71C3F002BB6D5 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA359132CB71C3E002BB6D5 /* Language.swift */; };
 		ADD1CF962C99936F00739278 /* EventsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */; };
 		ADE5C4FB2CA808A300FF2BF5 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = ADE5C4FA2CA808A300FF2BF5 /* Localizable.xcstrings */; };
 		ADE5C4FD2CA810D800FF2BF5 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE5C4FC2CA810CF00FF2BF5 /* Utils.swift */; };
-		ADE5C5002CA81D8900FF2BF5 /* LocalizationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE5C4FF2CA81D8900FF2BF5 /* LocalizationManager.swift */; };
 		ADE5C5022CA81F0100FF2BF5 /* Bundle+Extrnsion.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE5C5012CA81F0000FF2BF5 /* Bundle+Extrnsion.swift */; };
 		ADE5C5042CA846E500FF2BF5 /* BundleEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE5C5032CA846E400FF2BF5 /* BundleEx.swift */; };
 		ADEDFD1F2CAA9FB0003AACA5 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADEDFD1E2CAA9FAF003AACA5 /* String+Extension.swift */; };
@@ -208,10 +210,12 @@
 		ADA358F42CB696E9002BB6D5 /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
 		ADA358F72CB6B686002BB6D5 /* RemoteConfigService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigService.swift; sourceTree = "<group>"; };
 		ADA3590D2CB6C595002BB6D5 /* RemoteSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteSettings.swift; sourceTree = "<group>"; };
+		ADA3590F2CB70A5A002BB6D5 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		ADA359112CB71C0D002BB6D5 /* Notification+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extension.swift"; sourceTree = "<group>"; };
+		ADA359132CB71C3E002BB6D5 /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewModelTests.swift; sourceTree = "<group>"; };
 		ADE5C4FA2CA808A300FF2BF5 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		ADE5C4FC2CA810CF00FF2BF5 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
-		ADE5C4FF2CA81D8900FF2BF5 /* LocalizationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationManager.swift; sourceTree = "<group>"; };
 		ADE5C5012CA81F0000FF2BF5 /* Bundle+Extrnsion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extrnsion.swift"; sourceTree = "<group>"; };
 		ADE5C5032CA846E400FF2BF5 /* BundleEx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleEx.swift; sourceTree = "<group>"; };
 		ADEDFD1E2CAA9FAF003AACA5 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
@@ -441,6 +445,7 @@
 			children = (
 				AD4D88ED2C9841CF003DD3C4 /* ThisDayApp.swift */,
 				ADA358F12CB688AF002BB6D5 /* Apperance.swift */,
+				ADA3590F2CB70A5A002BB6D5 /* AppSettings.swift */,
 				AD4AC46C2CB4557300C6BFBE /* FlowCoordinator.swift */,
 			);
 			path = App;
@@ -452,7 +457,6 @@
 				ADA358F62CB6B667002BB6D5 /* RemoteConfig */,
 				ADA358F32CB696DD002BB6D5 /* Analytics */,
 				AD4AC44C2CAC74FB00C6BFBE /* Authentication */,
-				ADE5C4FE2CA81D6B00FF2BF5 /* Localization */,
 				AD9592092C99C8E60019BB13 /* Network */,
 				AD53AA442CA2A5A70024FD31 /* Storage */,
 				AD4D891E2C988810003DD3C4 /* AppLogger.swift */,
@@ -485,6 +489,7 @@
 		AD4D89142C9878D9003DD3C4 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				ADA359132CB71C3E002BB6D5 /* Language.swift */,
 				AD4AC4532CAD66BE00C6BFBE /* UserInfo.swift */,
 				AD53AA3F2CA185AA0024FD31 /* Event.swift */,
 				AD8BDFF72CA58C4D006B9D58 /* BookmarkEvent.swift */,
@@ -495,6 +500,7 @@
 		AD4D891B2C987F50003DD3C4 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				ADA359112CB71C0D002BB6D5 /* Notification+Extension.swift */,
 				AD4AC46E2CB54C8F00C6BFBE /* Array+Extension.swift */,
 				ADEDFD1E2CAA9FAF003AACA5 /* String+Extension.swift */,
 				ADE5C5012CA81F0000FF2BF5 /* Bundle+Extrnsion.swift */,
@@ -610,6 +616,7 @@
 				ADE5C4FC2CA810CF00FF2BF5 /* Utils.swift */,
 				AD53AA812CA435140024FD31 /* ShareableItems.swift */,
 				AD95923D2C9DD53C0019BB13 /* ViewState.swift */,
+				ADE5C5032CA846E400FF2BF5 /* BundleEx.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -673,15 +680,6 @@
 				ADA358EF2CB59D17002BB6D5 /* Colors.xcassets */,
 			);
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		ADE5C4FE2CA81D6B00FF2BF5 /* Localization */ = {
-			isa = PBXGroup;
-			children = (
-				ADE5C5032CA846E400FF2BF5 /* BundleEx.swift */,
-				ADE5C4FF2CA81D8900FF2BF5 /* LocalizationManager.swift */,
-			);
-			path = Localization;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -843,7 +841,6 @@
 				ADE5C5022CA81F0100FF2BF5 /* Bundle+Extrnsion.swift in Sources */,
 				ADFE369D2CA5ABDA0050337D /* EventEntity+CoreDataClass.swift in Sources */,
 				ADFE369E2CA5ABDA0050337D /* EventEntity+CoreDataProperties.swift in Sources */,
-				ADE5C5002CA81D8900FF2BF5 /* LocalizationManager.swift in Sources */,
 				AD4D88F02C9841CF003DD3C4 /* DayView.swift in Sources */,
 				AD5E69B12CA6E7E800F0EEFA /* SnackbarModifier.swift in Sources */,
 				ADA358F22CB688B1002BB6D5 /* Apperance.swift in Sources */,
@@ -866,6 +863,7 @@
 				ADFE36922CA5A9F90050337D /* Badge.swift in Sources */,
 				AD53AA6E2CA2C2EA0024FD31 /* EventEntity+Helpers.swift in Sources */,
 				ADF08E332CA02DF100CB877A /* WikipediaURLBuilder.swift in Sources */,
+				ADA359142CB71C3F002BB6D5 /* Language.swift in Sources */,
 				AD53AA822CA435150024FD31 /* ShareableItems.swift in Sources */,
 				AD5F1F572CA5841D00966944 /* BookmarkRow.swift in Sources */,
 				AD3606802CA724BF008D31A9 /* SettingsViewBuilder.swift in Sources */,
@@ -883,6 +881,7 @@
 				AD4AC4602CB009CF00C6BFBE /* EventDataModel.swift in Sources */,
 				AD53AA5A2CA2B64F0024FD31 /* PersistenceController.swift in Sources */,
 				AD5F1F502CA4873600966944 /* BookmarksViewBuilder.swift in Sources */,
+				ADA359102CB70A5C002BB6D5 /* AppSettings.swift in Sources */,
 				AD53AA802CA4068C0024FD31 /* RowActions.swift in Sources */,
 				AD5F1F542CA570E500966944 /* PlaceholderView.swift in Sources */,
 				AD95922A2C9C1D580019BB13 /* NetworkService.swift in Sources */,
@@ -905,6 +904,7 @@
 				AD95920B2C99C8F80019BB13 /* NetworkError.swift in Sources */,
 				AD4AC4592CAEBD2500C6BFBE /* CloudStorage.swift in Sources */,
 				AD53AA672CA2BAF20024FD31 /* LocalStorage.swift in Sources */,
+				ADA359122CB71C12002BB6D5 /* Notification+Extension.swift in Sources */,
 				AD53AA402CA185AD0024FD31 /* Event.swift in Sources */,
 				AD4AC4622CB009F400C6BFBE /* BookmarkDataModel.swift in Sources */,
 				AD4AC4672CB4543200C6BFBE /* LaunchViewBuilder.swift in Sources */,

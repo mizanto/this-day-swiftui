@@ -100,8 +100,8 @@ struct SettingsView<ViewModel: SettingsViewModelProtocol>: View {
 #Preview {
     SettingsView(
         viewModel: SettingsViewModel(
+            settings: AppSettings.shared,
             authService: AuthenticationService(),
-            localizationManager: LocalizationManager(),
             analyticsService: AnalyticsService.shared,
             onLogout: {}
         )

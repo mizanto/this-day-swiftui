@@ -42,7 +42,7 @@ final class DayViewModel: DayViewModelProtocol {
 
     private var currentDate: Date = Date()
     private var dataRepository: DataRepositoryProtocol
-    private let localizationManager: any LocalizationManagerProtocol
+    private let settings: AppSettingsProtocol
     private let analyticsService: AnalyticsServiceProtocol
     private var cancellables = Set<AnyCancellable>()
     private var day: DayDataModel? {
@@ -52,13 +52,13 @@ final class DayViewModel: DayViewModelProtocol {
         }
     }
     private var uiModels: [EventCategory: [Event]] = [:]
-    private var language: String { localizationManager.currentLanguage }
+    private var language: String { settings.language }
 
     init(dataRepository: DataRepositoryProtocol,
-         localizationManager: any LocalizationManagerProtocol,
+         settings: AppSettingsProtocol,
          analyticsService: AnalyticsServiceProtocol) {
         self.dataRepository = dataRepository
-        self.localizationManager = localizationManager
+        self.settings = settings
         self.analyticsService = analyticsService
     }
 

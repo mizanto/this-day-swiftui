@@ -25,25 +25,30 @@ final class SettingsViewModel: SettingsViewModelProtocol {
     @Published var selectedLanguage: String
     @Published var currentUser: UserInfo?
 
-    var appVersion: String { Bundle.main.versionNumber }
-    var buildNumber: String { Bundle.main.buildNumber }
-    var availableLanguages: [Language] { localizationManager.availableLanguages }
+    var appVersion: String { settings.appVersion }
+    var buildNumber: String { settings.buildNumber }
+    var availableLanguages: [Language] {
+        [
+            Language(id: "en", name: "English"),
+            Language(id: "ru", name: "Русский")
+        ]
+    }
     var isAuthenticated: Bool { authService.isAuthenticated }
 
+    private var settings: AppSettingsProtocol
     private var authService: AuthenticationServiceProtocol
-    private var localizationManager: any LocalizationManagerProtocol
     private let analyticsService: AnalyticsServiceProtocol
     private var onLogout: VoidClosure
 
     private var cancellables = Set<AnyCancellable>()
 
-    init(authService: AuthenticationServiceProtocol,
-         localizationManager: any LocalizationManagerProtocol,
+    init(settings: AppSettingsProtocol,
+         authService: AuthenticationServiceProtocol,
          analyticsService: AnalyticsServiceProtocol,
          onLogout: @escaping VoidClosure) {
+        self.settings = settings
         self.authService = authService
-        self.localizationManager = localizationManager
-        self.selectedLanguage = localizationManager.currentLanguage
+        self.selectedLanguage = settings.language
         self.analyticsService = analyticsService
         self.onLogout = onLogout
 
@@ -70,11 +75,15 @@ final class SettingsViewModel: SettingsViewModelProtocol {
             .store(in: &cancellables)
     }
 
-    func updateLanguage(_ languageId: String) {
-        localizationManager.currentLanguage = languageId
-        selectedLanguage = languageId
-        analyticsService.setUserProperty(.language, value: languageId)
-        analyticsService.logEvent(.languageSelected, parameters: ["id": languageId])
+    func updateLanguage(_ id: String) {
+        settings.language = id
+        Bundle.setLanguage(id)
+        NotificationCenter.default.post(name: .languageDidChange, object: nil)
+    
+        objectWillChange.send()
+
+        analyticsService.setUserProperty(.language, value: id)
+        analyticsService.logEvent(.languageSelected, parameters: ["id": id])
     }
 
     private func bind() {

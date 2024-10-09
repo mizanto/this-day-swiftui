@@ -8,12 +8,12 @@
 import SwiftUI
 
 final class SettingsViewBuilder {
-    static func build(authService: AuthenticationServiceProtocol,
-                      localizationManager: any LocalizationManagerProtocol,
+    static func build(settings: AppSettingsProtocol,
+                      authService: AuthenticationServiceProtocol,
                       analyticsService: AnalyticsServiceProtocol,
                       onLogout: @escaping VoidClosure) -> some View {
-        let viewModel = SettingsViewModel(authService: authService,
-                                          localizationManager: localizationManager,
+        let viewModel = SettingsViewModel(settings: settings,
+                                          authService: authService,
                                           analyticsService: analyticsService,
                                           onLogout: onLogout)
         return SettingsView(viewModel: viewModel)

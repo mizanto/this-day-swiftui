@@ -11,8 +11,9 @@ struct MainTabView: View {
     let authService: AuthenticationServiceProtocol
     let dataRepository: DataRepositoryProtocol
     let analyticsService: AnalyticsServiceProtocol
+    
+    @EnvironmentObject var settings: AppSettings
 
-    @EnvironmentObject private var localizationManager: LocalizationManager
     @State private var selectedTab: Int = 0
 
     let completion: VoidClosure
@@ -30,7 +31,7 @@ struct MainTabView: View {
     var body: some View {
         TabView(selection: $selectedTab) {
             DayViewBuilder.build(dataRepository: dataRepository,
-                                 localizationManager: localizationManager,
+                                 settings: settings,
                                  analyticsService: analyticsService)
                 .tabItem {
                     Image(systemName: "list.bullet")
@@ -39,7 +40,7 @@ struct MainTabView: View {
                 .tag(0)
 
             BookmarksViewBuilder.build(dataRepository: dataRepository,
-                                       localizationManager: localizationManager,
+                                       settings: settings,
                                        analyticsService: analyticsService)
                 .tabItem {
                     Image(systemName: "bookmark")
@@ -47,8 +48,8 @@ struct MainTabView: View {
                 }
                 .tag(1)
 
-            SettingsViewBuilder.build(authService: authService,
-                                      localizationManager: localizationManager,
+            SettingsViewBuilder.build(settings: settings,
+                                      authService: authService,
                                       analyticsService: analyticsService,
                                       onLogout: completion)
                 .tabItem {

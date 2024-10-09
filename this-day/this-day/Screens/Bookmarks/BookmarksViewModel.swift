@@ -28,7 +28,7 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
     var snackbarMessage: String { LocalizedString("message.snackbar.copied") }
 
     private let dataRepository: DataRepositoryProtocol
-    private let localizationManager: any LocalizationManagerProtocol
+    private let settings: AppSettingsProtocol
     private let analyticsService: AnalyticsServiceProtocol
     private var cancellables = Set<AnyCancellable>()
 
@@ -39,13 +39,13 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
         }
     }
     private var uiModels: [BookmarkEvent] = []
-    private var language: String { localizationManager.currentLanguage }
+    private var language: String { settings.language }
 
     init(dataRepository: DataRepositoryProtocol,
-         localizationManager: any LocalizationManagerProtocol,
+         settings: AppSettingsProtocol,
          analyticsService: AnalyticsServiceProtocol) {
         self.dataRepository = dataRepository
-        self.localizationManager = localizationManager
+        self.settings = settings
         self.analyticsService = analyticsService
     }
 

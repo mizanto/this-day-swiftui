@@ -22,24 +22,25 @@ final class FlowCoordinator: ObservableObject {
 
     private let dataRepository: DataRepositoryProtocol
     private let authService: AuthenticationServiceProtocol
-    private let localizationManager: LocalizationManager
     private let analyticsService: AnalyticsServiceProtocol
-    private let remoteConfigService: RemoteConfigService
+    private let remoteConfigService: RemoteConfigServiceProtocol
+    private var settings: AppSettings
 
     private var cancellables: Set<AnyCancellable> = []
 
     init(dataRepository: DataRepositoryProtocol,
          authService: AuthenticationServiceProtocol,
-         localizationManager: LocalizationManager,
          analyticsService: AnalyticsServiceProtocol) {
+        self.settings = AppSettings.shared
         self.dataRepository = dataRepository
         self.authService = authService
-        self.localizationManager = localizationManager
         self.analyticsService = analyticsService
-        self.remoteConfigService = .shared
+        self.remoteConfigService = RemoteConfigService.shared
     }
 
     func start() {
+        Bundle.setLanguage(settings.language)
+
         $flow.removeDuplicates()
             .sink { [weak self] state in
                 guard let self else { return }
@@ -63,9 +64,9 @@ final class FlowCoordinator: ObservableObject {
                                     dataRepository: self.dataRepository,
                                     analyticsService: self.analyticsService,
                                     completion: self.handleMainCompletion)
-                        .environmentObject(self.localizationManager)
+                        .environmentObject(self.settings)
                         .onReceive(NotificationCenter.default.publisher(for: .languageDidChange)) { _ in
-                            self.localizationManager.objectWillChange.send()
+                            self.settings.objectWillChange.send()
                         }
                     )
                 }
@@ -76,14 +77,15 @@ final class FlowCoordinator: ObservableObject {
     private func handleLaunchCompletion(settings: Result<RemoteSettings, Never>) {
         if case .success(let settings) = settings {
             AppLogger.shared.debug("[Coordinator]: Remote settings loaded successfully: \(settings)")
+            self.settings.appStoreVersion = settings.currentVersion
+            self.settings.minVersion = settings.minVersion
         }
         authService.currentUserPublisher
             .first()
             .flatMap { user -> AnyPublisher<Flow, Never> in
                 if let user {
                     self.analyticsService.setUserId(user.id)
-                    self.analyticsService.setUserProperty(.language,
-                                                          value: self.localizationManager.currentLanguage)
+                    self.analyticsService.setUserProperty(.language, value: self.settings.language)
                     return self.synchronizeBookmarks()
                 } else {
                     return Just(.authorization).eraseToAnyPublisher()

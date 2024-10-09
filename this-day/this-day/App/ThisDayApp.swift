@@ -26,7 +26,6 @@ struct ThisDayApp: App {
                     networkService: NetworkService()
                 ),
                 authService: auth,
-                localizationManager: LocalizationManager(),
                 analyticsService: AnalyticsService.shared
             )
         )
