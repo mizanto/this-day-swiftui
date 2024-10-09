@@ -29,6 +29,7 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
 
     private let dataRepository: DataRepositoryProtocol
     private let localizationManager: any LocalizationManagerProtocol
+    private let analyticsService: AnalyticsServiceProtocol
     private var cancellables = Set<AnyCancellable>()
 
     private var events: [EventDataModel] = [] {
@@ -41,9 +42,11 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
     private var language: String { localizationManager.currentLanguage }
 
     init(dataRepository: DataRepositoryProtocol,
-         localizationManager: any LocalizationManagerProtocol) {
+         localizationManager: any LocalizationManagerProtocol,
+         analyticsService: AnalyticsServiceProtocol) {
         self.dataRepository = dataRepository
         self.localizationManager = localizationManager
+        self.analyticsService = analyticsService
     }
 
     func onAppear() {
@@ -71,6 +74,7 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
 
     func removeBookmark(for id: String) {
         dataRepository.toggleBookmark(for: id)
+            .map { _ in () }
             .receive(on: DispatchQueue.main)
             .flatMap { [weak self] () -> AnyPublisher<[EventDataModel], RepositoryError> in
                 guard let self else {
@@ -93,6 +97,8 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
 
                     let feedbackGenerator = UINotificationFeedbackGenerator()
                     feedbackGenerator.notificationOccurred(.success)
+
+                    self.analyticsService.logEvent(.removeBookmark, parameters: ["source": "bookmarks"])
                 }
             )
             .store(in: &cancellables)
@@ -112,6 +118,8 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
         let feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
         feedbackGenerator.impactOccurred()
 
+        analyticsService.logEvent(.copyEvent, parameters: ["source": "bookmarks"])
+
         AppLogger.shared.debug("[Bookmarks View]: Event \(id) copied to clipboard: \(stringToCopy)", category: .ui)
     }
 
@@ -124,6 +132,9 @@ final class BookmarksViewModel: BookmarksViewModelProtocol {
             return
         }
         itemsForSahre = ShareableItems(items: [stringToShare])
+
+        analyticsService.logEvent(.shareEvent, parameters: ["source": "bookmarks"])
+
         AppLogger.shared.debug("[Bookmarks View]: Prepared sharing content: \(stringToShare)", category: .ui)
     }
 

@@ -8,10 +8,8 @@
 import Foundation
 import FirebaseAuth
 import Combine
-import SwiftUI
 
 protocol SettingsViewModelProtocol: ObservableObject {
-    associatedtype AuthViewType: View
     var appVersion: String { get }
     var buildNumber: String { get }
     var availableLanguages: [Language] { get }
@@ -21,7 +19,6 @@ protocol SettingsViewModelProtocol: ObservableObject {
 
     func signOut()
     func updateLanguage(_ languageId: String)
-    func makeAuthView(onAuthenticated: @escaping VoidClosure) -> AuthViewType
 }
 
 final class SettingsViewModel: SettingsViewModelProtocol {
@@ -35,16 +32,19 @@ final class SettingsViewModel: SettingsViewModelProtocol {
 
     private var authService: AuthenticationServiceProtocol
     private var localizationManager: any LocalizationManagerProtocol
+    private let analyticsService: AnalyticsServiceProtocol
     private var onLogout: VoidClosure
 
     private var cancellables = Set<AnyCancellable>()
 
     init(authService: AuthenticationServiceProtocol,
          localizationManager: any LocalizationManagerProtocol,
+         analyticsService: AnalyticsServiceProtocol,
          onLogout: @escaping VoidClosure) {
         self.authService = authService
         self.localizationManager = localizationManager
         self.selectedLanguage = localizationManager.currentLanguage
+        self.analyticsService = analyticsService
         self.onLogout = onLogout
 
         bind()
@@ -62,6 +62,7 @@ final class SettingsViewModel: SettingsViewModelProtocol {
                 },
                 receiveValue: { [weak self] in
                     guard let self else { return }
+                    self.analyticsService.logEvent(.signout)
                     AppLogger.shared.debug("[Settings View]: Signed out successfully", category: .auth)
                     self.onLogout()
                 }
@@ -72,10 +73,8 @@ final class SettingsViewModel: SettingsViewModelProtocol {
     func updateLanguage(_ languageId: String) {
         localizationManager.currentLanguage = languageId
         selectedLanguage = languageId
-    }
-
-    func makeAuthView(onAuthenticated: @escaping VoidClosure) -> some View {
-        AuthViewBuilder.build(authService: authService, onAuthenticated: onAuthenticated)
+        analyticsService.setUserProperty(.language, value: languageId)
+        analyticsService.logEvent(.languageSelected, parameters: ["id": languageId])
     }
 
     private func bind() {

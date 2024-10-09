@@ -23,15 +23,18 @@ final class FlowCoordinator: ObservableObject {
     private let dataRepository: DataRepositoryProtocol
     private let authService: AuthenticationServiceProtocol
     private let localizationManager: LocalizationManager
+    private let analyticsService: AnalyticsServiceProtocol
 
     private var cancellables: Set<AnyCancellable> = []
 
     init(dataRepository: DataRepositoryProtocol,
          authService: AuthenticationServiceProtocol,
-         localizationManager: LocalizationManager) {
+         localizationManager: LocalizationManager,
+         analyticsService: AnalyticsServiceProtocol) {
         self.dataRepository = dataRepository
         self.authService = authService
         self.localizationManager = localizationManager
+        self.analyticsService = analyticsService
     }
 
     func start() {
@@ -48,12 +51,14 @@ final class FlowCoordinator: ObservableObject {
                 case .authorization:
                     AppLogger.shared.info("[Coordinator]: Start authorization", category: .coordinator)
                     self.view = AnyView(AuthViewBuilder.build(authService: self.authService,
+                                                              analyticsService: self.analyticsService,
                                                               onAuthenticated: self.handleAuthentication))
                 case .main:
                     AppLogger.shared.info("[Coordinator]: Start main flow", category: .coordinator)
                     self.view = AnyView(
                         MainTabView(authService: self.authService,
                                     dataRepository: self.dataRepository,
+                                    analyticsService: self.analyticsService,
                                     completion: self.handleMainCompletion)
                         .environmentObject(self.localizationManager)
                         .onReceive(NotificationCenter.default.publisher(for: .languageDidChange)) { _ in
@@ -69,7 +74,10 @@ final class FlowCoordinator: ObservableObject {
         authService.currentUserPublisher
             .first()
             .flatMap { user -> AnyPublisher<Flow, Never> in
-                if user != nil {
+                if let user {
+                    self.analyticsService.setUserId(user.id)
+                    self.analyticsService.setUserProperty(.language,
+                                                          value: self.localizationManager.currentLanguage)
                     return self.synchronizeBookmarks()
                 } else {
                     return Just(.authorization).eraseToAnyPublisher()

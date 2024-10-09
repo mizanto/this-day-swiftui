@@ -35,6 +35,7 @@ final class DayViewModel: DayViewModelProtocol {
     @Published var selectedCategory: EventCategory = .events {
         didSet {
             updateState(with: selectedCategory)
+            analyticsService.logEvent(.categorySelected, parameters: ["title": selectedCategory.rawValue])
         }
     }
     var snackbarMessage: String { LocalizedString("message.snackbar.copied") }
@@ -42,6 +43,7 @@ final class DayViewModel: DayViewModelProtocol {
     private var currentDate: Date = Date()
     private var dataRepository: DataRepositoryProtocol
     private let localizationManager: any LocalizationManagerProtocol
+    private let analyticsService: AnalyticsServiceProtocol
     private var cancellables = Set<AnyCancellable>()
     private var day: DayDataModel? {
         didSet {
@@ -53,9 +55,11 @@ final class DayViewModel: DayViewModelProtocol {
     private var language: String { localizationManager.currentLanguage }
 
     init(dataRepository: DataRepositoryProtocol,
-         localizationManager: any LocalizationManagerProtocol) {
+         localizationManager: any LocalizationManagerProtocol,
+         analyticsService: AnalyticsServiceProtocol) {
         self.dataRepository = dataRepository
         self.localizationManager = localizationManager
+        self.analyticsService = analyticsService
     }
 
     func onAppear() {
@@ -108,11 +112,16 @@ final class DayViewModel: DayViewModelProtocol {
                         // TODO: show snackbar with error
                     }
                 },
-                receiveValue: {
+                receiveValue: { [weak self] isBookmarked in
                     AppLogger.shared.debug(
                         "[Events View]: Successfully toggled bookmark for event \(eventID)", category: .ui)
                     let feedbackGenerator = UINotificationFeedbackGenerator()
                     feedbackGenerator.notificationOccurred(.success)
+                    if isBookmarked {
+                        self?.analyticsService.logEvent(.addBookmark)
+                    } else {
+                        self?.analyticsService.logEvent(.removeBookmark, parameters: ["source": "events"])
+                    }
                 }
             )
             .store(in: &cancellables)
@@ -134,6 +143,8 @@ final class DayViewModel: DayViewModelProtocol {
         let feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
         feedbackGenerator.impactOccurred()
 
+        analyticsService.logEvent(.copyEvent, parameters: ["source": "events"])
+
         AppLogger.shared.debug("[Events View]: Event \(id) copied to clipboard: \(stringToCopy)", category: .ui)
     }
 
@@ -147,6 +158,9 @@ final class DayViewModel: DayViewModelProtocol {
             return
         }
         itemsForSahre = ShareableItems(items: [stringToShare])
+
+        analyticsService.logEvent(.shareEvent, parameters: ["source": "events"])
+
         AppLogger.shared.debug("[Events View]: Prepared sharing content: \(stringToShare)", category: .ui)
     }
 

@@ -11,31 +11,23 @@ import FirebaseCore
 @main
 struct ThisDayApp: App {
 
-    let authService: AuthenticationService
-    let dataRepository: DataRepository
-    let localizationManager: LocalizationManager
-
     @StateObject var coordinator: FlowCoordinator
 
     init() {
         FirebaseApp.configure()
 
         let auth = AuthenticationService()
-        self.authService = auth
         let context = PersistenceController.shared.container.viewContext
-        let repository = DataRepository(
-            localStorage: LocalStorage(context: context),
-            cloudStorage: CloudStorage(authService: authService),
-            networkService: NetworkService()
-        )
-        self.dataRepository = repository
-        let localization = LocalizationManager()
-        self.localizationManager = localization
         _coordinator = StateObject(
             wrappedValue: FlowCoordinator(
-                dataRepository: repository,
+                dataRepository: DataRepository(
+                    localStorage: LocalStorage(context: context),
+                    cloudStorage: CloudStorage(authService: auth),
+                    networkService: NetworkService()
+                ),
                 authService: auth,
-                localizationManager: localization
+                localizationManager: LocalizationManager(),
+                analyticsService: AnalyticsService.shared
             )
         )
 

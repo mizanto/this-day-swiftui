@@ -54,10 +54,14 @@ final class AuthViewModel: AuthViewModelProtocol {
     }
 
     private let authService: AuthenticationServiceProtocol
+    private let analyticsService: AnalyticsServiceProtocol
     private var cancellables = Set<AnyCancellable>()
 
-    init(authService: AuthenticationServiceProtocol, onAuthenticated: @escaping VoidClosure) {
+    init(authService: AuthenticationServiceProtocol,
+         analyticsService: AnalyticsServiceProtocol,
+         onAuthenticated: @escaping VoidClosure) {
         self.authService = authService
+        self.analyticsService = analyticsService
         self.onAuthenticated = onAuthenticated
 
         bind()
@@ -100,6 +104,12 @@ final class AuthViewModel: AuthViewModelProtocol {
                 receiveValue: { [weak self] in
                     AppLogger.shared.debug("[Auth View]: Sign in successful", category: .auth)
                     self?.isAuthenticated = true
+                    self?.analyticsService.logEvent(.login)
+                    if let id = self?.authService.currentUser?.id {
+                        self?.analyticsService.setUserId(id)
+                    } else {
+                        AppLogger.shared.error("[Auth View]: No user id found", category: .auth)
+                    }
                 }
             )
             .store(in: &cancellables)
@@ -118,6 +128,12 @@ final class AuthViewModel: AuthViewModelProtocol {
                 receiveValue: { [weak self] in
                     AppLogger.shared.debug("[Auth View]: Sign up successful", category: .auth)
                     self?.isAuthenticated = true
+                    self?.analyticsService.logEvent(.signup)
+                    if let id = self?.authService.currentUser?.id {
+                        self?.analyticsService.setUserId(id)
+                    } else {
+                        AppLogger.shared.error("[Auth View]: No user id found", category: .auth)
+                    }
                 }
             )
             .store(in: &cancellables)

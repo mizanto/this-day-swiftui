@@ -9,9 +9,11 @@ import SwiftUI
 
 final class DayViewBuilder {
     static func build(dataRepository: DataRepositoryProtocol,
-                      localizationManager: any LocalizationManagerProtocol) -> some View {
+                      localizationManager: any LocalizationManagerProtocol,
+                      analyticsService: AnalyticsServiceProtocol) -> some View {
         let viewModel = DayViewModel(dataRepository: dataRepository,
-                                     localizationManager: localizationManager)
+                                     localizationManager: localizationManager,
+                                     analyticsService: analyticsService)
         return DayView(viewModel: viewModel)
     }
 }

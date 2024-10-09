@@ -9,9 +9,11 @@ import SwiftUI
 
 final class BookmarksViewBuilder {
     static func build(dataRepository: DataRepositoryProtocol,
-                      localizationManager: any LocalizationManagerProtocol) -> some View {
+                      localizationManager: any LocalizationManagerProtocol,
+                      analyticsService: AnalyticsServiceProtocol) -> some View {
         let viewModel = BookmarksViewModel(dataRepository: dataRepository,
-                                           localizationManager: localizationManager)
+                                           localizationManager: localizationManager,
+                                           analyticsService: analyticsService)
         return BookmarksView(viewModel: viewModel)
     }
 }

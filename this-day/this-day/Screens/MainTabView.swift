@@ -10,6 +10,7 @@ import SwiftUI
 struct MainTabView: View {
     let authService: AuthenticationServiceProtocol
     let dataRepository: DataRepositoryProtocol
+    let analyticsService: AnalyticsServiceProtocol
 
     @EnvironmentObject private var localizationManager: LocalizationManager
     @State private var selectedTab: Int = 0
@@ -18,16 +19,19 @@ struct MainTabView: View {
 
     init(authService: AuthenticationServiceProtocol,
          dataRepository: DataRepositoryProtocol,
+         analyticsService: AnalyticsServiceProtocol,
          completion: @escaping VoidClosure) {
         self.authService = authService
         self.dataRepository = dataRepository
+        self.analyticsService = analyticsService
         self.completion = completion
     }
 
     var body: some View {
-        TabView {
+        TabView(selection: $selectedTab) {
             DayViewBuilder.build(dataRepository: dataRepository,
-                                 localizationManager: localizationManager)
+                                 localizationManager: localizationManager,
+                                 analyticsService: analyticsService)
                 .tabItem {
                     Image(systemName: "list.bullet")
                     Text(NSLocalizedString("tab_title.events", comment: ""))
@@ -35,7 +39,8 @@ struct MainTabView: View {
                 .tag(0)
 
             BookmarksViewBuilder.build(dataRepository: dataRepository,
-                                       localizationManager: localizationManager)
+                                       localizationManager: localizationManager,
+                                       analyticsService: analyticsService)
                 .tabItem {
                     Image(systemName: "bookmark")
                     Text(NSLocalizedString("tab_title.bookmarks", comment: ""))
@@ -44,6 +49,7 @@ struct MainTabView: View {
 
             SettingsViewBuilder.build(authService: authService,
                                       localizationManager: localizationManager,
+                                      analyticsService: analyticsService,
                                       onLogout: completion)
                 .tabItem {
                     Image(systemName: "gearshape")
@@ -59,5 +65,19 @@ struct MainTabView: View {
         .onDisappear {
             NotificationCenter.default.removeObserver(self, name: .languageDidChange, object: nil)
         }
+        .onChange(of: selectedTab) { _, newTab in
+            logTabSelection(newTab)
+        }
+    }
+
+    private func logTabSelection(_ index: Int) {
+        let tab: String
+        switch index {
+        case 0: tab = "events"
+        case 1: tab = "bookmarks"
+        case 2: tab = "settings"
+        default: tab = "unknown"
+        }
+        analyticsService.logEvent(.tabSelected, parameters: ["title": tab])
     }
 }

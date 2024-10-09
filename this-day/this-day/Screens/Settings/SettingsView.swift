@@ -102,6 +102,7 @@ struct SettingsView<ViewModel: SettingsViewModelProtocol>: View {
         viewModel: SettingsViewModel(
             authService: AuthenticationService(),
             localizationManager: LocalizationManager(),
+            analyticsService: AnalyticsService.shared,
             onLogout: {}
         )
     )

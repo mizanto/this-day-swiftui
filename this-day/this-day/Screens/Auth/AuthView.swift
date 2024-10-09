@@ -83,6 +83,7 @@ struct AuthView<ViewModel: AuthViewModelProtocol>: View {
     AuthView(
         viewModel: AuthViewModel(
             authService: AuthenticationService(),
+            analyticsService: AnalyticsService.shared,
             onAuthenticated: {}
         )
     )

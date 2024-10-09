@@ -19,7 +19,7 @@ enum RepositoryError: Error {
 
 protocol DataRepositoryProtocol {
     func fetchDay(date: Date, language: String) -> AnyPublisher<DayDataModel, RepositoryError>
-    func toggleBookmark(for eventID: String) -> AnyPublisher<Void, RepositoryError>
+    func toggleBookmark(for eventID: String) -> AnyPublisher<Bool, RepositoryError>
     func fetchBookmarkedEvents() -> AnyPublisher<[EventDataModel], RepositoryError>
     func syncBookmarks() -> AnyPublisher<Void, RepositoryError>
     func clearLocalStorage() -> AnyPublisher<Void, RepositoryError>
@@ -78,11 +78,11 @@ final class DataRepository: DataRepositoryProtocol {
             .eraseToAnyPublisher()
     }
 
-    func toggleBookmark(for eventID: String) -> AnyPublisher<Void, RepositoryError> {
+    func toggleBookmark(for eventID: String) -> AnyPublisher<Bool, RepositoryError> {
         AppLogger.shared.debug("[Repo]: Toggle bookmark for event \(eventID).", category: .ui)
         return localStorage.fetchEvent(id: eventID)
             .mapError { _ in RepositoryError.fetchError }
-            .flatMap { [unowned self] event -> AnyPublisher<Void, RepositoryError> in
+            .flatMap { [unowned self] event -> AnyPublisher<Bool, RepositoryError> in
                 guard let event else {
                     AppLogger.shared.error("[Repo]: Failed to toggle bookmark for event \(eventID). Event not found.",
                                            category: .repository)
@@ -91,9 +91,13 @@ final class DataRepository: DataRepositoryProtocol {
                 if let bookmark = event.bookmark {
                     AppLogger.shared.debug("[Repo]: Remove bookmark for event \(eventID).", category: .repository)
                     return self.removeBookmark(bookmark)
+                        .map { false }
+                        .eraseToAnyPublisher()
                 } else {
                     AppLogger.shared.debug("[Repo]: Add event \(eventID) to bookmarks.", category: .repository)
                     return self.addToBookmarks(event: event)
+                        .map { true }
+                        .eraseToAnyPublisher()
                 }
             }
             .eraseToAnyPublisher()
@@ -260,7 +264,7 @@ final class DataRepository: DataRepositoryProtocol {
                 return self.fetchDays(ids: missingDayIDs)
             }
             .flatMap { [unowned self] fetchedDays -> AnyPublisher<Void, RepositoryError> in
-                AppLogger.shared.debug("[Repo]: Saving fetched days: \(fetchedDays)", category: .repository)
+                AppLogger.shared.debug("[Repo]: Saving fetched days", category: .repository)
                 return self.saveDaysLocally(fetchedDays)
             }
             .flatMap { [unowned self] _ -> AnyPublisher<Void, Never> in

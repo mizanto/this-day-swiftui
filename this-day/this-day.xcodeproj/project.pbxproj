@@ -86,6 +86,7 @@
 		AD95923E2C9DD53E0019BB13 /* ViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD95923D2C9DD53C0019BB13 /* ViewState.swift */; };
 		ADA358F02CB59D17002BB6D5 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ADA358EF2CB59D17002BB6D5 /* Colors.xcassets */; };
 		ADA358F22CB688B1002BB6D5 /* Apperance.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA358F12CB688AF002BB6D5 /* Apperance.swift */; };
+		ADA358F52CB696EA002BB6D5 /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA358F42CB696E9002BB6D5 /* AnalyticsService.swift */; };
 		ADD1CF962C99936F00739278 /* EventsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */; };
 		ADE5C4FB2CA808A300FF2BF5 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = ADE5C4FA2CA808A300FF2BF5 /* Localizable.xcstrings */; };
 		ADE5C4FD2CA810D800FF2BF5 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE5C4FC2CA810CF00FF2BF5 /* Utils.swift */; };
@@ -192,6 +193,7 @@
 		AD95923D2C9DD53C0019BB13 /* ViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewState.swift; sourceTree = "<group>"; };
 		ADA358EF2CB59D17002BB6D5 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		ADA358F12CB688AF002BB6D5 /* Apperance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Apperance.swift; sourceTree = "<group>"; };
+		ADA358F42CB696E9002BB6D5 /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
 		ADD1CF952C99936D00739278 /* EventsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewModelTests.swift; sourceTree = "<group>"; };
 		ADE5C4FA2CA808A300FF2BF5 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		ADE5C4FC2CA810CF00FF2BF5 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
@@ -422,6 +424,7 @@
 		AD4D89092C986C96003DD3C4 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				ADA358F32CB696DD002BB6D5 /* Analytics */,
 				AD4AC44C2CAC74FB00C6BFBE /* Authentication */,
 				ADE5C4FE2CA81D6B00FF2BF5 /* Localization */,
 				AD9592092C99C8E60019BB13 /* Network */,
@@ -583,6 +586,14 @@
 				AD95923D2C9DD53C0019BB13 /* ViewState.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		ADA358F32CB696DD002BB6D5 /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				ADA358F42CB696E9002BB6D5 /* AnalyticsService.swift */,
+			);
+			path = Analytics;
 			sourceTree = "<group>";
 		};
 		ADD1CF8F2C99930900739278 /* Screens */ = {
@@ -841,6 +852,7 @@
 				AD5F1F542CA570E500966944 /* PlaceholderView.swift in Sources */,
 				AD95922A2C9C1D580019BB13 /* NetworkService.swift in Sources */,
 				AD2609582C99763400687D36 /* URLSessionProtocol.swift in Sources */,
+				ADA358F52CB696EA002BB6D5 /* AnalyticsService.swift in Sources */,
 				ADE5C4FD2CA810D800FF2BF5 /* Utils.swift in Sources */,
 				AD5F1F522CA4883600966944 /* BookmarksViewModel.swift in Sources */,
 				AD4AC45E2CB0089400C6BFBE /* DayDataModel.swift in Sources */,
