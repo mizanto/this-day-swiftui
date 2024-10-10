@@ -20,6 +20,9 @@ protocol AuthViewModelProtocol: ObservableObject {
     var changeModeButtonTitle: String { get }
     var showErrorSnackbar: Bool { get set }
     var snackbarErrorMessage: String { get }
+    var isPolicyAccepted: Bool { get set }
+    var actionButtonIsActive: Bool { get }
+    var currentLanguage: String { get }
 
     func onActionButtonTapped()
     func changeAuthMode()
@@ -33,6 +36,7 @@ final class AuthViewModel: AuthViewModelProtocol {
     @Published var errorMessage: String?
     @Published var isAuthenticated: Bool = false
     @Published var showErrorSnackbar = false
+    @Published var isPolicyAccepted = false
 
     var snackbarErrorMessage: String = ""
 
@@ -53,14 +57,20 @@ final class AuthViewModel: AuthViewModelProtocol {
                      : LocalizedString("auth.button.dont_have_account")
     }
 
+    var actionButtonIsActive: Bool { (isSignUpMode && isPolicyAccepted) || !isSignUpMode }
+    var currentLanguage: String { settings.language }
+
     private let authService: AuthenticationServiceProtocol
+    private let settings: AppSettingsProtocol
     private let analyticsService: AnalyticsServiceProtocol
     private var cancellables = Set<AnyCancellable>()
 
     init(authService: AuthenticationServiceProtocol,
+         settings: AppSettingsProtocol,
          analyticsService: AnalyticsServiceProtocol,
          onAuthenticated: @escaping VoidClosure) {
         self.authService = authService
+        self.settings = settings
         self.analyticsService = analyticsService
         self.onAuthenticated = onAuthenticated
 

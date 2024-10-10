@@ -174,6 +174,23 @@
         }
       }
     },
+    "auth.text.policy" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I have read and agree to the Privacy Policy."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Я прочитал(а) и согласен(на) с политикой конфиденциальности."
+          }
+        }
+      }
+    },
     "auth.title.sign_in" : {
       "extractionState" : "manual",
       "localizations" : {

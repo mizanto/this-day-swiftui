@@ -10,6 +10,7 @@ import SwiftUI
 struct AuthView<ViewModel: AuthViewModelProtocol>: View {
     @StateObject private var viewModel: ViewModel
     @FocusState private var isTextFieldFocused: Bool
+    @State private var isPresentingPrivacyPolicy = false
 
     init(viewModel: ViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -51,11 +52,24 @@ struct AuthView<ViewModel: AuthViewModelProtocol>: View {
                         Text(viewModel.actionButtonTitle)
                             .frame(maxWidth: .infinity)
                             .padding(12)
-                            .background(.main)
+                            .background(viewModel.actionButtonIsActive ? .main : .unavailable)
                             .foregroundColor(.white)
                             .cornerRadius(8)
                     }
                 )
+                .disabled(!viewModel.actionButtonIsActive)
+
+                if viewModel.isSignUpMode {
+                    Toggle(isOn: $viewModel.isPolicyAccepted) {
+                        Text(LocalizedString("auth.text.policy"))
+                            .underline()
+                            .font(.footnote)
+                            .onTapGesture {
+                                isPresentingPrivacyPolicy = true
+                            }
+                    }
+                    .toggleStyle(SwitchToggleStyle(tint: .main))
+                }
                 Button(
                     action: {
                         viewModel.changeAuthMode()
@@ -75,6 +89,9 @@ struct AuthView<ViewModel: AuthViewModelProtocol>: View {
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())
+        .sheet(isPresented: $isPresentingPrivacyPolicy) {
+            PrivacyPolicyView(language: viewModel.currentLanguage)
+        }
         .snackbar(isPresented: $viewModel.showErrorSnackbar, message: viewModel.snackbarErrorMessage, type: .error)
     }
 }
@@ -83,6 +100,7 @@ struct AuthView<ViewModel: AuthViewModelProtocol>: View {
     AuthView(
         viewModel: AuthViewModel(
             authService: AuthenticationService(),
+            settings: AppSettings.shared,
             analyticsService: AnalyticsService.shared,
             onAuthenticated: {}
         )

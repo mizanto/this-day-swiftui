@@ -56,6 +56,7 @@ final class FlowCoordinator: ObservableObject {
                 case .authorization:
                     AppLogger.shared.info("[Coordinator]: Start authorization", category: .coordinator)
                     self.view = AnyView(AuthViewBuilder.build(authService: self.authService,
+                                                              settings: self.settings,
                                                               analyticsService: self.analyticsService,
                                                               onAuthenticated: self.handleAuthentication))
                 case .main:
