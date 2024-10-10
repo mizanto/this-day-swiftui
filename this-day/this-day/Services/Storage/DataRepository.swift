@@ -153,40 +153,6 @@ final class DataRepository: DataRepositoryProtocol {
             .eraseToAnyPublisher()
     }
 
-//    func syncBookmarks() -> AnyPublisher<Void, RepositoryError> {
-//        AppLogger.shared.debug("[Repo]: Start syncing bookmarks", category: .repository)
-//        return localStorage.fetchBookmarks()
-//            .flatMap { localBookmarks in
-//                AppLogger.shared.debug(
-//                    "[Repo]: Found \(localBookmarks.count) bookmarks in local storage", category: .repository)
-//                if localBookmarks.isEmpty {
-//                    AppLogger.shared.debug(
-//                        "[Repo]: No bookmarks in local storage, fetching from cloud", category: .repository)
-//                    return self.cloudStorage.fetchBookmarks()
-//                } else {
-//                    return Just([])
-//                        .setFailureType(to: StorageError.self)
-//                        .eraseToAnyPublisher()
-//                }
-//            }
-//            .mapError { error in
-//                AppLogger.shared.error(
-//                    "[Repo]: Failed to fetch bookmarks from cloud storage: \(error)", category: .repository)
-//                return RepositoryError.fetchError
-//            }
-//            .flatMap { [weak self] cloudBookmarks -> AnyPublisher<Void, RepositoryError> in
-//                AppLogger.shared.debug(
-//                    "[Repo]: Found \(cloudBookmarks.count) bookmarks in cloud storage", category: .repository)
-//                guard let self else {
-//                    return Fail(error: RepositoryError.fetchError)
-//                        .eraseToAnyPublisher()
-//                }
-//                return self.tryToSaveCloudBookmarks(cloudBookmarks)
-//            }
-//            .map { _ in () }
-//            .eraseToAnyPublisher()
-//    }
-
     func clearLocalStorage() -> AnyPublisher<Void, RepositoryError> {
         AppLogger.shared.debug("Clearing local storage", category: .repository)
         return localStorage.clearStorage()
