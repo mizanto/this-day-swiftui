@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SettingsView<ViewModel: SettingsViewModelProtocol>: View {
     @StateObject private var viewModel: ViewModel
+    @State private var isPresentingPrivacyPolicy = false
 
     init(viewModel: ViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -20,6 +21,9 @@ struct SettingsView<ViewModel: SettingsViewModelProtocol>: View {
                 .navigationTitle(LocalizedString("tab_title.settings"))
         }
         .snackbar(isPresented: $viewModel.showSnackbar, message: viewModel.appVersionMessage)
+        .sheet(isPresented: $isPresentingPrivacyPolicy) {
+            PrivacyPolicyView(language: viewModel.selectedLanguage)
+        }
     }
 
     @ViewBuilder
@@ -27,6 +31,7 @@ struct SettingsView<ViewModel: SettingsViewModelProtocol>: View {
         Form {
             profileSection()
             generalSection()
+            legalInfoSection()
             appInfoSection()
         }
     }
@@ -107,6 +112,22 @@ struct SettingsView<ViewModel: SettingsViewModelProtocol>: View {
                     )
                 }
             }
+        }
+    }
+
+    private func legalInfoSection() -> some View {
+        Section(header: Text(LocalizedString("settings.section.legal_info"))) {
+            Button(action: {
+                isPresentingPrivacyPolicy = true
+            }) {
+                HStack {
+                    Text(LocalizedString("settings.section.legal_info.privacy_policy"))
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .foregroundColor(.secondary)
+                }
+            }
+            .colorMultiply(.appBlue)
         }
     }
 

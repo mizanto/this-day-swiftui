@@ -49,6 +49,7 @@ struct BookmarksView<ViewModel: BookmarksViewModelProtocol>: View {
                     .listRowInsets(EdgeInsets(top: 12, leading: 0, bottom: 12, trailing: 0))
                     .listRowBackground(Color.clear)
                 }
+                .scrollIndicators(.hidden)
                 .listStyle(PlainListStyle())
             }
 
