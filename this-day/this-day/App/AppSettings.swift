@@ -62,15 +62,15 @@ final class AppSettings: AppSettingsProtocol, ObservableObject {
     var buildNumber: String { Bundle.main.buildNumber }
 
     var appStorePageURL: String {
-        set { saveString(value: newValue, forKey: .appStoreURL) }
         get { getString(forKey: .appStoreURL) ?? DefaultValue.appStoreURL }
+        set { saveString(value: newValue, forKey: .appStoreURL) }
     }
 
     var isCurrentVersionLessThanMinVersion: Bool { appVersion.isVersionLessThan(minVersion) }
     var isUpdateAvailable: Bool { appVersion.isVersionLessThan(appStoreVersion) }
 
     private let userDefaults: UserDefaults = .standard
-    
+
     private func saveString(value: String, forKey key: SettingsKey) {
         userDefaults.set(value, forKey: key.rawValue)
     }

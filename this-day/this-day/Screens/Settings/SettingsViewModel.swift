@@ -86,9 +86,9 @@ final class SettingsViewModel: SettingsViewModelProtocol {
         settings.language = id
         Bundle.setLanguage(id)
         NotificationCenter.default.post(name: .languageDidChange, object: nil)
-        
+
         objectWillChange.send()
-        
+
         analyticsService.setUserProperty(.language, value: id)
         analyticsService.logEvent(.languageSelected, parameters: ["id": id])
     }

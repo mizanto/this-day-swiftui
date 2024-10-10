@@ -24,4 +24,25 @@ extension String {
             return hashString
         }
     }
+
+    func isVersionLessThan(_ version: String) -> Bool {
+        let currentComponents = split(separator: ".").compactMap { Int($0) }
+        let compareComponents = version.split(separator: ".").compactMap { Int($0) }
+
+        let maxCount = max(currentComponents.count, compareComponents.count)
+
+        let paddedCurrent = currentComponents + Array(repeating: 0, count: maxCount - currentComponents.count)
+        let paddedCompare = compareComponents + Array(repeating: 0, count: maxCount - compareComponents.count)
+
+        for (current, compare) in zip(paddedCurrent, paddedCompare) {
+            if current < compare {
+                return true
+            } else if current > compare {
+                return false
+            }
+        }
+
+        // if equals
+        return false
+    }
 }

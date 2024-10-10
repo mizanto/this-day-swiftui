@@ -35,7 +35,7 @@ cyclomatic_complexity:
   error: 25
 
 file_name: 
-  excluded: ["Utils.swift"]
+  excluded: ["Utils.swift", "Notification+Extension.swift"]
 
 included:
   - this-day/this-day
