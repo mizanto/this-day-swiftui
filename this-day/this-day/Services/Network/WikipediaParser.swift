@@ -92,7 +92,7 @@ final class WikipediaParser {
 
         let lines = categoryText.components(separatedBy: "\n")
 
-        let separator: Character = language == "en" ? "–" : "—"
+        let separators = CharacterSet(arrayLiteral: "–", "—")
         let yearPattern = language == "en" ? "^[0-9]{1,4}( BC)?$"
                                            : "^[0-9]{1,4}( до н\\. э\\.)?$"
         var events: [EventNetworkModel] = []
@@ -105,7 +105,8 @@ final class WikipediaParser {
             guard !cleanedLine.isEmpty else { continue }
 
             // check if possible to parse "year - text"
-            if let separator = cleanedLine.firstIndex(of: separator) {
+            let separator = cleanedLine.firstIndex(where: { $0.unicodeScalars.contains(where: separators.contains) })
+            if let separator {
                 let potentialYear = cleanedLine.prefix(upTo: separator).trimmingCharacters(in: .whitespacesAndNewlines)
                 let eventText = cleanedLine
                     .suffix(from: cleanedLine.index(after: separator))
